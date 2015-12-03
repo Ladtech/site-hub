@@ -1,0 +1,36 @@
+require 'logger'
+require 'sitehub/constants'
+require_relative 'log_wrapper'
+require_relative 'log_stash'
+class SiteHub
+  module Logging
+    class ErrorLogger
+      include Constants
+      LOG_TEMPLATE = '[%s] ERROR: %s - %s'
+
+
+      attr_reader :logger
+
+      def initialize(app, logger = Logger.new(STDERR))
+        @app = app
+        @logger = LogWrapper.new(logger)
+      end
+
+      def call env
+        env[ERRORS] ||= LogStash.new
+        @app.call(env).tap do
+          unless env[ERRORS].empty?
+            messages = env[ERRORS].collect { |log_entry| log_message(error: log_entry.message, transaction_id: env[RackHttpHeaderKeys::TRANSACTION_ID]) }
+
+            logger.write(messages.join(NEW_LINE))
+          end
+        end
+      end
+
+      def log_message(error:, transaction_id:)
+        LOG_TEMPLATE % [Time.now.strftime(TIME_STAMP_FORMAT), transaction_id, error]
+      end
+
+    end
+  end
+end

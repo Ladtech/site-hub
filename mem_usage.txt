@@ -1,0 +1,1584 @@
+100000 hits on trusted reviews.
+
+Total allocated 97954
+Total retained 22685
+
+allocated memory by gem
+-----------------------------------
+  12083561  rubygems
+   1502083  addressable-2.3.7
+    569395  ruby-2.1.1/lib
+    167014  sitehub/lib
+    113775  ruby-2.1.1@sitehub
+     52621  eventmachine-1.0.7
+     36721  em-http-request-1.1.2
+     24856  cookiejar-0.3.2
+     11823  rack-1.6.0
+     11673  em-socksify-0.3.0
+      9559  uuid-2.3.7
+      6512  ruby-2.1.1@global
+      6450  http_parser.rb-0.6.0
+      3088  other
+      3032  rack-ssl-enforcer-0.2.8
+      2980  systemu-2.6.5
+      1425  macaddr-1.7.1
+
+allocated memory by file
+-----------------------------------
+   8586624  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb
+   1668261  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb
+   1490209  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb
+   1018186  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb
+    437220  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb
+    200862  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so
+    155136  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb
+    146320  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb
+    107856  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb
+     78347  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb
+     69000  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb
+     58028  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/socket.so
+     57308  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb
+     24100  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/zlib.so
+     23406  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb
+     23267  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/eventmachine.rb
+     22338  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems.rb
+     20920  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb
+     19084  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/cookiejar-0.3.2/lib/cookiejar/cookie_validation.rb
+     18744  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/x509.rb
+     17143  /home/team/.rvm/gems/ruby-2.1.1@sitehub/extensions/x86_64-linux/2.1.0/eventmachine-1.0.7/rubyeventmachine.so
+     14386  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/timeout.rb
+     12952  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/logger.rb
+     11528  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/cipher.rb
+      9537  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/uri.rb
+      8845  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-socksify-0.3.0/lib/em-socksify/errors.rb
+      6640  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri/generic.rb
+      6088  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec
+      5840  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/http_parser.rb-0.6.0/lib/ruby_http_parser.so
+      5741  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri/mailto.rb
+      5667  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/client.rb
+      5657  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_status_codes.rb
+      5612  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/lib/uuid.rb
+      5574  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/em/resolver.rb
+      5454  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/rack-1.6.0/lib/rack/response.rb
+      5433  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_connection.rb
+      5368  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec
+      5336  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/stringio.so
+      5148  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/decoders.rb
+      4728  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/digest.so
+      4593  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/rack-1.6.0/lib/rack/request.rb
+      4558  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_client_options.rb
+      4328  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec
+      4288  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec
+      4236  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/cookiejar-0.3.2/lib/cookiejar/cookie.rb
+      4202  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/ssl.rb
+      3947  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec
+      3480  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec
+      3472  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec
+      3348  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/em/protocols.rb
+
+allocated memory by location
+-----------------------------------
+   8017505  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+    933831  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+    871478  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+    560422  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+    512642  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1023
+    338640  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:341
+    257184  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:68
+    256618  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:91
+    208112  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:62
+    200862  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+    191412  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+    160000  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:346
+    144804  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:108
+    114196  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:168
+     99705  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:28
+     97546  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:61
+     77503  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1816
+     75200  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:85
+     71344  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+     58028  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/socket.so:0
+     46416  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:340
+     40352  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+     37600  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1810
+     36536  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1815
+     35796  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+     30560  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:89
+     30359  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+     30028  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+     27600  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:38
+     25288  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+     24100  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/zlib.so:0
+     23655  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+     21940  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1734
+     21458  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems.rb:1092
+     21384  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/eventmachine.rb:90
+     19850  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:124
+     19800  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1338
+     17918  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:89
+     17640  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+     17143  /home/team/.rvm/gems/ruby-2.1.1@sitehub/extensions/x86_64-linux/2.1.0/eventmachine-1.0.7/rubyeventmachine.so:0
+     15898  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:48
+     15672  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:192
+     15088  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1515
+     14720  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1514
+     13889  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:432
+     13800  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:36
+     13800  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:39
+     13800  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:40
+     13200  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:53
+     11122  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb:2827
+
+allocated objects by gem
+-----------------------------------
+     71092  rubygems
+     19416  addressable-2.3.7
+      3520  ruby-2.1.1/lib
+      2013  ruby-2.1.1@sitehub
+       728  sitehub/lib
+       443  eventmachine-1.0.7
+       221  em-http-request-1.1.2
+       122  ruby-2.1.1@global
+       104  cookiejar-0.3.2
+        94  uuid-2.3.7
+        50  em-socksify-0.3.0
+        43  rack-1.6.0
+        39  http_parser.rb-0.6.0
+        27  systemu-2.6.5
+        21  other
+        11  macaddr-1.7.1
+        10  rack-ssl-enforcer-0.2.8
+
+allocated objects by file
+-----------------------------------
+     44020  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb
+     19371  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb
+     10977  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb
+      5982  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb
+      5789  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb
+      2248  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb
+      1725  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb
+      1121  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so
+       496  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems.rb
+       444  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/socket.so
+       356  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb
+       330  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/eventmachine.rb
+       314  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb
+       300  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb
+       268  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb
+       226  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb
+       171  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb
+       126  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec
+       123  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec
+       116  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/zlib.so
+        96  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/cipher.rb
+        94  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec
+        87  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec
+        76  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec
+        72  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/x509.rb
+        70  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec
+        70  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/cookiejar-0.3.2/lib/cookiejar/cookie_validation.rb
+        70  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/timeout.rb
+        70  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec
+        65  /home/team/.rvm/gems/ruby-2.1.1@sitehub/extensions/x86_64-linux/2.1.0/eventmachine-1.0.7/rubyeventmachine.so
+        62  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec
+        60  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec
+        58  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec
+        55  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec
+        55  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec
+        54  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/logger.rb
+        54  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_status_codes.rb
+        49  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec
+        47  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec
+        46  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec
+        45  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec
+        45  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec
+        44  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec
+        43  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec
+        42  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec
+        42  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/em/protocols.rb
+        41  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec
+        41  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec
+        41  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec
+        40  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec
+
+allocated objects by location
+-----------------------------------
+     42464  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+      9031  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+      8466  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:341
+      5207  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+      2264  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+      1880  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1816
+      1836  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:346
+      1807  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:62
+      1777  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+      1501  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+      1380  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:28
+      1121  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+       940  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1810
+       846  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1815
+       764  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:89
+       712  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:168
+       690  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:38
+       654  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+       493  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:61
+       474  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems.rb:1092
+       470  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:85
+       464  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:124
+       444  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/socket.so:0
+       441  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+       399  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:68
+       355  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:192
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:36
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:40
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:39
+       330  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1338
+       330  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:53
+       295  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/eventmachine.rb:90
+       285  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+       276  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1515
+       248  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:89
+       235  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1023
+       232  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:123
+       227  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:109
+       222  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:2212
+       222  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:48
+       211  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:159
+       182  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:432
+       168  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:37
+       165  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1333
+       152  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+       132  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:108
+       121  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:453
+       119  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+       116  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/zlib.so:0
+       111  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1747
+
+retained memory by gem
+-----------------------------------
+   4852067  rubygems
+    999963  addressable-2.3.7
+    443185  ruby-2.1.1/lib
+     79799  ruby-2.1.1@sitehub
+     76242  sitehub/lib
+     34219  eventmachine-1.0.7
+     29200  em-http-request-1.1.2
+     16183  cookiejar-0.3.2
+     10753  em-socksify-0.3.0
+     10456  rack-1.6.0
+      7769  uuid-2.3.7
+      6089  http_parser.rb-0.6.0
+      4440  ruby-2.1.1@global
+      2992  rack-ssl-enforcer-0.2.8
+      1824  systemu-2.6.5
+      1024  macaddr-1.7.1
+       240  other
+
+retained memory by file
+-----------------------------------
+   4024824  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb
+    988889  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb
+    539918  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb
+    168513  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so
+    138827  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb
+     96810  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb
+     82583  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb
+     58028  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/socket.so
+     31969  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb
+     27480  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb
+     24208  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb
+     23939  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/zlib.so
+     19854  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb
+     17143  /home/team/.rvm/gems/ruby-2.1.1@sitehub/extensions/x86_64-linux/2.1.0/eventmachine-1.0.7/rubyeventmachine.so
+     15848  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb
+     15240  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb
+     12583  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/cookiejar-0.3.2/lib/cookiejar/cookie_validation.rb
+     11313  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/logger.rb
+      9592  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/cipher.rb
+      9057  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/uri.rb
+      8205  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-socksify-0.3.0/lib/em-socksify/errors.rb
+      8187  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/x509.rb
+      7072  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/eventmachine.rb
+      5840  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/http_parser.rb-0.6.0/lib/ruby_http_parser.so
+      5657  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_status_codes.rb
+      5336  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/stringio.so
+      5328  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec
+      5312  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri/generic.rb
+      5252  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/em/resolver.rb
+      5068  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/decoders.rb
+      4728  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/digest.so
+      4672  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/lib/uuid.rb
+      4500  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/client.rb
+      4427  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_connection.rb
+      4392  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/rack-1.6.0/lib/rack/request.rb
+      4328  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/rack-1.6.0/lib/rack/response.rb
+      4028  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri/mailto.rb
+      3961  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/ssl.rb
+      3424  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec
+      3224  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/timeout.rb
+      3097  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec
+      3025  /home/team/Projects/sitehub/lib/sitehub/collection.rb
+      2976  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/util.rb
+      2792  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/fcntl.so
+      2728  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec
+      2648  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec
+      2462  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection/split.rb
+      2448  /home/team/Projects/sitehub/lib/sitehub/http_headers.rb
+      2348  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/em/protocols.rb
+      2329  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_header.rb
+
+retained memory by location
+-----------------------------------
+   3770539  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+    809698  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+    254285  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+    235923  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:91
+    223506  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:68
+    168513  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+    136587  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:108
+    123280  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:346
+     58028  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/socket.so:0
+     49668  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:61
+     46416  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:340
+     23939  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/zlib.so:0
+     23816  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1815
+     20695  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1734
+     18102  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+     17554  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+     17143  /home/team/.rvm/gems/ruby-2.1.1@sitehub/extensions/x86_64-linux/2.1.0/eventmachine-1.0.7/rubyeventmachine.so:0
+     16055  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+     13200  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1338
+     11766  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+     11760  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+     11072  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:192
+     10731  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+      9600  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+      9080  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:109
+      7288  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:432
+      7051  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+      6672  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/eventmachine-1.0.7/lib/eventmachine.rb:90
+      6600  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:53
+      6009  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:48
+      5979  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1034
+      5888  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1515
+      5840  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/http_parser.rb-0.6.0/lib/ruby_http_parser.so:0
+      5621  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb:2827
+      5336  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/stringio.so:0
+      5232  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb:46
+      5200  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb:2103
+      5120  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/uri.rb:29
+      4931  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:2212
+      4792  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri/generic.rb:18
+      4728  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/digest.so:0
+      4264  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb:45
+      4139  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:331
+      3880  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/rack-1.6.0/lib/rack/request.rb:12
+      3376  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+      3200  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/cipher.rb:25
+      3120  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb:50
+      3026  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb:2413
+      3016  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb:2305
+      2904  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:416
+
+retained objects by gem
+-----------------------------------
+      9986  addressable-2.3.7
+      8594  rubygems
+      2223  ruby-2.1.1/lib
+      1172  ruby-2.1.1@sitehub
+       169  sitehub/lib
+       157  em-http-request-1.1.2
+        87  eventmachine-1.0.7
+        71  ruby-2.1.1@global
+        61  uuid-2.3.7
+        45  cookiejar-0.3.2
+        33  http_parser.rb-0.6.0
+        30  rack-1.6.0
+        27  em-socksify-0.3.0
+        11  systemu-2.6.5
+         9  rack-ssl-enforcer-0.2.8
+         6  other
+         4  macaddr-1.7.1
+
+retained objects by file
+-----------------------------------
+      9960  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb
+      5735  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb
+      1079  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb
+       885  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so
+       687  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb
+       565  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb
+       444  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/socket.so
+       439  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb
+       220  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb
+       138  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb
+       117  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb
+       115  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/zlib.so
+       107  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec
+        89  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb
+        70  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec
+        69  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/cipher.rb
+        65  /home/team/.rvm/gems/ruby-2.1.1@sitehub/extensions/x86_64-linux/2.1.0/eventmachine-1.0.7/rubyeventmachine.so
+        54  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_status_codes.rb
+        53  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec
+        52  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec
+        47  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec
+        46  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec
+        43  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb
+        39  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/logger.rb
+        36  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec
+        34  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec
+        31  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec
+        31  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/http_parser.rb-0.6.0/lib/ruby_http_parser.so
+        30  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/util.rb
+        29  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/cookiejar-0.3.2/lib/cookiejar/cookie_validation.rb
+        29  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec
+        27  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec
+        27  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb
+        26  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec
+        26  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec
+        26  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec
+        26  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec
+        26  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec
+        25  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec
+        25  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec
+        25  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec
+        25  /home/team/Projects/sitehub/lib/sitehub/http_headers.rb
+        25  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec
+        25  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec
+        24  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec
+        24  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/client.rb
+        24  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec
+        22  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/fcntl.so
+        22  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/uri.rb
+        21  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-socksify-0.3.0/lib/em-socksify/errors.rb
+
+retained objects by location
+-----------------------------------
+      9028  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+      5495  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+       918  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:346
+       885  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+       528  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1815
+       444  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/socket.so:0
+       294  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+       240  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+       240  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:192
+       240  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+       227  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:109
+       165  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1338
+       165  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:53
+       146  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+       115  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/zlib.so:0
+        95  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+        81  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:2212
+        81  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+        75  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:48
+        67  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:432
+        65  /home/team/.rvm/gems/ruby-2.1.1@sitehub/extensions/x86_64-linux/2.1.0/eventmachine-1.0.7/rubyeventmachine.so:0
+        57  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:91
+        57  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:89
+        56  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:37
+        54  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:68
+        54  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:112
+        47  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1034
+        46  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:262
+        46  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1515
+        42  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:16
+        41  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:15
+        40  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb:46
+        33  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:108
+        31  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/http_parser.rb-0.6.0/lib/ruby_http_parser.so:0
+        30  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:14
+        29  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:13
+        28  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:10
+        26  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb:50
+        25  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/cipher.rb:25
+        22  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/fcntl.so:0
+        18  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+        16  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb:1314
+        15  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+        13  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb:51
+        13  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:14
+        13  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:15
+        13  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/util.rb:160
+        13  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/digest.so:0
+        13  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:46
+        13  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/digest.rb:45
+
+
+Allocated String Report
+-----------------------------------
+      2862  "\n"
+      2506  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+       217  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+       109  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         8  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         7  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         6  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         5  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+         2  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/openssl/config.rb:113
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:13
+
+       989  "    end\n"
+       898  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        38  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+        38  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         8  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         4  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+
+       925  "C*"
+       918  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:346
+         7  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+       815  "    #\n"
+       811  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         3  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+
+       690  "rubylibprefix"
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:38
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:36
+
+       674  "      end\n"
+       645  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        17  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         6  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         4  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+
+       648  "2.2.2"
+       168  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+       164  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+        93  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+        84  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:168
+        47  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1815
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/daemons-1.2.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/daemons-1.2.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/httpclient-2.6.0.1.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/httpclient-2.6.0.1.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rubygems-bundler-1.4.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rubygems-bundler-1.4.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rvm-1.11.3.9.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rvm-1.11.3.9.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/safe_yaml-1.0.4.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/safe_yaml-1.0.4.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/systemu-2.6.5.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/systemu-2.6.5.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:17
+
+       644  "2"
+       315  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+       313  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+         4  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         3  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:221
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:159
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:168
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/version.rb:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/lib/uuid.rb:70
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/lib/uuid.rb:66
+
+       640  "  #\n"
+       630  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        10  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+
+       496  "0"
+       235  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:89
+       125  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+       125  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+         4  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         4  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:159
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri.rb:99
+
+       488  "-"
+       355  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+       115  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/platform.rb:121
+         4  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         2  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/Projects/sitehub/lib/sitehub/http_headers.rb:14
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+
+       441  ">="
+       382  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:89
+        59  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+
+       440  "gems"
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:39
+        95  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+
+       414  "/home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/gems/2.1.0/specifications/default"
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:28
+        43  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:68
+        26  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:46
+
+       407  "2.2.0.preview.2"
+       222  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+        74  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+        37  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:159
+        37  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:168
+        37  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1419
+
+       406  "1.2.0"
+       156  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+        84  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+        42  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:168
+        40  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:159
+        40  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+         3  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:89
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:6
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rubygems-bundler-1.4.2.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:25
+
+       395  "/home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications"
+       259  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:68
+       136  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:48
+
+       380  "#\n"
+       363  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        13  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         4  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+
+       377  "  end\n"
+       310  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        38  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+        22  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         3  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+
+       360  ">= 0"
+       184  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+        88  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:85
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:34
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:35
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:34
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:33
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:32
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:32
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/daemons-1.2.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:34
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:33
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:32
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/httpclient-2.6.0.1.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rubygems-bundler-1.4.2.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rvm-1.11.3.9.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rubygems-bundler-1.4.2.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/safe_yaml-1.0.4.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/systemu-2.6.5.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:35
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:33
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:32
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:50
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:49
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:48
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:47
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:46
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:45
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:44
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:43
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:42
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:41
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:40
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:39
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:38
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:37
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:8
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:8
+
+       357  "\\-"
+       357  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+
+       355  ".pre."
+       355  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+
+       353  "default"
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:28
+         8  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+       347  "        end\n"
+       332  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         7  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         2  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         2  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         2  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+
+       345  "ruby_version"
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/defaults.rb:40
+
+       345  "specifications"
+       345  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:28
+
+       216  "/home/team"
+       200  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         2  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         2  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         2  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         2  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+
+       216  "/home"
+       200  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         2  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         2  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         2  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         2  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+
+       199  ""
+       150  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        26  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:432
+        10  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/resolv.rb:2107
+         3  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:419
+         1  /home/team/Projects/sitehub/lib/sitehub/http_headers.rb:12
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/em-http-request-1.1.2/lib/em-http/http_encoding.rb:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:13
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/cookiejar-0.3.2/lib/cookiejar/cookie_validation.rb:40
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/cookiejar-0.3.2/lib/cookiejar/cookie_validation.rb:46
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/uri.rb:54
+
+       193  "/home/team/.rvm/gems/ruby-2.1.1@sitehub/gems"
+       114  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        73  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+
+       188  "/home/team/.rvm/gems/ruby-2.1.1@sitehub"
+       114  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        68  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:48
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+
+       176  "/home/team/.rvm"
+       168  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+
+       176  "1"
+        85  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+        85  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+         4  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+       168  "~>"
+        84  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+        84  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:89
+
+       155  "    ##\n"
+       155  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+       149  "lib"
+        56  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:37
+        46  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:9
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:10
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:10
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec:10
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/daemons-1.2.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/httpclient-2.6.0.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rubygems-bundler-1.4.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rvm-1.11.3.9.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/safe_yaml-1.0.4.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/systemu-2.6.5.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:9
+
+       140  "          end\n"
+       137  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+
+       139  "/"
+       124  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         5  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/uri.rb:53
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:24
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxies.rb:26
+         1  /home/team/Projects/sitehub/config.ru:9
+
+       137  "end\n"
+        84  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        47  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+
+       120  "/home/team/.rvm/gems"
+       114  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+
+       111  " "
+        47  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:2212
+        28  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:37
+        24  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        12  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+
+       111  "      else\n"
+       104  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         7  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+
+       108  "<top (required)>"
+       100  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         3  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:1
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:2
+         1  /home/team/Projects/sitehub/lib/sitehub/collection/split_route_collection.rb:1
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxy_builder.rb:3
+
+        76  "    else\n"
+        38  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+        34  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         3  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+
+        74  "  ##\n"
+        53  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+        21  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+
+        73  "rake"
+        54  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:33
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:34
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:39
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:5
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:33
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:26
+
+        69  "        else\n"
+        68  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+
+        61  "MIT"
+        31  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/daemons-1.2.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rvm-1.11.3.9.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/safe_yaml-1.0.4.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:15
+
+        61  "3"
+        25  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+        25  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+         4  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:168
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/version.rb:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/lib/uuid.rb:70
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/lib/uuid.rb:66
+
+        60  "/home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0"
+        55  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         3  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:135
+         2  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+
+
+Retained String Report
+-----------------------------------
+        94  "2.2.2"
+        46  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/daemons-1.2.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/httpclient-2.6.0.1.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:15
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:302
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:23
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rubygems-bundler-1.4.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rvm-1.11.3.9.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/safe_yaml-1.0.4.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/systemu-2.6.5.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:17
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1815
+
+        84  "~>"
+        84  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+
+        75  "lib"
+        28  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/stub_specification.rb:37
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:9
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:10
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:10
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec:10
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/daemons-1.2.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/httpclient-2.6.0.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rubygems-bundler-1.4.2.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rvm-1.11.3.9.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/safe_yaml-1.0.4.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/systemu-2.6.5.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:9
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:9
+
+        74  "/home/team/.rvm/gems/ruby-2.1.1@sitehub/gems"
+        73  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+        69  "/home/team/.rvm/gems/ruby-2.1.1@sitehub"
+        68  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:48
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+        59  ">="
+        59  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/requirement.rb:92
+
+        48  "ruby"
+        47  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1815
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/httpclient-2.6.0.1.gemspec:16
+
+        47  "bin"
+        46  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1815
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+        30  "MIT"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/crack-0.4.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/daemons-1.2.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/rvm-1.11.3.9.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/safe_yaml-1.0.4.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:15
+
+        19  "rake"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:34
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-debug-ide-0.4.22.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:39
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:33
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/method_source-0.8.2.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:5
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:33
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:26
+
+        18  "README.rdoc"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:14
+
+        17  "rspec"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:35
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-socksify-0.3.0.gemspec:26
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:40
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/docile-1.1.5.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:5
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:22
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:28
+
+        14  "README.md"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debase-ruby_core_source-0.7.9.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/debugger-ruby_core_source-1.3.8.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:14
+
+        13  "/home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/gems/2.1.0"
+        13  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:46
+
+        13  "/home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/gems/2.1.0/gems"
+        13  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+
+        12  " "
+        12  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+
+        11  "1.8.7"
+        11  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+
+        11  "--main"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/addressable-2.3.7.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:20
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/multipart-post-2.0.0.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:17
+
+        11  "1.0"
+        11  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+
+        10  "bundler"
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-1.5.3.gemspec:5
+         1  /home/team/.rvm/gems/ruby-2.1.1@global/specifications/bundler-unload-1.0.2.gemspec:24
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/faraday-0.9.1.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/nesty-1.0.2.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-0.10.0.gemspec:29
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/simplecov-html-0.10.0.gemspec:26
+
+         9  "/home/team/.rvm/gems/ruby-2.1.1@global/gems"
+         9  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:146
+
+         9  "MIT-LICENSE"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/geminabox-0.12.4.gemspec:17
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:19
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:14
+
+         8  "3.2.0"
+         8  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+
+         7  "rack"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/em-http-request-1.1.2.gemspec:33
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/thin-1.6.3.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-protection-1.5.3.gemspec:25
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-ssl-enforcer-0.2.8.gemspec:28
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-test-0.6.3.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:28
+
+         7  "minitest"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:30
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:35
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:34
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:34
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/slop-3.6.0.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:36
+
+         7  "--title"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/cookiejar-0.3.2.gemspec:16
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:17
+
+         7  "_"
+         6  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/Projects/sitehub/lib/sitehub/http_headers.rb:13
+
+         6  "rdoc"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/ruby-prof-0.15.8.gemspec:32
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/diff-lcs-1.2.5.gemspec:32
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rake-10.4.2.gemspec:31
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:50
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:45
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/webmock-1.20.4.gemspec:37
+
+         6  "uuid"
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:5
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1269
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:15
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:2
+
+         6  "C"
+         5  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/x86_64-linux/openssl.so:0
+
+         6  "2"
+         4  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+         6  "l"
+         5  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+         6  "/home/team/.rvm/gems/ruby-2.1.1@global"
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:48
+
+         6  "3"
+         4  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+
+         6  "/home/team/.rvm/gems/ruby-2.1.1@sitehub/extensions/x86_64-linux/2.1.0"
+         6  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/basic_specification.rb:83
+
+         6  "樂"
+         6  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+
+         6  "systemu"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:26
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/systemu-2.6.5.gemspec:5
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:2212
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1269
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+         6  "-----BEGIN CERTIFICATE-----\nMIIF1TCCA72gAwIBAgIJAPXjfUbCjdXUMA0GCSqGSIb3DQEBBQUAMIGAMQswCQYD\nVQQGEwJVUzETMBEGA1UECAwKV2FzaGluZ3RvbjEQMA4GA1UEBwwHU2VhdHRsZTEO\nMAwGA1UECgwFUlNwZWMxEzARBgNVBAMMCnJzcGVjLml"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-3.2.0.gemspec:11
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1031
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:12
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-expectations-3.2.0.gemspec:11
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-mocks-3.2.1.gemspec:11
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-support-3.2.2.gemspec:11
+
+         6  "--line-numbers"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/builder-3.2.2.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rack-contrib-1.2.0.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/sinatra-1.4.5.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/tilt-1.4.1.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:18
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:17
+
+         6  "1"
+         4  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:303
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+         6  "("
+         5  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/core_ext/kernel_require.rb:55
+
+         5  "龜"
+         5  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+
+         5  "macaddr"
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:2212
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/macaddr-1.7.1.gemspec:5
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/uuid-2.3.7.gemspec:28
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/specification.rb:1269
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/uuid-2.3.7/uuid.gemspec:21
+
+         5  "/"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/uri.rb:53
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/cgi/core.rb:24
+         1  /home/team/Projects/sitehub/lib/sitehub/forward_proxies.rb:26
+         1  /home/team/Projects/sitehub/config.ru:9
+
+         5  "+"
+         5  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+
+         5  "1.3"
+         5  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/rubygems/version.rb:205
+
+         5  "i"
+         4  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+         1  /home/team/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri/ftp.rb:42
+
+         5  ")"
+         5  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+
+         5  "coderay"
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:21
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:14
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/coderay-1.1.0.gemspec:5
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/pry-0.10.1.gemspec:27
+         1  /home/team/.rvm/gems/ruby-2.1.1@sitehub/specifications/rspec-core-3.2.1.gemspec:38
+
+         5  "H"
+         5  /home/team/.rvm/gems/ruby-2.1.1@sitehub/gems/addressable-2.3.7/lib/addressable/idna/pure.rb:332
+
+
+Process finished with exit code 0

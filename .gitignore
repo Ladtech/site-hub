@@ -1,0 +1,5 @@
+*.iml
+.idea
+Gemfile.lock
+test.rb
+coverage

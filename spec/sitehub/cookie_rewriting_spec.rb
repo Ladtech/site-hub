@@ -1,0 +1,67 @@
+require 'sitehub/cookie_rewriting'
+
+class SiteHub
+  describe CookieRewriting do
+    let(:downstream_domain){'.downstream_domain.com'}
+    let(:request_mapping){RequestMapping.new(source_url: 'http://example.org', mapped_url: "http://#{downstream_domain}", mapped_path: '/map')}
+    let(:substitute_domain){URI(request_mapping.source_url).host}
+    let(:substitute_path){'/path'}
+    let(:downstream_response){Rack::Response.new}
+    let(:downstream_domain_cookie_name){'downstream.cookie'}
+
+    subject do
+      Object.new.tap do |o|
+        o.extend(described_class)
+      end
+    end
+
+    before do
+      downstream_response.set_cookie(downstream_domain_cookie_name, domain: downstream_domain, value: 'value')
+      downstream_response.set_cookie('downstream.cookie2', domain: downstream_domain, value: 'value2', httponly: true)
+    end
+
+    describe '#cookies_string_as_hash' do
+      it 'returns the string as a hash' do
+        cookie_header = downstream_response.headers['Set-Cookie']
+
+        cookie_strings = cookie_header.lines
+        cookie1 = SiteHub::Cookie.new(cookie_strings[0])
+        cookie2 = SiteHub::Cookie.new(cookie_strings[1])
+        expected = {
+            cookie1.name => cookie1,
+            cookie2.name => cookie2
+        }
+        result = subject.cookies_string_as_hash(cookie_header)
+        expect(result).to eq(expected)
+      end
+    end
+
+    describe '#cookies_hash_to_string' do
+      it 'returns the hash as a correctly formatted string' do
+        cookies_hash = subject.cookies_string_as_hash(downstream_response.headers['Set-Cookie'])
+        expect(subject.cookies_hash_to_string(cookies_hash)).to eq(downstream_response.headers['Set-Cookie'])
+      end
+    end
+
+    describe '#rewrite_cookies' do
+
+      context 'subdomain character present' do
+        it 'substitues the domain for the mapped domain' do
+          downstream_response.set_cookie(downstream_domain_cookie_name, domain: downstream_domain, value: 'value')
+          subject.rewrite_cookies(downstream_response.headers, substitute_domain: substitute_domain)
+          expect(downstream_response.cookies[downstream_domain_cookie_name][:domain]).to eq('.example.org')
+        end
+      end
+
+      context 'subdomain not character present' do
+        it 'substitues the domain for the mapped domain' do
+          downstream_response.set_cookie(downstream_domain_cookie_name, domain: 'downstream.com', value: 'value')
+          subject.rewrite_cookies(downstream_response.headers, substitute_domain: substitute_domain)
+          expect(downstream_response.cookies[downstream_domain_cookie_name][:domain]).to eq('example.org')
+        end
+      end
+    end
+
+  end
+
+end
