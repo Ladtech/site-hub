@@ -3,3 +3,5 @@
 Gemfile.lock
 test.rb
 coverage
+.ruby-gemset
+.ruby-version
