@@ -15,6 +15,16 @@ class SiteHub
         it 'sanitises the string parameter' do
           expect(described_class.new("#{attribute_name} \n", attribute_value).name).to eq(attribute_name.to_sym)
         end
+
+        context 'value is nil' do
+          subject do
+            described_class.new(attribute_name, nil)
+          end
+
+          it 'default to empty string' do
+            expect(subject.value).to eq('')
+          end
+        end
       end
 
       describe '#to_s' do

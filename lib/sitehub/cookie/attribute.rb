@@ -7,7 +7,7 @@ class SiteHub
 
       def initialize name, value
         @name = sanitise(name).to_s.to_sym
-        @value = sanitise(value)
+        @value = sanitise(value || EMPTY_STRING)
       end
 
       def to_s

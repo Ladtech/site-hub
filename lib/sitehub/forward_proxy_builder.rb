@@ -91,7 +91,7 @@ class SiteHub
     end
 
 
-    def forward_proxy(label: label, url: url, rule: nil)
+    def forward_proxy(label:, url:, rule: nil)
       ForwardProxy.new(url: url, id: label.to_sym, mapped_path: mapped_path, sitehub_cookie_path: sitehub_cookie_path, sitehub_cookie_name: sitehub_cookie_name, rule: rule)
     end
   end

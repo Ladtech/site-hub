@@ -11,7 +11,7 @@ class SiteHub
         !self.empty?
       end
 
-      def resolve env: env
+      def resolve(env: nil)
         return self.values.first unless self.values.find { |route| route.rule }
         result = self.values.find { |route| route.applies?(env) }
         result && result.resolve(env: env)
