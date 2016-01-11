@@ -52,7 +52,7 @@ class SiteHub
             env[REQUEST_METHOD],
             env[PATH_INFO],
             env[QUERY_STRING].empty? ? EMPTY_STRING : QUESTION_MARK+env[QUERY_STRING],
-            mapped_request.mapped_url.to_s,
+            mapped_request ? mapped_request.mapped_url.to_s : EMPTY_STRING,
             env[HTTP_VERSION],
             status.to_s[STATUS_RANGE],
             length,

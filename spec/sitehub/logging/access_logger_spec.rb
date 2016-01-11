@@ -33,22 +33,14 @@ class SiteHub
         end
       end
 
-      #describe '#before_call' do
-      #  it 'saves the time' do
-      #    now = Time.now
-      #    allow(Time).to receive(:now).and_return(now)
-      #    subject.before_call(:env)
-      #    expect(subject.start_time).to eq(now)
-      #  end
-      #end
-
       describe '#call' do
         let(:env) do
           {
               REQUEST_MAPPING => request_mapping,
               described_class::QUERY_STRING => '',
               described_class::PATH_INFO => 'path_info',
-              Constants::RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id
+              Constants::RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id,
+              described_class::HTTP_VERSION => '1.1'
           }
 
         end
@@ -98,6 +90,14 @@ class SiteHub
           subject.call(env)
 
           expect(logger.string).to include("#{env[described_class::PATH_INFO]} => #{:mapped_url}")
+        end
+
+        context '404 returned, i.e. no downstream call made' do
+          let(:request_mapping) { nil }
+          it 'does not log the down stream url' do
+            subject.call(env)
+            expect(logger.string).to include("=> #{EMPTY_STRING} #{env[described_class::HTTP_VERSION]}")
+          end
         end
 
       end
