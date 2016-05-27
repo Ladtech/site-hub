@@ -42,9 +42,18 @@ class SiteHub
       @endpoints = collection
     end
 
-    def split(percentage:, url:, label:, &block)
+    def split(percentage:, url:nil, label:nil, &block)
       endpoints(splits)
-      endpoints.add label.to_sym, forward_proxy(label: label, url: url), percentage
+
+      if block
+        builder = self.class.new(mapped_path: mapped_path, &block).build
+        endpoints.add UUID.generate(:compact), builder, percentage
+      else
+        parameters = [url, label]
+        raise InvalidDefinitionException, "label and url must be defined if not supplying a block" unless parameters.all?
+        endpoints.add label.to_sym, forward_proxy(label: label, url: url), percentage
+      end
+
     end
 
     def route url:nil, label:nil, rule: nil, &block

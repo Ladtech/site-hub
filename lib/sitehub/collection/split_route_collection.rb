@@ -24,7 +24,7 @@ class SiteHub
       def resolve(*args)
         random = rand(100)
         result = values.find { |split| random >= split.lower && random < split.upper }
-        result ? result.value : nil
+        result ? result.value.resolve(*args) : nil
       end
 
       def transform &block
