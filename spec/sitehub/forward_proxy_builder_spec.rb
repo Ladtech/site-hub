@@ -71,11 +71,42 @@ class SiteHub
 
 
       context 'split supplied' do
-        it 'stores a split for the version' do
-          subject.split url: :url, label: :label, percentage: 50
-          expected = Collection::SplitRouteCollection.new(ForwardProxy.new(url: :url, id: :label,sitehub_cookie_name: :cookie_name) => 50)
-          expect(subject.endpoints).to eq(expected)
+
+        context 'block supplied' do
+          it 'stores a forward proxy builder' do
+            proc = proc do
+              default url: :url
+            end
+
+            subject.split(percentage: 50, &proc)
+
+            expected_builder = described_class.new(mapped_path: subject.mapped_path, &proc)
+            expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
+            expect(subject.endpoints.values).to eq([expected_split])
+          end
         end
+
+        context 'block not supplied' do
+          it 'stores a split for the version' do
+            subject.split url: :url, label: :label, percentage: 50
+            expected = Collection::SplitRouteCollection.new(ForwardProxy.new(url: :url, id: :label, sitehub_cookie_name: :cookie_name) => 50)
+            expect(subject.endpoints).to eq(expected)
+          end
+
+          context 'label not supplied' do
+            it 'raises an error' do
+              expect{subject.split(url: :url, percentage: 50)}.to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+            end
+          end
+
+          context 'url not supplied' do
+            it 'raises an error' do
+              expect{subject.split(label: :label, percentage: 50)}.to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+            end
+          end
+        end
+
+
       end
 
       context 'routes defined' do
@@ -100,16 +131,16 @@ class SiteHub
           end
         end
 
-        it 'allows further splits or routes to be defined' do
+        it 'stores a proxy builder' do
           rule = proc { true }
-          subject.route rule: rule do
+          proc = proc do
             route url: :url, label: :label1
           end
 
-          subject.build
+          subject.route(rule: rule, &proc)
 
-          expected_route = ForwardProxy.new(url: :url, id: :label1, sitehub_cookie_name: :cookie_name)
-          expect(subject.resolve(env: {})).to eq(expected_route)
+          expected_builder = described_class.new(mapped_path: subject.mapped_path, &proc)
+          expect(subject.endpoints.values).to eq([expected_builder])
         end
 
         context 'invalid definitions inside block' do

@@ -18,7 +18,7 @@ class SiteHub
       end
 
       def transform &block
-        each  do |id, value|
+        each do |id, value|
           self[id] = block.call(value)
         end
       end
