@@ -19,9 +19,7 @@ class SiteHub
     end
 
     describe '#apply_middleware' do
-
       context 'middleware defined' do
-
         it 'wraps the supplied app in the middleware' do
           subject.use middleware
           result = subject.apply_middleware(:app)
@@ -61,9 +59,7 @@ class SiteHub
             expect(block_passed).to be(true)
           end
         end
-
       end
-
     end
   end
 end

@@ -6,8 +6,7 @@ class SiteHub
   module Logging
     class ErrorLogger
       include Constants
-      LOG_TEMPLATE = '[%s] ERROR: %s - %s'
-
+      LOG_TEMPLATE = '[%s] ERROR: %s - %s'.freeze
 
       attr_reader :logger
 
@@ -16,11 +15,13 @@ class SiteHub
         @logger = LogWrapper.new(logger)
       end
 
-      def call env
+      def call(env)
         env[ERRORS] ||= LogStash.new
         @app.call(env).tap do
           unless env[ERRORS].empty?
-            messages = env[ERRORS].collect { |log_entry| log_message(error: log_entry.message, transaction_id: env[RackHttpHeaderKeys::TRANSACTION_ID]) }
+            messages = env[ERRORS].collect do |log_entry|
+              log_message(error: log_entry.message, transaction_id: env[RackHttpHeaderKeys::TRANSACTION_ID])
+            end
 
             logger.write(messages.join(NEW_LINE))
           end
@@ -28,9 +29,8 @@ class SiteHub
       end
 
       def log_message(error:, transaction_id:)
-        LOG_TEMPLATE % [Time.now.strftime(TIME_STAMP_FORMAT), transaction_id, error]
+        format(LOG_TEMPLATE, Time.now.strftime(TIME_STAMP_FORMAT), transaction_id, error)
       end
-
     end
   end
 end

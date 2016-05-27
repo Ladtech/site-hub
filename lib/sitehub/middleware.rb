@@ -5,7 +5,7 @@ class SiteHub
     end
 
     def use(middleware_clazz, *args, &block)
-      middlewares << [middleware_clazz, args, block|| proc{}]
+      middlewares << [middleware_clazz, args, block || proc {}]
     end
 
     def apply_middleware(forward_proxy)

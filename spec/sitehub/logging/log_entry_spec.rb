@@ -3,8 +3,7 @@ class SiteHub
   module Logging
     describe LogEntry do
       describe '#initialize' do
-
-        let(:time){Time.now}
+        let(:time) { Time.now }
         subject do
           described_class.new(:message, time)
         end
@@ -26,8 +25,6 @@ class SiteHub
             expect(subject.time).to be(:current_time)
           end
         end
-
-
       end
     end
   end

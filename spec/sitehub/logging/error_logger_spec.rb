@@ -3,8 +3,7 @@ require 'sitehub/logging/error_logger'
 class SiteHub
   module Logging
     describe ErrorLogger do
-
-      let(:app){ proc{[200, {}, []]}}
+      let(:app) { proc { [200, {}, []] } }
       subject { described_class.new(app) }
 
       describe '#initialize' do
@@ -44,7 +43,7 @@ class SiteHub
         context 'errors have occurred' do
           it 'logs errors' do
             log_message = subject.log_message(error: error_message, transaction_id: :transaction_id)
-            subject.call({ERRORS => errors, Constants::RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id})
+            subject.call(ERRORS => errors, Constants::RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id)
             expect(output.string).to eq(log_message)
           end
         end
@@ -52,7 +51,7 @@ class SiteHub
         context 'no errors have occured' do
           it 'does not log anything' do
             expect(logger).to_not receive(:write)
-            subject.call({ERRORS => []})
+            subject.call(ERRORS => [])
           end
         end
       end
@@ -62,17 +61,16 @@ class SiteHub
         it 'contains the time and date' do
           now = Time.now
           expect(Time).to receive(:now).and_return(now)
-          expected_time = now.strftime("%d/%b/%Y:%H:%M:%S %z")
+          expected_time = now.strftime('%d/%b/%Y:%H:%M:%S %z')
           expect(subject.log_message(error: error, transaction_id: :transaction_id)).to start_with("[#{expected_time}]")
         end
 
         it 'logs statements made against blah' do
-
           expect(subject.log_message(error: error, transaction_id: :transaction_id)).to match(/ERROR: .* -  ?#{error}$/)
         end
 
         it 'contains the transation id of the request' do
-          expect(subject.log_message(error: error, transaction_id: :transaction_id)).to include("ERROR: #{:transaction_id}")
+          expect(subject.log_message(error: error, transaction_id: :transaction_id)).to include('ERROR: transaction_id')
         end
       end
     end

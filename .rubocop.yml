@@ -1,0 +1,17 @@
+Metrics/LineLength:
+  Max: 120
+
+AllCops:
+  TargetRubyVersion: 2.1
+  Exclude:
+    - 'pkg/**/*'
+    - 'vendor/**/*'
+    - 'coverage/**/*'
+    - '.idea/**/*'
+    - '*.gemspec'
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 11

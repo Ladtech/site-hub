@@ -1,10 +1,9 @@
 require 'stringio'
 shared_context :site_hub do
-
-  let(:downstream_url){'http://localhost:12345'}
+  let(:downstream_url) { 'http://localhost:12345' }
 
   before do
-    stub_request(:get, downstream_url).to_return(:body => 'hello')
+    stub_request(:get, downstream_url).to_return(body: 'hello')
   end
 
   let(:builder) do
@@ -12,7 +11,7 @@ shared_context :site_hub do
       builder.access_logger StringIO.new
       builder.error_logger StringIO.new
       downstream_url = downstream_url()
-      builder.proxy "/endpoint" do
+      builder.proxy '/endpoint' do
         split(percentage: 100) do
           split percentage: 50, label: 'experiment1', url: downstream_url
           split percentage: 50, label: 'experiment2', url: downstream_url

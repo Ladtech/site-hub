@@ -1,7 +1,6 @@
- require 'sitehub/http_headers'
+require 'sitehub/http_headers'
 class SiteHub
   describe HttpHeaders do
-
     subject do
       Object.new.tap do |o|
         o.extend(described_class)
@@ -9,27 +8,26 @@ class SiteHub
     end
 
     let(:headers_underscored) do
-      {'CONNECTION' => 'close',
-       'KEEP_ALIVE' => 'something',
-       'PROXY_AUTHENTICATE' => 'something',
-       'PROXY_AUTHORIZATION' => 'something',
-       'TE' => 'something',
-       'TRAILERS' => 'something',
-       'TRANSFER_ENCODING' => 'something',
-       'CONTENT_ENCODING' => 'something',
-       'PROXY_CONNECTION' => 'something'}
+      { 'CONNECTION' => 'close',
+        'KEEP_ALIVE' => 'something',
+        'PROXY_AUTHENTICATE' => 'something',
+        'PROXY_AUTHORIZATION' => 'something',
+        'TE' => 'something',
+        'TRAILERS' => 'something',
+        'TRANSFER_ENCODING' => 'something',
+        'CONTENT_ENCODING' => 'something',
+        'PROXY_CONNECTION' => 'something' }
     end
 
     let(:headers_hyphonised) do
-      Hash.new.tap do |hash|
+      {}.tap do |hash|
         headers_underscored.each do |key, value|
-          hash[key.gsub('_', '-')] = value
+          hash[key.tr('_', '-')] = value
         end
       end
     end
 
     describe '#sanitise_headers' do
-
       context 'port 80 present in url' do
         it 'removes the port' do
           headers_hyphonised['location'] = 'http://mysite.com:80/redirect_endpoint'
@@ -60,12 +58,13 @@ class SiteHub
         end
 
         it 'filters out connections' do
-          headers = subject.sanitise_headers('connection' => 'a, b', 'a' => 'value_a', 'b' => 'value_b', 'c' => 'value_c')
+          headers = subject.sanitise_headers('connection' => 'a, b',
+                                             'a' => 'value_a',
+                                             'b' => 'value_b', 'c' => 'value_c')
+
           expect(headers).to eq('c' => 'value_c')
         end
       end
     end
-
-
   end
 end

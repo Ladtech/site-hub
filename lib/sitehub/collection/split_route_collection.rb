@@ -3,21 +3,24 @@ require_relative 'split_route_collection/split'
 class SiteHub
   class Collection < Hash
     class SplitRouteCollection < Collection
-      class InvalidSplitException < Exception;
+      class InvalidSplitException < Exception
       end
 
-      def initialize(hash={})
+      FIXNUM_ERR_MSG = 'splits must be a Fixnum'.freeze
+      SPLIT_ERR_MSG = 'total split percentages can not be greater than 100%'.freeze
+
+      def initialize(hash = {})
         hash.each do |value, percentage|
           add(value.id, value, percentage)
         end
       end
 
-      def add id, value, percentage
-        raise InvalidSplitException, 'splits must be a Fixnum' unless percentage.is_a?(Fixnum)
+      def add(id, value, percentage)
+        raise InvalidSplitException, FIXNUM_ERR_MSG unless percentage.is_a?(Fixnum)
         lower = values.last ? values.last.upper : 0
         upper = lower + percentage
 
-        raise InvalidSplitException, 'total split percentages can not be greater than 100%' if upper > 100
+        raise InvalidSplitException, SPLIT_ERR_MSG if upper > 100
         self[id] = Split.new(lower, upper, value)
       end
 
@@ -27,13 +30,13 @@ class SiteHub
         result ? result.value.resolve(*args) : nil
       end
 
-      def transform &block
+      def transform
         values.each do |split|
-          split.value = block.call(split.value)
+          split.value = yield(split.value)
         end
       end
 
-      def [] key
+      def [](key)
         result = super
         result && result.value
       end

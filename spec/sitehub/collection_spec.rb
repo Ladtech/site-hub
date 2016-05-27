@@ -4,13 +4,13 @@ class SiteHub
   describe Collection do
     describe '#valid?' do
       it 'must be overiden and raises an exception by default' do
-        expect { subject.valid? }.to raise_exception "implement me"
+        expect { subject.valid? }.to raise_exception 'implement me'
       end
     end
 
     describe '#resolve' do
       it 'must be overiden and raises an exception by default' do
-        expect { subject.resolve }.to raise_exception "implement me"
+        expect { subject.resolve }.to raise_exception 'implement me'
       end
     end
 
@@ -19,7 +19,7 @@ class SiteHub
         context 'duplicate ids added' do
           subject do
             inheritor = Class.new(described_class) do
-              def add id, value, *args
+              def add(id, value, *_args)
                 self[id] = value
               end
             end
@@ -29,12 +29,12 @@ class SiteHub
           it 'raises an error' do
             duplicate = Struct.new(:id).new(1)
             subject.add(duplicate.id, duplicate)
-            expect{subject.add(duplicate.id, duplicate)}.to raise_exception described_class::DuplicateVersionException, 'supply unique labels'
+            expected_message = described_class::ClassMethods::UNIQUE_LABELS_MSG
+            expect { subject.add(duplicate.id, duplicate) }
+              .to raise_exception described_class::DuplicateVersionException, expected_message
           end
         end
       end
-
     end
-
   end
 end

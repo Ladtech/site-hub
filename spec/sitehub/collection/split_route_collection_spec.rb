@@ -2,11 +2,9 @@ require 'sitehub/collection/split_route_collection'
 require 'sitehub/forward_proxy'
 
 class SiteHub
-
   describe Collection::SplitRouteCollection do
-
-    let(:route_1) { ForwardProxy.new(url: :url, id: :id1,sitehub_cookie_name: :cookie_name) }
-    let(:route_2) { ForwardProxy.new(url: :url, id: :id2,sitehub_cookie_name: :cookie_name) }
+    let(:route_1) { ForwardProxy.new(url: :url, id: :id1, sitehub_cookie_name: :cookie_name) }
+    let(:route_2) { ForwardProxy.new(url: :url, id: :id2, sitehub_cookie_name: :cookie_name) }
 
     it 'is a collection' do
       expect(subject).to be_a(Collection)
@@ -34,13 +32,15 @@ class SiteHub
 
       context 'entry is added which takes splits total over 100%' do
         it 'raises an error' do
-          expect{subject.add route_2.id, route_2, 101}.to raise_exception described_class::InvalidSplitException, 'total split percentages can not be greater than 100%'
+          expect { subject.add route_2.id, route_2, 101 }
+            .to raise_exception described_class::InvalidSplitException, described_class::SPLIT_ERR_MSG
         end
       end
 
       context 'non fixnum passed in' do
         it 'raises and error' do
-          expect{subject.add route_2.id, route_2, 1.1}.to raise_exception described_class::InvalidSplitException, 'splits must be a Fixnum'
+          expect { subject.add route_2.id, route_2, 1.1 }
+            .to raise_exception described_class::InvalidSplitException, described_class::FIXNUM_ERR_MSG
         end
       end
     end
@@ -79,8 +79,7 @@ class SiteHub
       end
     end
 
-    describe "#valid?" do
-
+    describe '#valid?' do
       context 'splits == to 100' do
         it 'returns true' do
           subject.add route_1.id, route_1, 50
@@ -107,5 +106,4 @@ class SiteHub
       end
     end
   end
-
 end

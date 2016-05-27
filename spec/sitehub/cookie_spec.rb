@@ -2,12 +2,12 @@ require 'sitehub/cookie'
 
 class SiteHub
   describe Cookie do
-    let(:attribute_class){described_class::Attribute}
-    let(:flag_class){described_class::Flag}
-    let(:domain_attribute){attribute_class.new(:domain.to_s, 'example.com')}
-    let(:name){'sitehub.recorded_route'}
-    let(:value){'new'}
-    let(:cookie_string){ "#{name}=#{value}; HttpOnly; #{domain_attribute}"}
+    let(:attribute_class) { described_class::Attribute }
+    let(:flag_class) { described_class::Flag }
+    let(:domain_attribute) { attribute_class.new(:domain.to_s, 'example.com') }
+    let(:name) { 'sitehub.recorded_route' }
+    let(:value) { 'new' }
+    let(:cookie_string) { "#{name}=#{value}; HttpOnly; #{domain_attribute}" }
 
     subject do
       described_class.new cookie_string
@@ -27,9 +27,7 @@ class SiteHub
       end
     end
 
-
     describe '#find' do
-
       context 'entry found' do
         it 'returns the entry with the given name' do
           expect(subject.find(:domain)).to eq(domain_attribute)
@@ -41,14 +39,6 @@ class SiteHub
           expect(subject.find(:missing)).to eq(nil)
         end
       end
-
-    end
-
-    describe '#delete' do
-      it 'removes the entry' do
-        subject.delete(:domain)
-        expect(subject.find(:domain)).to eq(nil)
-      end
     end
 
     describe '#to_s' do
@@ -56,6 +46,5 @@ class SiteHub
         expect(subject.to_s).to eq(cookie_string)
       end
     end
-
   end
 end

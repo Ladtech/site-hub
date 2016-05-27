@@ -2,9 +2,8 @@ require 'sitehub/request_mapping'
 
 class SiteHub
   describe RequestMapping do
-
     describe '#initialize' do
-      let(:mapped_url){'http://downstream_url'}
+      let(:mapped_url) { 'http://downstream_url' }
       subject do
         described_class.new(source_url: 'http://upstream.com/articles/123',
                             mapped_url: mapped_url,
@@ -64,8 +63,6 @@ class SiteHub
           expect(subject.computed_uri).to eq('http://downstream_url/articles?param=value')
         end
       end
-
-
     end
   end
 end

@@ -5,7 +5,7 @@ class SiteHub
       include StringSanitiser
       attr_accessor :name, :value
 
-      def initialize name, value
+      def initialize(name, value)
         @name = sanitise(name).to_s.to_sym
         @value = sanitise(value || EMPTY_STRING)
       end
@@ -14,8 +14,8 @@ class SiteHub
         "#{name}=#{value}"
       end
 
-      def == other
-        other.is_a?(Attribute) && self.name == other.name && self.value == other.value
+      def ==(other)
+        other.is_a?(Attribute) && name == other.name && value == other.value
       end
     end
   end

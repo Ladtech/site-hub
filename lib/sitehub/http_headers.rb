@@ -10,48 +10,50 @@ class SiteHub
     COMMAND_FOLLOWED_BY_SPACES = /,\s+/
 
     def split_field(f)
-      f ? f.split(COMMAND_FOLLOWED_BY_SPACES).collect { |i| i.downcase } : []
+      f ? f.split(COMMAND_FOLLOWED_BY_SPACES).collect(&:downcase) : []
     end
 
     def sanitise_headers(src)
-
-      sanitised_headers = {}
-
       connections = split_field(src[CONNECTION_HEADER])
-      src.each do |key, value|
-        key = key.downcase.gsub(UNDERSCORE, HYPHEN)
-        if HopByHop.member?(key) ||
-            connections.member?(key) ||
-            ShouldNotTransfer.member?(key)
-          next
+
+      {}.tap do |sanitised_headers|
+        src.each do |key, value|
+          key = key.downcase.gsub(UNDERSCORE, HYPHEN)
+          next if HopByHop.member?(key) || connections.member?(key) || ShouldNotTransfer.member?(key)
+          sanitised_headers[key] = value
         end
-        sanitised_headers[key] = value
+
+        sanitised_headers[LOCATION_HEADER].gsub!(HTTP_OR_SSL_PORT, EMPTY_STRING) if sanitised_headers[LOCATION_HEADER]
       end
-
-      sanitised_headers[LOCATION_HEADER].gsub!(HTTP_OR_SSL_PORT, EMPTY_STRING) if sanitised_headers[LOCATION_HEADER]
-
-      sanitised_headers
     end
 
-
-
     def extract_http_headers(env)
-      headers = env.reject do |k, v|
-        !RackHttpHeaderKeys::HTTP_HEADER_FILTER_EXCEPTIONS.include?(k.to_s.upcase) && (!(RACK_HTTP_HEADER_ID === k) || v.nil?)
-      end.map do |k, v|
-        [reconstruct_header_name(k), v]
-      end.inject(Rack::Utils::HeaderHash.new) do |hash, k_v|
+      headers = remove_excluded_headers(env)
+
+      headers = headers.to_a.each_with_object(Rack::Utils::HeaderHash.new) do |k_v, hash|
         k, v = k_v
-        hash[k] = v
+        hash[reconstruct_header_name(k)] = v
         hash
       end
 
-      x_forwarded_for = (headers[X_FORWARDED_FOR_HEADER].to_s.split(COMMAND_FOLLOWED_BY_SPACES) << env[RackHttpHeaderKeys::REMOTE_ADDRESS_ENV_KEY]).join(COMMA_WITH_SPACE)
-
-      headers.merge!(X_FORWARDED_FOR_HEADER => x_forwarded_for)
+      remote_address = env[RackHttpHeaderKeys::REMOTE_ADDRESS_ENV_KEY]
+      headers.merge!(X_FORWARDED_FOR_HEADER => x_forwarded_for_value(headers, remote_address))
     end
 
+    def x_forwarded_for_value(headers, remote_address)
+      (forwarded_address_list(headers) << remote_address).join(COMMA_WITH_SPACE)
+    end
 
+    def forwarded_address_list(headers)
+      headers[X_FORWARDED_FOR_HEADER].to_s.split(COMMAND_FOLLOWED_BY_SPACES)
+    end
+
+    def remove_excluded_headers(env)
+      env.reject do |k, v|
+        !RackHttpHeaderKeys::HTTP_HEADER_FILTER_EXCEPTIONS.include?(k.to_s.upcase) &&
+          (!RACK_HTTP_HEADER_ID.match(k) || v.nil?)
+      end
+    end
 
     def reconstruct_header_name(name)
       name.sub(HTTP_PREFIX, EMPTY_STRING).gsub(UNDERSCORE, HYPHEN)
