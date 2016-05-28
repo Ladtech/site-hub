@@ -7,7 +7,6 @@ class SiteHub
       @app = app
     end
 
-    # TODO: - don't overwrite
     def call(env)
       env[RackHttpHeaderKeys::TRANSACTION_ID] ||= UUID.generate(:compact)
       @app.call env
