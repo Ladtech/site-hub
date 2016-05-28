@@ -2,6 +2,12 @@ require 'json'
 require 'rubocop/rake_task'
 $LOAD_PATH.unshift(__dir__)
 require 'support/console'
+require 'reek/rake/task'
+
+Reek::Rake::Task.new do |t|
+  t.fail_on_error = false
+  t.source_files  = FileList.new('lib/**/*.rb', 'spec/**/*.rb')
+end
 
 RuboCop::RakeTask.new
 

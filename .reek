@@ -1,0 +1,5 @@
+---
+UtilityFunction:
+  enabled: true
+  exclude:
+  - 'collect_middleware'
