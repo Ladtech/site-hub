@@ -1,9 +1,8 @@
+# rubocop:disable Metrics/ClassLength
 require 'sitehub/forward_proxy_builder'
 
 class SiteHub
-
   describe ForwardProxyBuilder do
-
     include_context :middleware_test
 
     subject do
@@ -58,20 +57,19 @@ class SiteHub
           end
         end
       end
-
     end
 
     describe '#split' do
       context 'duplicate label used' do
         it 'raises an error' do
           subject.split percentage: 10, url: :url, label: :label
-          expect { subject.split percentage: 10, url: :url, label: :label }.to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
+
+          expect { subject.split percentage: 10, url: :url, label: :label }
+            .to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
         end
       end
 
-
       context 'split supplied' do
-
         context 'block supplied' do
           it 'stores a forward proxy builder' do
             proc = proc do
@@ -89,30 +87,35 @@ class SiteHub
         context 'block not supplied' do
           it 'stores a split for the version' do
             subject.split url: :url, label: :label, percentage: 50
-            expected = Collection::SplitRouteCollection.new(ForwardProxy.new(url: :url, id: :label, sitehub_cookie_name: :cookie_name) => 50)
+
+            expected_proxy = { ForwardProxy.new(url: :url, id: :label, sitehub_cookie_name: :cookie_name) => 50 }
+            expected = Collection::SplitRouteCollection.new(expected_proxy)
+
             expect(subject.endpoints).to eq(expected)
           end
 
           context 'label not supplied' do
             it 'raises an error' do
-              expect{subject.split(url: :url, percentage: 50)}.to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+              expect { subject.split(url: :url, percentage: 50) }
+                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
             end
           end
 
           context 'url not supplied' do
             it 'raises an error' do
-              expect{subject.split(label: :label, percentage: 50)}.to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+              expect { subject.split(label: :label, percentage: 50) }
+                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
             end
           end
         end
-
-
       end
 
       context 'routes defined' do
         it 'throws and error' do
           subject.route url: :url, label: :label
-          expect { subject.split(url: :url, label: :label, percentage: 50) }.to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+
+          expect { subject.split(url: :url, label: :label, percentage: 50) }
+            .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
         end
       end
     end
@@ -121,13 +124,14 @@ class SiteHub
       it 'accepts a rule' do
         subject.route url: :url, label: :current, rule: :rule
         expected_route = ForwardProxy.new(url: :url, id: :current, rule: :rule, sitehub_cookie_name: :cookie_name)
-        expect(subject.endpoints).to eq({expected_route.id => expected_route})
+        expect(subject.endpoints).to eq(expected_route.id => expected_route)
       end
 
       context 'block supplied' do
         context 'rule not supplied' do
           it 'raise an error' do
-            expect { subject.route {} }.to raise_exception described_class::InvalidDefinitionException, 'rule must be specified when supplying a block'
+            expected_message = described_class::INVALID_ROUTE_DEF_MSG
+            expect { subject.route {} }.to raise_exception described_class::InvalidDefinitionException, expected_message
           end
         end
 
@@ -156,9 +160,7 @@ class SiteHub
       end
     end
 
-
     describe '#build' do
-
       let(:rule) { proc {} }
 
       context 'middleware not specified' do
@@ -175,12 +177,10 @@ class SiteHub
           subject.route url: :url, label: :current, rule: rule
           expect(subject.endpoints[:current]).to_not receive(:extend).with(Resolver)
           subject.build
-
         end
       end
 
       context 'middleware specified' do
-
         before do
           subject.use middleware
           subject.route url: :url, label: :current, rule: rule
@@ -193,7 +193,6 @@ class SiteHub
           proxy_after_build = subject.endpoints[:current]
           expect(proxy_after_build).to be_a(middleware)
           expect(proxy_after_build.app).to be(proxy_before_build)
-
         end
 
         it 'extends the middleware with Resolver' do
@@ -223,10 +222,8 @@ class SiteHub
           expect(default_proxy_after_build.app).to be(default_proxy_before_build)
         end
       end
-
     end
     describe '#resolve' do
-
       subject { described_class.new(mapped_path: '/') }
 
       context 'routes defined' do
@@ -270,12 +267,9 @@ class SiteHub
             expect { subject.endpoints(:collection2) }.to raise_exception described_class::InvalidDefinitionException
           end
         end
-
       end
 
-
       context 'version selected' do
-
         context 'version applies to a route' do
           before do
             subject.split percentage: 50, url: :url1, label: :new
@@ -301,7 +295,6 @@ class SiteHub
             end
           end
         end
-
       end
     end
 
@@ -322,5 +315,4 @@ class SiteHub
       end
     end
   end
-
 end

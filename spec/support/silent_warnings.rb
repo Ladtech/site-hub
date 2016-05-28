@@ -1,5 +1,4 @@
 class Object
-  def warn message
-
+  def warn(message)
   end
 end

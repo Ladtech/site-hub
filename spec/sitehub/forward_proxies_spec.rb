@@ -2,7 +2,6 @@ require 'sitehub/forward_proxies'
 
 class SiteHub
   describe ForwardProxies do
-
     let(:base_url) { 'http://google.com' }
     let(:application_root) { '/application_url' }
     let(:forward_proxy_builder) do
@@ -29,27 +28,33 @@ class SiteHub
     end
 
     describe '#mapped_route' do
-
       let(:request) { Rack::Request.new({}) }
-      let(:more_specific_proxy_builder) {ForwardProxyBuilder.new(url: "#{base_url}/sub_url", mapped_path: "#{application_root}/sub_url")}
+      let(:more_specific_proxy_builder) do
+        ForwardProxyBuilder.new(url: "#{base_url}/sub_url", mapped_path: "#{application_root}/sub_url")
+      end
 
       context 'regex match on path' do
-        let(:fuzzy_matcher){ ForwardProxyBuilder.new(url: "#{base_url}/$1/view", mapped_path: %r{#{application_root}/(.*)/view})}
+        let(:fuzzy_matcher) do
+          ForwardProxyBuilder.new(url: "#{base_url}/$1/view", mapped_path: %r{#{application_root}/(.*)/view})
+        end
         subject do
           described_class.new.tap do |route_set|
-
             route_set << fuzzy_matcher
           end
         end
 
         it 'matches and subsitutes the captured group' do
-          expect(subject.mapped_route(path: "#{application_root}/123/view", request: request)).to eq(fuzzy_matcher.resolve(env:{}))
+          mapped_endpoint = subject.mapped_route(path: "#{application_root}/123/view", request: request)
+          expected_endpoint = fuzzy_matcher.resolve(env: {})
+          expect(mapped_endpoint).to eq(expected_endpoint)
         end
       end
 
       context 'exact match on path' do
         it 'proxies to the requested path' do
-          expect(subject.mapped_route(path: application_root, request: request)).to eq(forward_proxy_builder.resolve(env:{}))
+          mapped_endpoint = subject.mapped_route(path: application_root, request: request)
+          expected_endpoint = forward_proxy_builder.resolve(env: {})
+          expect(mapped_endpoint).to eq(expected_endpoint)
         end
       end
 
@@ -62,14 +67,14 @@ class SiteHub
         end
 
         it 'matches the first endpoint' do
-          expect(subject.mapped_route(path: "#{application_root}/sub_url", request: request)).to eq(more_specific_proxy_builder.resolve(env:{}))
+          expected_endpoint = more_specific_proxy_builder.resolve(env: {})
+          mapped_endpoint = subject.mapped_route(path: "#{application_root}/sub_url", request: request)
+          expect(mapped_endpoint).to eq(expected_endpoint)
         end
       end
     end
 
-
     describe '#call' do
-
       context 'mapped_route not found' do
         let(:app) do
           subject
@@ -94,6 +99,5 @@ class SiteHub
         end
       end
     end
-
   end
 end

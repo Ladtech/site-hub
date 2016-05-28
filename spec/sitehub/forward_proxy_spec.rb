@@ -1,13 +1,22 @@
+# rubocop:disable Metrics/ClassLength
 require 'sitehub/forward_proxy'
 
 class SiteHub
   describe ForwardProxy do
-
     let(:current_version_url) { 'http://does.not.exist.com' }
     let(:mapped_path) { '/path' }
 
+    let(:expected_mapping) do
+      RequestMapping.new(source_url: "http://example.org#{mapped_path}",
+                         mapped_url: current_version_url,
+                         mapped_path: mapped_path)
+    end
+
     subject do
-      described_class.new(id: :id, url: current_version_url, mapped_path: mapped_path,sitehub_cookie_name: :cookie_name)
+      described_class.new(id: :id,
+                          url: current_version_url,
+                          mapped_path: mapped_path,
+                          sitehub_cookie_name: :cookie_name)
     end
 
     let(:app) do
@@ -25,7 +34,7 @@ class SiteHub
     describe '#call' do
       before do
         WebMock.enable!
-        stub_request(:get, current_version_url).to_return(:body => 'body')
+        stub_request(:get, current_version_url).to_return(body: 'body')
       end
 
       context 'recorded routes cookie' do
@@ -42,8 +51,7 @@ class SiteHub
         end
 
         context 'recorded_routes_cookie_path set' do
-
-          let(:expected_path){'/expected_path'}
+          let(:expected_path) { '/expected_path' }
 
           subject do
             described_class.new(id: :id,
@@ -60,11 +68,9 @@ class SiteHub
         end
       end
 
-
-
       it 'passes request mapping information in to the environment hash' do
         get(mapped_path, {})
-        expect(last_request.env[REQUEST_MAPPING]).to eq(RequestMapping.new(source_url: "http://example.org#{mapped_path}", mapped_url: current_version_url, mapped_path: mapped_path))
+        expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
       end
 
       context 'downstream call' do
@@ -73,15 +79,15 @@ class SiteHub
             WebMock.disable!
           end
           it 'adds an error to be logged' do
-            env = {ERRORS.to_s => []}
+            env = { ERRORS.to_s => [] }
             get(mapped_path, {}, env)
-            expect(last_request.env[ERRORS]).to eq(["unable to resolve server address"])
+            expect(last_request.env[ERRORS]).to eq(['unable to resolve server address'])
           end
 
           describe 'parameters to callback' do
             it 'calls the callback with an error response' do
               expect(described_class::ERROR_RESPONSE).to receive(:dup).and_return(described_class::ERROR_RESPONSE)
-              env = {ERRORS.to_s => []}
+              env = { ERRORS.to_s => [] }
               get(mapped_path, {}, env)
 
               expect(last_response.body).to eq(described_class::ERROR_RESPONSE.body.join)
@@ -90,13 +96,12 @@ class SiteHub
             end
 
             it 'passes the request mapping' do
-              env = { ERRORS.to_s => []}
+              env = { ERRORS.to_s => [] }
               get(mapped_path, {}, env)
-              expect(last_request.env[REQUEST_MAPPING]).to eq(RequestMapping.new(source_url: "http://example.org#{mapped_path}", mapped_url: current_version_url, mapped_path: mapped_path))
+              expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
             end
           end
         end
-
 
         it 'translates the header names back in to the http compatible names' do
           get(mapped_path, {})
@@ -108,30 +113,29 @@ class SiteHub
           context 'when not present in the original request' do
             it 'appends original request url with port' do
               get(mapped_path, {})
-              assert_requested :get, current_version_url, headers: {'X-FORWARDED-HOST' => 'example.org:80'}
+              assert_requested :get, current_version_url, headers: { 'X-FORWARDED-HOST' => 'example.org:80' }
             end
           end
 
           context 'when present in the original request' do
             it 'appends original request url without port' do
               get(mapped_path, {}, 'HTTP_X_FORWARDED_HOST' => 'staging.com')
-              assert_requested :get, current_version_url, headers: {'X-FORWARDED-HOST' => 'staging.com,staging.com'}
+              assert_requested :get, current_version_url, headers: { 'X-FORWARDED-HOST' => 'staging.com,staging.com' }
             end
           end
 
           it 'preserves the body when forwarding request' do
-            body = {"key" => "value"}
-            stub_request(:put, current_version_url).with(:body => body)
+            body = { 'key' => 'value' }
+            stub_request(:put, current_version_url).with(body: body)
 
             put(mapped_path, body)
           end
 
           it 'preserves the headers when forwarding request' do
             get(mapped_path, '', 'HTTP_HEADER' => 'value')
-            assert_requested :get, current_version_url, headers: {'Header' => 'value'}
+            assert_requested :get, current_version_url, headers: { 'Header' => 'value' }
           end
         end
-
       end
     end
   end

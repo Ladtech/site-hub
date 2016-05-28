@@ -2,13 +2,12 @@ describe 'error handling' do
   include_context :site_hub
   include_context :async
 
-
   before do
     WebMock.enable!
   end
   context 'connectivity error' do
     def app
-      @app||= async_middleware.new(rack_application)
+      @app ||= Async::Middleware.new(rack_application)
     ensure
       WebMock.disable!
     end

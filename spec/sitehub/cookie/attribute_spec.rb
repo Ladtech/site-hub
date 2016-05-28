@@ -1,8 +1,8 @@
 class SiteHub
   class Cookie
     describe Attribute do
-      let(:attribute_name){'domain'}
-      let(:attribute_value){'value'}
+      let(:attribute_name) { 'domain' }
+      let(:attribute_value) { 'value' }
       subject do
         described_class.new(attribute_name, attribute_value)
       end

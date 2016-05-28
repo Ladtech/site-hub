@@ -1,6 +1,6 @@
 class SiteHub
   module Rules
-    def rule rule=nil
+    def rule(rule = nil)
       return @rule unless rule
       @rule = rule
     end

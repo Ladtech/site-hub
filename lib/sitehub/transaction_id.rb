@@ -3,12 +3,12 @@ require 'sitehub/constants'
 class SiteHub
   class TransactionId
     include Constants
-    def initialize app
+    def initialize(app)
       @app = app
     end
 
-    #TODO - don't overwrite
-    def call env
+    # TODO: - don't overwrite
+    def call(env)
       env[RackHttpHeaderKeys::TRANSACTION_ID] ||= UUID.generate(:compact)
       @app.call env
     end

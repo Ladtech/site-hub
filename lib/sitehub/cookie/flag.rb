@@ -5,7 +5,7 @@ class SiteHub
       include StringSanitiser
       attr_accessor :name
 
-      def initialize flag
+      def initialize(flag)
         @name = sanitise(flag).to_sym
       end
 
@@ -13,10 +13,9 @@ class SiteHub
         name.to_s
       end
 
-      def == other
-        other.is_a?(Flag) && self.name == other.name
+      def ==(other)
+        other.is_a?(Flag) && name == other.name
       end
     end
-
   end
 end

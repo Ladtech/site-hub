@@ -1,7 +1,6 @@
 class SiteHub
   module Constants
     module HttpHeaderKeys
-
       ShouldNotTransfer = %w(proxy-connection).freeze
 
       LOCATION_HEADER = 'location'.freeze
@@ -19,7 +18,14 @@ class SiteHub
       SET_COOKIE = 'Set-Cookie'.freeze
       CONTENT_LENGTH = 'Content-Length'.freeze
 
-      HopByHop = [CONNECTION_HEADER, KEEP_ALIVE, PROXY_AUTHENTICATE, PROXY_AUTHORIZATION, TE, TRAILERS, TRANSFER_ENCODING, CONTENT_ENCODING].freeze
+      HopByHop = [CONNECTION_HEADER,
+                  KEEP_ALIVE,
+                  PROXY_AUTHENTICATE,
+                  PROXY_AUTHORIZATION,
+                  TE,
+                  TRAILERS,
+                  TRANSFER_ENCODING,
+                  CONTENT_ENCODING].freeze
     end
   end
 end

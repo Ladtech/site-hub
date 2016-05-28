@@ -1,10 +1,8 @@
+# rubocop:disable Metrics/ClassLength
 require 'sitehub/builder'
 
 class SiteHub
-
-
   describe Builder do
-
     include_context :middleware_test
 
     subject do
@@ -19,13 +17,11 @@ class SiteHub
 
     describe '#proxy' do
       context 'no version explicitly defined' do
-
         subject do
           described_class.new do
             proxy '/app1' => :endpoint
           end
         end
-
 
         it 'the defined route is used 100% of the time' do
           expected_proxy = ForwardProxyBuilder.new(mapped_path: '/path').tap do |route|
@@ -54,7 +50,7 @@ class SiteHub
       end
     end
 
-    describe "#access_logger" do
+    describe '#access_logger' do
       it ' sets the logger' do
         subject.access_logger :access_logger
         sitehub = subject.build
@@ -69,13 +65,12 @@ class SiteHub
         logger_middleware = find_middleware(sitehub, Logging::AccessLogger)
         expect(logger_middleware.logger).to eq(Logging::LogWrapper.new(:stdout_logger))
       end
-
     end
 
     describe '#reverse_proxy' do
       it 'registers a reverse proxy' do
-        subject.reverse_proxy(:downstream_url => :upstream_path)
-        expect(subject.reverse_proxies).to eq({:downstream_url => :upstream_path})
+        subject.reverse_proxy(downstream_url: :upstream_path)
+        expect(subject.reverse_proxies).to eq(downstream_url: :upstream_path)
       end
     end
 
@@ -91,7 +86,7 @@ class SiteHub
       end
     end
 
-    describe "#error_logger" do
+    describe '#error_logger' do
       it 'sets the logger' do
         subject.error_logger :error_logger
         sitehub = subject.build
@@ -106,11 +101,9 @@ class SiteHub
         logger_middleware = find_middleware(sitehub, SiteHub::Logging::ErrorLogger)
         expect(logger_middleware.logger).to eq(Logging::LogWrapper.new(:stderr_logger))
       end
-
     end
 
     describe '#build' do
-
       it 'initializes the forward_proxies' do
         expect(subject.forward_proxies).to receive(:init).and_call_original
         subject.build
@@ -142,17 +135,24 @@ class SiteHub
           end
 
           it 'uses configured reverse proxy directives' do
-            subject.reverse_proxy({:downstream_url => :upstream_path.to_s})
+            subject.reverse_proxy(downstream_url: :upstream_path.to_s)
             reverse_proxy = find_middleware(subject.build, ReverseProxy)
 
-            expect(reverse_proxy.path_directives).to eq(PathDirectives.new(:downstream_url => :upstream_path.to_s))
+            expect(reverse_proxy.path_directives).to eq(PathDirectives.new(downstream_url: :upstream_path.to_s))
           end
         end
 
-
         it 'adds them in the right order' do
-          middleware_stack = collect_middleware(subject.build).collect{|m| m.class}
-          expect(middleware_stack).to eq([Rack::FiberPool, Logging::ErrorLogger, Logging::AccessLogger,TransactionId, ReverseProxy, ForwardProxies])
+          middleware_stack = collect_middleware(subject.build).collect(&:class)
+
+          expected_middleware = [Rack::FiberPool,
+                                 Logging::ErrorLogger,
+                                 Logging::AccessLogger,
+                                 TransactionId,
+                                 ReverseProxy,
+                                 ForwardProxies]
+
+          expect(middleware_stack).to eq(expected_middleware)
         end
       end
 
@@ -195,9 +195,7 @@ class SiteHub
             expect(sitehub).to_not be_using(Rack::SslEnforcer)
           end
         end
-
       end
     end
-
   end
 end

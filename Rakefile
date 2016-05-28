@@ -1,11 +1,5 @@
-require 'bundler'
-require "bundler/gem_tasks"
-
-require 'rspec/core/rake_task'
-
-
-RSpec::Core::RakeTask.new(:spec) do
-  ENV['coverage'] = 'true'
+Dir["#{__dir__}/tasks/*.rake"].each do |tasks|
+  import tasks
 end
 
-task :default => :spec
+task default: [:clean, :spec, :coverage_check, 'rubocop:auto_correct', 'rubocop']

@@ -2,27 +2,25 @@ require_relative '../collection'
 class SiteHub
   class Collection < Hash
     class RouteCollection < Collection
-
-      def add id, route, *opts
+      def add(id, route, *_opts)
         self[id] = route
       end
 
       def valid?
-        !self.empty?
+        !empty?
       end
 
       def resolve(env: nil)
-        return self.values.first unless self.values.find { |route| route.rule }
-        result = self.values.find { |route| route.applies?(env) }
+        return values.first unless values.find(&:rule)
+        result = values.find { |route| route.applies?(env) }
         result && result.resolve(env: env)
       end
 
-      def transform &block
+      def transform
         each do |id, value|
-          self[id] = block.call(value)
+          self[id] = yield(value)
         end
       end
-
     end
   end
 end

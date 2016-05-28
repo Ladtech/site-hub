@@ -3,11 +3,11 @@ class SiteHub
     class LogWrapper
       attr_reader :logger
 
-      def initialize logger
+      def initialize(logger)
         @logger = logger
       end
 
-      def write msg
+      def write(msg)
         if logger.respond_to?(:<<)
           logger << msg
         elsif logger.respond_to?(:write)
@@ -15,8 +15,8 @@ class SiteHub
         end
       end
 
-      def == other
-        other.is_a?(LogWrapper) && self.logger == other.logger
+      def ==(other)
+        other.is_a?(LogWrapper) && logger == other.logger
       end
     end
   end
