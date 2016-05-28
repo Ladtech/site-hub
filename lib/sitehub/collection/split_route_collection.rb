@@ -8,6 +8,9 @@ class SiteHub
 
       FIXNUM_ERR_MSG = 'splits must be a Fixnum'.freeze
       SPLIT_ERR_MSG = 'total split percentages can not be greater than 100%'.freeze
+      INVALID_SPILTS_MSG = 'splits do not add up to 100% and no default has been specified'.freeze
+      MAX = 100
+      MIN = 0
 
       def initialize(hash = {})
         hash.each do |value, percentage|
@@ -17,15 +20,15 @@ class SiteHub
 
       def add(id, value, percentage)
         raise InvalidSplitException, FIXNUM_ERR_MSG unless percentage.is_a?(Fixnum)
-        lower = values.last ? values.last.upper : 0
+        lower = values.last ? values.last.upper : MIN
         upper = lower + percentage
 
-        raise InvalidSplitException, SPLIT_ERR_MSG if upper > 100
+        raise InvalidSplitException, SPLIT_ERR_MSG if upper > MAX
         self[id] = Split.new(lower, upper, value)
       end
 
       def resolve(*args)
-        random = rand(100)
+        random = rand(MAX)
         result = values.find { |split| random >= split.lower && random < split.upper }
         result ? result.value.resolve(*args) : nil
       end
@@ -43,9 +46,9 @@ class SiteHub
 
       def valid?
         last = values.last
-        return true if last && last.upper == 100
+        return true if last && last.upper == MAX
 
-        warn('splits do not add up to 100% and no default has been specified')
+        warn(INVALID_SPILTS_MSG)
         false
       end
     end
