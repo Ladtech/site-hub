@@ -1,9 +1,13 @@
+require 'sitehub/constants'
 require 'sitehub/logging/access_logger'
 require 'stringio'
 
 class SiteHub
   module Logging
     describe AccessLogger do
+      RackHttpHeaderKeys = Constants::RackHttpHeaderKeys
+      HttpHeaderKeys = Constants::HttpHeaderKeys
+
       let(:logger) do
         StringIO.new
       end
@@ -34,16 +38,14 @@ class SiteHub
       describe '#call' do
         let(:env) do
           { REQUEST_MAPPING => request_mapping,
-            described_class::QUERY_STRING => '',
-            described_class::PATH_INFO => 'path_info',
-            Constants::RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id,
-            described_class::HTTP_VERSION => '1.1' }
+            RackHttpHeaderKeys::QUERY_STRING => '',
+            RackHttpHeaderKeys::PATH_INFO => 'path_info',
+            RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id,
+            RackHttpHeaderKeys::HTTP_VERSION => '1.1' }
         end
 
         let(:request_mapping) do
-          RequestMapping.new(source_url: :source_url,
-                             mapped_url: :mapped_url.to_s,
-                             mapped_path: :mapped_path.to_s)
+          RequestMapping.new(source_url: :source_url, mapped_url: :mapped_url.to_s, mapped_path: :mapped_path.to_s)
         end
 
         before { subject.call(env) }
@@ -57,7 +59,7 @@ class SiteHub
         end
 
         context 'query string' do
-          let(:query_string) { described_class::QUERY_STRING }
+          let(:query_string) { RackHttpHeaderKeys::QUERY_STRING }
           context 'present' do
             it 'logs it' do
               env[query_string] = 'query'
@@ -89,14 +91,14 @@ class SiteHub
         it 'logs the downstream url that was proxied to' do
           subject.call(env)
 
-          expect(logger.string).to include("#{env[described_class::PATH_INFO]} => mapped_url")
+          expect(logger.string).to include("#{env[RackHttpHeaderKeys::PATH_INFO]} => mapped_url")
         end
 
         context '404 returned, i.e. no downstream call made' do
           let(:request_mapping) { nil }
           it 'does not log the down stream url' do
             subject.call(env)
-            expect(logger.string).to include("=> #{EMPTY_STRING} #{env[described_class::HTTP_VERSION]}")
+            expect(logger.string).to include("=> #{EMPTY_STRING} #{env[RackHttpHeaderKeys::HTTP_VERSION]}")
           end
         end
       end
@@ -109,7 +111,7 @@ class SiteHub
         end
 
         context 'content length header not present' do
-          let(:content_length) { described_class::CONTENT_LENGTH }
+          let(:content_length) { HttpHeaderKeys::CONTENT_LENGTH }
           context 'it is 0' do
             it 'returns -' do
               expect(subject.extract_content_length(content_length => 0)).to eq('-')

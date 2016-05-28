@@ -3,7 +3,7 @@ require 'sitehub/forward_proxy'
 
 class SiteHub
   describe ForwardProxy do
-    let(:current_version_url) { 'http://does.not.exist.com' }
+    let(:current_version_url) { 'http://127.0.0.1:10111' }
     let(:mapped_path) { '/path' }
 
     let(:expected_mapping) do
@@ -81,7 +81,7 @@ class SiteHub
           it 'adds an error to be logged' do
             env = { ERRORS.to_s => [] }
             get(mapped_path, {}, env)
-            expect(last_request.env[ERRORS]).to eq(['unable to resolve server address'])
+            expect(last_request.env[ERRORS]).to_not be_empty
           end
 
           describe 'parameters to callback' do

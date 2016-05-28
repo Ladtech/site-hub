@@ -9,6 +9,17 @@ class SiteHub
     RACK_HTTP_HEADER_ID = /#{HTTP_PREFIX.source}[A-Z_]+$/
     COMMAND_FOLLOWED_BY_SPACES = /,\s+/
 
+    SHOULD_NOT_TRANSFER = [PROXY_CONNECTION].freeze
+
+    HOP_BY_HOP = [CONNECTION_HEADER,
+                  KEEP_ALIVE,
+                  PROXY_AUTHENTICATE,
+                  PROXY_AUTHORIZATION,
+                  TE,
+                  TRAILERS,
+                  TRANSFER_ENCODING,
+                  CONTENT_ENCODING].freeze
+
     def split_field(f)
       f ? f.split(COMMAND_FOLLOWED_BY_SPACES).collect(&:downcase) : []
     end
@@ -19,7 +30,7 @@ class SiteHub
       {}.tap do |sanitised_headers|
         src.each do |key, value|
           key = key.downcase.gsub(UNDERSCORE, HYPHEN)
-          next if HopByHop.member?(key) || connections.member?(key) || ShouldNotTransfer.member?(key)
+          next if HOP_BY_HOP.member?(key) || connections.member?(key) || SHOULD_NOT_TRANSFER.member?(key)
           sanitised_headers[key] = value
         end
 

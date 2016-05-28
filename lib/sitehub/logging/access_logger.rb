@@ -13,16 +13,6 @@ class SiteHub
       include Constants
 
       FORMAT = %(%s - %s [%s] transaction_id:%s: "%s %s%s => %s %s" %d %s %0.4f\n).freeze
-      PATH_INFO = RackHttpHeaderKeys::PATH_INFO
-      REQUEST_METHOD = RackHttpHeaderKeys::REQUEST_METHOD
-      SCRIPT_NAME = RackHttpHeaderKeys::SCRIPT_NAME
-      QUERY_STRING = RackHttpHeaderKeys::QUERY_STRING
-      X_FORWARDED_FOR = RackHttpHeaderKeys::X_FORWARDED_FOR
-      REMOTE_ADDR = RackHttpHeaderKeys::REMOTE_ADDR
-      HTTP_VERSION = RackHttpHeaderKeys::HTTP_VERSION
-      REMOTE_USER = RackHttpHeaderKeys::REMOTE_USER
-      TRANSACTION_ID = RackHttpHeaderKeys::TRANSACTION_ID
-      CONTENT_LENGTH = HttpHeaderKeys::CONTENT_LENGTH
       ZERO_STRING = '0'.freeze
       STATUS_RANGE = 0..3
 
@@ -45,14 +35,14 @@ class SiteHub
         now = Time.now
         [
           source_address(env),
-          remote_user(env[REMOTE_USER]),
+          remote_user(env[RackHttpHeaderKeys::REMOTE_USER]),
           now.strftime(TIME_STAMP_FORMAT),
-          env[TRANSACTION_ID],
-          env[REQUEST_METHOD],
-          env[PATH_INFO],
-          query_string(env[QUERY_STRING]),
+          env[RackHttpHeaderKeys::TRANSACTION_ID],
+          env[RackHttpHeaderKeys::REQUEST_METHOD],
+          env[RackHttpHeaderKeys::PATH_INFO],
+          query_string(env[RackHttpHeaderKeys::QUERY_STRING]),
           mapped_url(mapped_request),
-          env[HTTP_VERSION],
+          env[RackHttpHeaderKeys::HTTP_VERSION],
           status.to_s[STATUS_RANGE],
           extract_content_length(header),
           now - began_at
@@ -72,7 +62,7 @@ class SiteHub
       end
 
       def source_address(env)
-        env[X_FORWARDED_FOR] || env[REMOTE_ADDR] || HYPHEN
+        env[RackHttpHeaderKeys::X_FORWARDED_FOR] || env[RackHttpHeaderKeys::REMOTE_ADDR] || HYPHEN
       end
 
       def log_template
@@ -80,7 +70,7 @@ class SiteHub
       end
 
       def extract_content_length(headers)
-        (value = headers[CONTENT_LENGTH]) || (return HYPHEN)
+        (value = headers[HttpHeaderKeys::CONTENT_LENGTH]) || (return HYPHEN)
         value.to_s == ZERO_STRING ? HYPHEN : value
       end
     end
