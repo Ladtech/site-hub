@@ -37,7 +37,7 @@ class SiteHub
       end
 
       def [](key)
-        result = super
+        result = super(key)
         result && result.value
       end
 
