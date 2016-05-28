@@ -132,6 +132,29 @@ sitehub = SiteHub.build do
   end
 end
 ```
+### Nesting routes and splits
+Routes and Splits can themselves contain further route or split definitions
+```ruby
+sitehub = SiteHub.build do 
+  proxy '/catalogue' do
+    # Experiment 1
+    split(precentage: 30) do
+      # 30% of overall traffic is split between 2 different prototypes
+      split percentage: 50, url: 'http://version1.com', label: :prototype_1
+      split percentage: 50, url: 'http://version2.com', label: :prototype_2
+    end
+    
+    # Experiment 2
+    split(precentage: 30) do
+      # 30% of overall traffic is split between 2 different prototypes
+      split percentage: 50, url: 'http://version3.com', label: :prototype_3
+      split percentage: 50, url: 'http://version4.com', label: :prototype_4
+    end
+  
+    default url: 'http://current_catalogue.com'
+  end
+end
+```
 ### Labels
 Splits and Routes must be defined with a label. Within a proxy defintion, this label must be unique. This is the value that SiteHub will use to identify the version of a downstream url that a user should stick to once it has been selected.
 
