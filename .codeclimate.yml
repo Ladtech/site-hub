@@ -24,5 +24,6 @@ ratings:
   - "**.php"
   - "**.py"
   - "**.rb"
+  - "**.rake"
 exclude_paths:
 - spec/
