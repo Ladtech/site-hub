@@ -20,7 +20,13 @@ end
 
 require 'lib/sitehub'
 
-RSpec.configure do
+RSpec.configure do |config|
   include Rack::Test::Methods
-  WebMock.enable!
+  config.before(:suite) do
+    WebMock.enable!
+  end
+
+  config.after(:suite) do
+    WebMock.disable!
+  end
 end
