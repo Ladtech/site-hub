@@ -93,6 +93,24 @@ class SiteHub
         #   end
         # end
       end
+
+      context 'response' do
+        include_context :http_proxy_rules
+
+        let(:downstream_response) { Rack::Response.new('', 200, prohibited_headers.merge(permitted_header => 'value')) }
+
+        subject(:app) do
+          app = proc { downstream_response }
+          described_class.new(app, [])
+        end
+
+        it_behaves_like 'prohibited_header_filter' do
+          let(:subject) do
+            get('/', {}).headers
+          end
+        end
+
+      end
     end
 
     describe '#interpolate_location' do

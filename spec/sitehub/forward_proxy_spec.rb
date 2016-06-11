@@ -1,23 +1,6 @@
 # rubocop:disable Metrics/ClassLength
 require 'sitehub/forward_proxy'
 
-shared_examples 'prohibited_header_filter' do
-  let(:permitted_header) { 'permitted-header' }
-
-  describe 'treatment of headers according to RFC2616: 13.5.1 and RFC2616: 14.10' do
-    context 'prohibitted headers' do
-      it 'filters them out' do
-        expect(subject).to_not have_prohibitted_headers
-      end
-    end
-
-    it 'filters out hop by hop headers identified in connection header' do
-      expect(subject).to include_headers(permitted_header)
-      expect(subject).not_to include_headers(hop_header_1, hop_header_2)
-    end
-  end
-end
-
 class SiteHub
   describe ForwardProxy do
     include_context :http_proxy_rules
@@ -134,17 +117,6 @@ class SiteHub
 
       context 'response' do
         include_context :http_proxy_rules
-
-        it_behaves_like 'prohibited_header_filter' do
-          before do
-            stub_request(:get, current_version_url)
-              .to_return(body: '', headers: prohibited_headers.merge(permitted_header => 'value'))
-          end
-
-          let(:subject) do
-            get(mapped_path, {}).headers
-          end
-        end
 
         it 'passes request mapping information in to the environment hash' do
           expected_mapping = RequestMapping.new(source_url: "http://example.org#{mapped_path}",

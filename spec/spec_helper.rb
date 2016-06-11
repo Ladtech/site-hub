@@ -4,6 +4,7 @@ require 'webmock/rspec'
 $LOAD_PATH.unshift("#{__dir__}/..", "#{__dir__}/support")
 
 require 'support/shared_contexts'
+require 'support/shared_examples'
 require 'support/silent_warnings'
 
 require 'support/patch/rack/response'

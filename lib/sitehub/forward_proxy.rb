@@ -47,7 +47,7 @@ class SiteHub
     end
 
     def response(response, source_request)
-      Rack::Response.new(response.body, response.status, http_headers(response.headers)).tap do |r|
+      Rack::Response.new(response.body, response.status, response.headers).tap do |r|
         r.set_cookie(sitehub_cookie_name, path: (sitehub_cookie_path || source_request.path), value: id)
       end
     end
