@@ -5,6 +5,14 @@ require 'sitehub/rules'
 require 'sitehub/resolver'
 require 'faraday'
 require 'sitehub/constants'
+
+# Requirements: https://www.mnot.net/blog/2011/07/11/what_proxies_must_do
+# 1. remove hop by hop headers
+# 2. detect bad framing: where content length and content-encoding clash or are incorrect
+# 3. fix conflicts between header and URL header
+# 4. insert via (optional)
+# 5. Expect header (optional)
+
 class SiteHub
   class ForwardProxy
     ERROR_RESPONSE = Rack::Response.new(['error'], 500, {})
@@ -30,7 +38,7 @@ class SiteHub
       request_mapping = env[REQUEST_MAPPING] = request_mapping(source_request)
       mapped_uri = URI(request_mapping.computed_uri)
 
-      downstream_response = proxy_call(request_headers(mapped_uri, source_request), mapped_uri, source_request)
+      downstream_response = proxy_call(request_headers(mapped_uri, source_request.env), mapped_uri, source_request)
 
       response(downstream_response, source_request)
     rescue StandardError => e
@@ -39,16 +47,40 @@ class SiteHub
     end
 
     def response(response, source_request)
-      Rack::Response.new(response.body, response.status, sanitise_headers(response.headers)).tap do |r|
+      Rack::Response.new(response.body, response.status, http_headers(response.headers)).tap do |r|
         r.set_cookie(sitehub_cookie_name, path: (sitehub_cookie_path || source_request.path), value: id)
       end
     end
 
-    def request_headers(mapped_uri, source_request)
-      headers = sanitise_headers(extract_http_headers(source_request.env))
-      headers[HOST_HEADER] = "#{mapped_uri.host}:#{mapped_uri.port}"
-      headers[X_FORWARDED_HOST_HEADER] = append_host(headers[X_FORWARDED_HOST_HEADER].to_s, source_request.url)
-      headers
+    def request_headers(mapped_uri, source_env)
+      http_headers(extract_http_headers_from_rack_env(source_env)).tap do |headers|
+        # HOST HEADERS
+        headers[HOST_HEADER] = "#{mapped_uri.host}:#{mapped_uri.port}"
+
+        # x-forwarded-for
+        headers.merge!(x_forwarded_for_header(source_env))
+
+        # x-forwarded-host
+        headers[X_FORWARDED_HOST_HEADER] = address_list(source_env[RackHttpHeaderKeys::X_FORWARDED_HOST])
+                                           .push(source_env[RackHttpHeaderKeys::HTTP_HOST])
+                                           .join(',')
+      end
+    end
+
+    def x_forwarded_for_header(headers)
+      forwarded_address_list = address_list(headers[X_FORWARDED_FOR_HEADER])
+      forwarded_address_list << remote_address(headers)
+
+      { X_FORWARDED_FOR_HEADER => forwarded_address_list.join(COMMA_WITH_SPACE) }
+    end
+
+    # for extract_http_headers
+    def address_list(header)
+      header.to_s.split(COMMA)
+    end
+
+    def remote_address(env)
+      env[RackHttpHeaderKeys::REMOTE_ADDRESS_ENV_KEY]
     end
 
     def proxy_call(headers, mapped_uri, source_request)
@@ -65,17 +97,6 @@ class SiteHub
 
     def ==(other)
       other.is_a?(ForwardProxy) && url == other.url
-    end
-
-    private
-
-    def append_host(forwarded_host, destination_uri)
-      destination_uri = URI(destination_uri)
-      if forwarded_host == EMPTY_STRING
-        "#{destination_uri.host}:#{destination_uri.port}"
-      else
-        "#{forwarded_host},#{destination_uri.host}"
-      end
     end
   end
 end

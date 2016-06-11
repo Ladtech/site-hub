@@ -63,17 +63,35 @@ class SiteHub
         end
       end
 
-      # Location, Content-Location and URI
-      it 'rewrites the Location header' do
-        downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
+      context 'location header' do
+        context 'reverse proxy defined' do
+          # Location, Content-Location and URI
+          it 'rewrites the header' do
+            downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
 
-        expect(reverse_proxy)
-          .to receive(:interpolate_location)
-          .with(downstream_location, request_mapping.source_url)
-          .and_return(:interpolated_location)
+            expect(reverse_proxy)
+              .to receive(:interpolate_location)
+              .with(downstream_location, request_mapping.source_url)
+              .and_return(:interpolated_location)
 
-        reverse_proxy.call(env)
-        expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(:interpolated_location)
+            reverse_proxy.call(env)
+            expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(:interpolated_location)
+          end
+        end
+
+        # context 'reverse proxy not defined' do
+        #   it 'leaves the header alone' do
+        #     downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
+        #
+        #     expect(reverse_proxy)
+        #         .to receive(:interpolate_location)
+        #                 .with(downstream_location, request_mapping.source_url)
+        #                 .and_return(:nil)
+        #
+        #     reverse_proxy.call(env)
+        #     expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(downstream_location)
+        #   end
+        # end
       end
     end
 

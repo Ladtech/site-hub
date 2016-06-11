@@ -1,79 +1,62 @@
 # rubocop:disable Metrics/ClassLength
 require 'sitehub/forward_proxy'
 
+shared_examples 'prohibited_header_filter' do
+  let(:permitted_header) { 'permitted-header' }
+
+  describe 'treatment of headers according to RFC2616: 13.5.1 and RFC2616: 14.10' do
+    context 'prohibitted headers' do
+      it 'filters them out' do
+        expect(subject).to_not have_prohibitted_headers
+      end
+    end
+
+    it 'filters out hop by hop headers identified in connection header' do
+      expect(subject).to include_headers(permitted_header)
+      expect(subject).not_to include_headers(hop_header_1, hop_header_2)
+    end
+  end
+end
+
 class SiteHub
   describe ForwardProxy do
+    include_context :http_proxy_rules
+
     let(:current_version_url) { 'http://127.0.0.1:10111' }
     let(:mapped_path) { '/path' }
 
-    let(:expected_mapping) do
-      RequestMapping.new(source_url: "http://example.org#{mapped_path}",
-                         mapped_url: current_version_url,
-                         mapped_path: mapped_path)
-    end
-
-    subject do
+    let(:app) do
       described_class.new(id: :id,
                           url: current_version_url,
                           mapped_path: mapped_path,
                           sitehub_cookie_name: :cookie_name)
     end
 
-    let(:app) do
-      subject
-    end
-
     it 'includes Resolver' do
-      expect(subject).to be_a(Resolver)
+      expect(app).to be_a(Resolver)
     end
 
     it 'includes Rules' do
-      expect(subject).to be_a(Rules)
+      expect(app).to be_a(Rules)
     end
 
     describe '#call' do
-      before do
-        WebMock.enable!
-        stub_request(:get, current_version_url).to_return(body: 'body')
-      end
-
-      context 'recorded routes cookie' do
-        it 'drops a cookie using the name of the sitehub_cookie_name containing the id' do
-          get(mapped_path, {})
-          expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :id.to_s, path: subject.mapped_path)
+      context 'downstream request' do
+        before do
+          stub_request(:get, current_version_url).to_return(body: 'body')
         end
 
-        context 'recorded_routes_cookie_path not set' do
-          it 'sets the path to be the request path' do
-            get(mapped_path, {})
-            expect(last_response.cookies[:cookie_name.to_s][:path]).to eq(mapped_path)
-          end
+        it 'preserves the body when forwarding request' do
+          body = { 'key' => 'value' }
+          stub_request(:put, current_version_url).with(body: body)
+          put(mapped_path, body)
         end
 
-        context 'recorded_routes_cookie_path set' do
-          let(:expected_path) { '/expected_path' }
-
-          subject do
-            described_class.new(id: :id,
-                                url: current_version_url,
-                                mapped_path: mapped_path,
-                                sitehub_cookie_path: expected_path,
-                                sitehub_cookie_name: :cookie_name)
-          end
-
-          it 'is set as the path' do
-            get(mapped_path, {})
-            expect(last_response.cookies[:cookie_name.to_s][:path]).to eq(expected_path)
-          end
+        it 'preserves the headers when forwarding request' do
+          get(mapped_path, '', 'HTTP_HEADER' => 'value')
+          assert_requested :get, current_version_url, headers: { 'Header' => 'value' }
         end
-      end
 
-      it 'passes request mapping information in to the environment hash' do
-        get(mapped_path, {})
-        expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
-      end
-
-      context 'downstream call' do
         context 'it fails' do
           before do
             WebMock.disable!
@@ -94,46 +77,116 @@ class SiteHub
               expect(last_response.headers).to eq(described_class::ERROR_RESPONSE.headers)
               expect(last_response.status).to eq(described_class::ERROR_RESPONSE.status)
             end
-
-            it 'passes the request mapping' do
-              env = { ERRORS.to_s => [] }
-              get(mapped_path, {}, env)
-              expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
-            end
           end
         end
 
-        it 'translates the header names back in to the http compatible names' do
+        it_behaves_like 'prohibited_header_filter' do
+          include_context :rack_headers
+
+          subject do
+            http_headers = prohibited_headers.merge(permitted_header => 'value')
+            get(mapped_path, {}, to_rack_headers(http_headers))
+            WebMock::RequestRegistry.instance.requested_signatures.hash.keys.first.headers
+          end
+        end
+
+        context 'headers' do
+          # used to identify the originally requested host
+          context 'x-forwarded-host header' do
+            context 'header not present' do
+              it 'assigns it to the requested host' do
+                get(mapped_path, {})
+                assert_requested :get, current_version_url, headers: { 'X-FORWARDED-HOST' => 'example.org' }
+              end
+            end
+
+            context 'header already present' do
+              it 'appends the host to the existing value' do
+                get(mapped_path, {}, 'HTTP_X_FORWARDED_HOST' => 'first.host,second.host')
+                assert_requested :get, current_version_url,
+                                 headers: { 'X-FORWARDED-HOST' => 'first.host,second.host,example.org' }
+              end
+            end
+          end
+
+          # used for identifying the originating IP address of a request.
+          context 'x-forwarded-for' do
+            context 'header not present' do
+              it 'introduces it assigned to the value the remote-addr http header' do
+                x_forwarded_for_header = Constants::HttpHeaderKeys::X_FORWARDED_FOR_HEADER
+                get(mapped_path)
+                expected_headers = { x_forwarded_for_header => last_request.env['REMOTE_ADDR'] }
+                assert_requested :get, current_version_url, headers: expected_headers
+              end
+            end
+
+            context 'already present' do
+              it 'appends the value of the remote-addr header to it' do
+                x_forwarded_for_header = Constants::HttpHeaderKeys::X_FORWARDED_FOR_HEADER
+                get(mapped_path, {}, x_forwarded_for_header => 'first_host_ip')
+                expected_headers = { x_forwarded_for_header => "first_host_ip, #{last_request.env['REMOTE_ADDR']}" }
+                assert_requested :get, current_version_url, headers: expected_headers
+              end
+            end
+          end
+        end
+      end
+
+      context 'response' do
+        include_context :http_proxy_rules
+
+        it_behaves_like 'prohibited_header_filter' do
+          before do
+            stub_request(:get, current_version_url)
+              .to_return(body: '', headers: prohibited_headers.merge(permitted_header => 'value'))
+          end
+
+          let(:subject) do
+            get(mapped_path, {}).headers
+          end
+        end
+
+        it 'passes request mapping information in to the environment hash' do
+          expected_mapping = RequestMapping.new(source_url: "http://example.org#{mapped_path}",
+                                                mapped_url: current_version_url,
+                                                mapped_path: mapped_path)
+
+          stub_request(:get, current_version_url)
           get(mapped_path, {})
-          expect(last_response.headers).to include('Content-Length')
-          expect(last_response.headers).to_not include('CONTENT_LENGTH')
+          expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
         end
 
-        context 'adding http_x_forwarded_host header' do
-          context 'when not present in the original request' do
-            it 'appends original request url with port' do
+        context 'recorded routes cookie' do
+          before do
+            stub_request(:get, current_version_url)
+          end
+          it 'drops a cookie using the name of the sitehub_cookie_name containing the id' do
+            get(mapped_path, {})
+            expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :id.to_s, path: app.mapped_path)
+          end
+
+          context 'recorded_routes_cookie_path not set' do
+            it 'sets the path to be the request path' do
               get(mapped_path, {})
-              assert_requested :get, current_version_url, headers: { 'X-FORWARDED-HOST' => 'example.org:80' }
+              expect(last_response.cookies[:cookie_name.to_s][:path]).to eq(mapped_path)
             end
           end
 
-          context 'when present in the original request' do
-            it 'appends original request url without port' do
-              get(mapped_path, {}, 'HTTP_X_FORWARDED_HOST' => 'staging.com')
-              assert_requested :get, current_version_url, headers: { 'X-FORWARDED-HOST' => 'staging.com,staging.com' }
+          context 'recorded_routes_cookie_path set' do
+            let(:expected_path) { '/expected_path' }
+
+            subject(:app) do
+              described_class.new(id: :id,
+                                  url: current_version_url,
+                                  mapped_path: mapped_path,
+                                  sitehub_cookie_path: expected_path,
+                                  sitehub_cookie_name: :cookie_name)
             end
-          end
 
-          it 'preserves the body when forwarding request' do
-            body = { 'key' => 'value' }
-            stub_request(:put, current_version_url).with(body: body)
-
-            put(mapped_path, body)
-          end
-
-          it 'preserves the headers when forwarding request' do
-            get(mapped_path, '', 'HTTP_HEADER' => 'value')
-            assert_requested :get, current_version_url, headers: { 'Header' => 'value' }
+            it 'is set as the path' do
+              get(mapped_path, {})
+              expect(last_response.cookies[:cookie_name.to_s][:path]).to eq(expected_path)
+            end
           end
         end
       end

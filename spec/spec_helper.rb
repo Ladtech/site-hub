@@ -3,10 +3,7 @@ require 'rack/test'
 require 'webmock/rspec'
 $LOAD_PATH.unshift("#{__dir__}/..", "#{__dir__}/support")
 
-require 'support/shared_contexts/async_context'
-require 'support/shared_contexts/rack_test_context'
-require 'support/shared_contexts/sitehub_context'
-require 'support/shared_contexts/middleware_context'
+require 'support/shared_contexts'
 require 'support/silent_warnings'
 
 require 'support/patch/rack/response'
@@ -22,7 +19,7 @@ require 'lib/sitehub'
 
 RSpec.configure do |config|
   include Rack::Test::Methods
-  config.before(:suite) do
+  config.before do
     WebMock.enable!
   end
 
