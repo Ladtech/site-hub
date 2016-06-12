@@ -65,7 +65,7 @@ class SiteHub
           subject.split percentage: 10, url: :url, label: :label
 
           expect { subject.split percentage: 10, url: :url, label: :label }
-            .to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
+              .to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
         end
       end
 
@@ -88,7 +88,7 @@ class SiteHub
           it 'stores a split for the version' do
             subject.split url: :url, label: :label, percentage: 50
 
-            expected_proxy = { ForwardProxy.new(url: :url, id: :label, sitehub_cookie_name: :cookie_name) => 50 }
+            expected_proxy = {ForwardProxy.new(url: :url, id: :label, sitehub_cookie_name: :cookie_name) => 50}
             expected = Collection::SplitRouteCollection.new(expected_proxy)
 
             expect(subject.endpoints).to eq(expected)
@@ -97,14 +97,14 @@ class SiteHub
           context 'label not supplied' do
             it 'raises an error' do
               expect { subject.split(url: :url, percentage: 50) }
-                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+                  .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
             end
           end
 
           context 'url not supplied' do
             it 'raises an error' do
               expect { subject.split(label: :label, percentage: 50) }
-                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+                  .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
             end
           end
         end
@@ -115,7 +115,7 @@ class SiteHub
           subject.route url: :url, label: :label
 
           expect { subject.split(url: :url, label: :label, percentage: 50) }
-            .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+              .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
         end
       end
     end
@@ -123,8 +123,8 @@ class SiteHub
     describe 'route' do
       it 'accepts a rule' do
         subject.route url: :url, label: :current, rule: :rule
-        expected_route = ForwardProxy.new(url: :url, id: :current, rule: :rule, sitehub_cookie_name: :cookie_name)
-        expect(subject.endpoints).to eq(expected_route.id => expected_route)
+        expected_route = CookieMiddleware.new(ForwardProxy.new(url: :url, id: :current, rule: :rule, sitehub_cookie_name: :cookie_name), sitehub_cookie_name: :cookie_name, id: :current, rule: :rule)
+        expect(subject.endpoints).to eq(:current => expected_route)
       end
 
       context 'block supplied' do
