@@ -7,15 +7,10 @@ class SiteHub
     CAPTURE_GROUP_REFERENCE = '$%s'.freeze
     USER_SUPPLIED_CAPTURE = 1..-1
 
-    def initialize(source_url:, downstream_url: EMPTY_STRING, mapped_url: EMPTY_STRING, mapped_path:)
+    def initialize(source_url:, mapped_url: EMPTY_STRING, mapped_path:)
       @source_url = source_url
       @mapped_url = mapped_url.dup
       @mapped_path = mapped_path.is_a?(Regexp) ? mapped_path : Regexp.new(mapped_path)
-      @downstream_url = downstream_url
-    end
-
-    def cookie_path
-      mapped_path.source[/^(.*)?\(/, 1].gsub(%r{/$}, '') if mapped_path.is_a?(Regexp)
     end
 
     def computed_uri

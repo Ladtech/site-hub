@@ -15,20 +15,6 @@ class SiteHub
       end
     end
 
-    describe '#cookie_path' do
-      subject do
-        described_class.new(source_url: 'http://upstream.com/articles/123',
-                            mapped_url: 'http://downstream_url/$1/view',
-                            mapped_path: %r{/articles/(.*)})
-      end
-
-      context 'mapped_path is a regexp' do
-        it 'returns the literal part of the mapped path' do
-          expect(subject.cookie_path).to eq('/articles')
-        end
-      end
-    end
-
     describe '#computed_uri' do
       context 'mapped_path is a regexp' do
         subject do
