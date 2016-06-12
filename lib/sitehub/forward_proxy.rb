@@ -19,7 +19,7 @@ class SiteHub
 
     include Constants
 
-    attr_reader :url, :id, :mapped_path, :http_client, :sitehub_cookie_path, :sitehub_cookie_name
+    attr_reader :url, :mapped_path, :http_client
 
     def initialize(url:, mapped_path: nil)
       @url = url
