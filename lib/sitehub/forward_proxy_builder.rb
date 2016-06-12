@@ -108,15 +108,12 @@ class SiteHub
 
     def forward_proxy(label:, url:, rule: nil)
       forward_proxy = ForwardProxy.new(url: url,
-                                       id: label.to_sym,
-                                       mapped_path: mapped_path,
-                                       sitehub_cookie_path: sitehub_cookie_path,
-                                       sitehub_cookie_name: sitehub_cookie_name,
-                                       rule: rule)
+                                       mapped_path: mapped_path)
 
       CookieMiddleware.new(forward_proxy,
                            sitehub_cookie_path: sitehub_cookie_path,
                            sitehub_cookie_name: sitehub_cookie_name,
+                           mapped_path: mapped_path,
                            id: label.to_sym,
                            rule: rule)
     end

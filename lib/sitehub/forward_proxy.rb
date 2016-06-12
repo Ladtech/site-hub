@@ -21,13 +21,9 @@ class SiteHub
 
     attr_reader :url, :id, :mapped_path, :http_client, :sitehub_cookie_path, :sitehub_cookie_name
 
-    def initialize(url:, id:, mapped_path: nil, rule: nil, sitehub_cookie_path: nil, sitehub_cookie_name:)
-      @id = id
+    def initialize(url:, mapped_path: nil)
       @url = url
-      @rule = rule
       @mapped_path = mapped_path
-      @sitehub_cookie_path = sitehub_cookie_path
-      @sitehub_cookie_name = sitehub_cookie_name
       @http_client = Faraday.new(ssl: { verify: false }) do |con|
         con.adapter :em_synchrony
       end
@@ -37,26 +33,20 @@ class SiteHub
       request = Request.new(env)
       request_mapping = env[REQUEST_MAPPING] = request_mapping(request)
 
-      response(proxy_call(request_mapping.computed_uri, request), request)
+      proxy_call(request_mapping.computed_uri, request)
     rescue StandardError => exception
       env[ERRORS] << exception.message
       ERROR_RESPONSE.dup
     end
 
     def proxy_call(uri, sitehub_request)
-      http_client.send(sitehub_request.request_method, uri) do |request|
+      response = http_client.send(sitehub_request.request_method, uri) do |request|
         request.headers = sitehub_request.headers
         request.body = sitehub_request.body
         request.params = sitehub_request.params
       end
-    end
 
-    def response(downstream_response, source_request)
-      Rack::Response.new(downstream_response.body,
-                         downstream_response.status,
-                         downstream_response.headers).tap do |response|
-        response.set_cookie(sitehub_cookie_name, path: (sitehub_cookie_path || source_request.path), value: id)
-      end
+      Rack::Response.new(response.body, response.status,response.headers)
     end
 
     def request_mapping(source_request)
@@ -64,7 +54,7 @@ class SiteHub
     end
 
     def ==(other)
-      other.is_a?(ForwardProxy) && url == other.url
+      other.is_a?(ForwardProxy) && self.url == other.url
     end
   end
 end
