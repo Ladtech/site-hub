@@ -2,10 +2,17 @@ require 'sitehub/forward_proxy'
 class SiteHub
   describe ForwardProxy do
     let(:mapped_path) { '/mapped_path' }
+    let(:mapped_url) { 'http://www.somewhere.com/' }
 
     subject(:app) do
-      app = proc { [200, {}, []] }
-      described_class.new(app, sitehub_cookie_name: :cookie_name, id: :id)
+      described_class.new(sitehub_cookie_name: :cookie_name,
+                          id: :id,
+                          mapped_path: mapped_path,
+                          mapped_url: mapped_url)
+    end
+
+    before do
+      stub_request(:get, mapped_url).to_return(body: 'body')
     end
 
     it 'includes Resolver' do
@@ -18,8 +25,18 @@ class SiteHub
 
     describe '#call' do
       it 'calls the app' do
-        get('/')
+        get(mapped_path)
         expect(last_response.status).to eq(200)
+      end
+
+      it 'stores the request mapping' do
+        get(mapped_path)
+
+        expected_mapping = RequestMapping.new(source_url: last_request.url,
+                                              mapped_url: mapped_url,
+                                              mapped_path: mapped_path)
+
+        expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
       end
 
       context 'recorded routes cookie' do
@@ -39,11 +56,11 @@ class SiteHub
           let(:expected_path) { '/expected_path' }
 
           subject(:app) do
-            app = proc { [200, {}, []] }
-            described_class.new(app,
-                                id: :id,
+            described_class.new(id: :id,
                                 sitehub_cookie_path: expected_path,
-                                sitehub_cookie_name: :cookie_name)
+                                sitehub_cookie_name: :cookie_name,
+                                mapped_path: mapped_path,
+                                mapped_url: mapped_url)
           end
 
           it 'is set as the path' do

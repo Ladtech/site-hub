@@ -12,11 +12,13 @@ class SiteHub
     def_delegator :@rack_request, :url
     def_delegator :@rack_request, :path
 
-    attr_reader :env, :rack_request
+    attr_reader :env, :rack_request, :mapped_path, :mapped_url
 
-    def initialize(env)
+    def initialize(env:, mapped_path:, mapped_url:)
       @rack_request = Rack::Request.new(env)
       @env = filter_http_headers(extract_http_headers_from_rack_env(env))
+      @mapped_path = mapped_path
+      @mapped_url = mapped_url
     end
 
     def request_method
@@ -35,6 +37,14 @@ class SiteHub
         # x-forwarded-host
         headers[X_FORWARDED_HOST_HEADER] = x_forwarded_host
       end
+    end
+
+    def mapping
+      RequestMapping.new(source_url: rack_request.url, mapped_url: mapped_url, mapped_path: mapped_path)
+    end
+
+    def uri
+      mapping.computed_uri
     end
 
     private

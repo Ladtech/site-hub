@@ -24,7 +24,8 @@ class SiteHub
         end
 
         it 'the defined route is used 100% of the time' do
-          expected_proxy = ForwardProxyBuilder.new(mapped_path: '/path').tap do |route|
+          expected_proxy = ForwardProxyBuilder.new(mapped_path: '/app1',
+                                                   sitehub_cookie_name: RECORDED_ROUTES_COOKIE).tap do |route|
             route.default(url: :endpoint)
           end
           expect(subject.forward_proxies.forward_proxies['/app1']).to eq(expected_proxy)

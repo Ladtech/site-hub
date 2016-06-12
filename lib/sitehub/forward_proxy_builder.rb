@@ -107,14 +107,12 @@ class SiteHub
     end
 
     def forward_proxy(label:, url:, rule: nil)
-      forward_proxy = DownstreamClient.new(url: url,
-                                           mapped_path: mapped_path)
-
-      ForwardProxy.new(forward_proxy,
-                       sitehub_cookie_path: sitehub_cookie_path,
+      ForwardProxy.new(sitehub_cookie_path: sitehub_cookie_path,
                        sitehub_cookie_name: sitehub_cookie_name,
                        id: label.to_sym,
-                       rule: rule)
+                       rule: rule,
+                       mapped_url: url,
+                       mapped_path: mapped_path)
     end
   end
 end

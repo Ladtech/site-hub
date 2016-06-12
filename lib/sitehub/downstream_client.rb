@@ -16,39 +16,22 @@ class SiteHub
   class DownstreamClient
     include Constants
 
-    attr_reader :url, :mapped_path, :http_client
+    attr_reader :http_client
 
-    def initialize(url:, mapped_path: nil)
-      @url = url
-      @mapped_path = mapped_path
+    def initialize
       @http_client = Faraday.new(ssl: { verify: false }) do |con|
         con.adapter :em_synchrony
       end
     end
 
-    def call(env)
-      request = Request.new(env)
-      request_mapping = env[REQUEST_MAPPING] = request_mapping(request)
-
-      proxy_call(request_mapping.computed_uri, request)
-    end
-
-    def proxy_call(uri, sitehub_request)
-      response = http_client.send(sitehub_request.request_method, uri) do |request|
+    def call(sitehub_request)
+      response = http_client.send(sitehub_request.request_method, sitehub_request.uri) do |request|
         request.headers = sitehub_request.headers
         request.body = sitehub_request.body
         request.params = sitehub_request.params
       end
 
       Rack::Response.new(response.body, response.status, response.headers)
-    end
-
-    def request_mapping(source_request)
-      RequestMapping.new(source_url: source_request.url, mapped_url: url, mapped_path: mapped_path)
-    end
-
-    def ==(other)
-      url == other.url
     end
   end
 end
