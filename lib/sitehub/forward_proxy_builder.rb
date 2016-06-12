@@ -4,7 +4,7 @@ require_relative 'rules'
 require_relative 'resolver'
 require_relative 'collection/route_collection'
 require_relative 'middleware'
-require_relative 'cookie_middleware'
+require_relative 'forward_proxy'
 require_relative 'downstream_client'
 
 class SiteHub
@@ -110,11 +110,11 @@ class SiteHub
       forward_proxy = DownstreamClient.new(url: url,
                                            mapped_path: mapped_path)
 
-      CookieMiddleware.new(forward_proxy,
-                           sitehub_cookie_path: sitehub_cookie_path,
-                           sitehub_cookie_name: sitehub_cookie_name,
-                           id: label.to_sym,
-                           rule: rule)
+      ForwardProxy.new(forward_proxy,
+                       sitehub_cookie_path: sitehub_cookie_path,
+                       sitehub_cookie_name: sitehub_cookie_name,
+                       id: label.to_sym,
+                       rule: rule)
     end
   end
 end

@@ -88,9 +88,9 @@ class SiteHub
           it 'stores a split for the version' do
             subject.split url: :url, label: :label, percentage: 50
 
-            expected_proxy = CookieMiddleware.new(DownstreamClient.new(url: :url),
-                                                  id: :label,
-                                                  sitehub_cookie_name: :cookie_name)
+            expected_proxy = ForwardProxy.new(DownstreamClient.new(url: :url),
+                                              id: :label,
+                                              sitehub_cookie_name: :cookie_name)
 
             expected = Collection::SplitRouteCollection.new(expected_proxy => 50)
 
@@ -126,10 +126,10 @@ class SiteHub
     describe 'route' do
       it 'accepts a rule' do
         subject.route url: :url, label: :current, rule: :rule
-        expected_route = CookieMiddleware.new(DownstreamClient.new(url: :url),
-                                              sitehub_cookie_name: :cookie_name,
-                                              id: :current,
-                                              rule: :rule)
+        expected_route = ForwardProxy.new(DownstreamClient.new(url: :url),
+                                          sitehub_cookie_name: :cookie_name,
+                                          id: :current,
+                                          rule: :rule)
         expect(subject.endpoints).to eq(current: expected_route)
       end
 

@@ -1,5 +1,5 @@
 class SiteHub
-  class CookieMiddleware
+  class ForwardProxy
     include Rules, Resolver
 
     attr_reader :downstream_client, :sitehub_cookie_name, :sitehub_cookie_path, :id

@@ -1,6 +1,6 @@
-require 'sitehub/cookie_middleware'
+require 'sitehub/forward_proxy'
 class SiteHub
-  describe CookieMiddleware do
+  describe ForwardProxy do
     let(:mapped_path) { '/mapped_path' }
 
     subject(:app) do
