@@ -13,14 +13,6 @@ class SiteHub
                           mapped_path: mapped_path)
     end
 
-    it 'includes Resolver' do
-      expect(app).to be_a(Resolver)
-    end
-
-    it 'includes Rules' do
-      expect(app).to be_a(Rules)
-    end
-
     describe '#call' do
       context 'downstream request' do
         before do

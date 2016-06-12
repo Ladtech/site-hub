@@ -17,7 +17,7 @@ class SiteHub
   class ForwardProxy
     ERROR_RESPONSE = Rack::Response.new(['error'], 500, {})
 
-    include Rules, Resolver, Constants
+    include Constants
 
     attr_reader :url, :id, :mapped_path, :http_client, :sitehub_cookie_path, :sitehub_cookie_name
 

@@ -2,14 +2,22 @@ require 'sitehub/cookie_middleware'
 class SiteHub
   describe CookieMiddleware do
 
+    let(:mapped_path){'/mapped_path'}
+
+    subject(:app) do
+      app = proc { [200, {}, []] }
+      described_class.new(app, sitehub_cookie_name: :cookie_name, id: :id, mapped_path: mapped_path)
+    end
+
+    it 'includes Resolver' do
+      expect(app).to be_a(Resolver)
+    end
+
+    it 'includes Rules' do
+      expect(app).to be_a(Rules)
+    end
+
     describe '#call' do
-
-      let(:mapped_path){'/mapped_path'}
-
-      subject(:app) do
-        app = proc { [200, {}, []] }
-        described_class.new(app, sitehub_cookie_name: :cookie_name, id: :id, mapped_path: mapped_path)
-      end
 
       it 'calls the app' do
         get('/')
