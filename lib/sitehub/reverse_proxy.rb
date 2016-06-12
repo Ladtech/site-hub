@@ -19,17 +19,15 @@ class SiteHub
 
       request_mapping = env[REQUEST_MAPPING]
 
-      begin
-        downstream_status, downstream_headers, downstream_body = downstream_response.to_a
+      downstream_status, downstream_headers, downstream_body = downstream_response.to_a
 
-        transform_headers(downstream_headers, request_mapping)
+      transform_headers(downstream_headers, request_mapping)
 
-        if downstream_headers[HttpHeaders::SET_COOKIE]
-          rewrite_cookies(downstream_headers, substitute_domain: URI(request_mapping.source_url).host)
-        end
-
-        Rack::Response.new(downstream_body, downstream_status, filter_http_headers(downstream_headers))
+      if downstream_headers[HttpHeaders::SET_COOKIE]
+        rewrite_cookies(downstream_headers, substitute_domain: URI(request_mapping.source_url).host)
       end
+
+      Rack::Response.new(downstream_body, downstream_status, filter_http_headers(downstream_headers))
     end
 
     def transform_headers(downstream_headers, request_mapping)
