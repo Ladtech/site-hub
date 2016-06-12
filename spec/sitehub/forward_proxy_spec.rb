@@ -105,9 +105,10 @@ class SiteHub
 
             context 'already present' do
               it 'appends the value of the remote-addr header to it' do
-                x_forwarded_for_header = Constants::HttpHeaderKeys::X_FORWARDED_FOR_HEADER
+                x_forwarded_for_header = Constants::RackHttpHeaderKeys::X_FORWARDED_FOR
                 get(mapped_path, {}, x_forwarded_for_header => 'first_host_ip')
-                expected_headers = { x_forwarded_for_header => "first_host_ip,#{last_request.env['REMOTE_ADDR']}" }
+                expected_header_value = "first_host_ip,#{last_request.env['REMOTE_ADDR']}"
+                expected_headers = { Constants::HttpHeaderKeys::X_FORWARDED_FOR_HEADER => expected_header_value }
                 assert_requested :get, current_version_url, headers: expected_headers
               end
             end

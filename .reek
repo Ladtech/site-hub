@@ -3,3 +3,5 @@ UtilityFunction:
   enabled: true
   exclude:
   - 'collect_middleware'
+IrresponsibleModule:
+  enabled: false

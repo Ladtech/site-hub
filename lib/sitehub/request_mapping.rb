@@ -26,6 +26,7 @@ class SiteHub
             url.gsub!(CAPTURE_GROUP_REFERENCE % (index + 1), match)
           end
         end
+        URI(mapped_url)
       end
     end
 

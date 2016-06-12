@@ -37,7 +37,7 @@ class SiteHub
                               mapped_path: %r{/articles/(.*)})
         end
         it 'returns the computed uri' do
-          expect(subject.computed_uri).to eq('http://downstream_url/123/view')
+          expect(subject.computed_uri).to eq(URI('http://downstream_url/123/view'))
         end
       end
 
@@ -49,7 +49,7 @@ class SiteHub
         end
 
         it 'returns the mapped url' do
-          expect(subject.computed_uri).to eq('http://downstream_url/articles')
+          expect(subject.computed_uri).to eq(URI('http://downstream_url/articles'))
         end
       end
 
@@ -60,7 +60,7 @@ class SiteHub
                               mapped_path: %r{/(.*)})
         end
         it 'keeps the querystring' do
-          expect(subject.computed_uri).to eq('http://downstream_url/articles?param=value')
+          expect(subject.computed_uri).to eq(URI('http://downstream_url/articles?param=value'))
         end
       end
     end

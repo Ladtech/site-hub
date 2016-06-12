@@ -15,6 +15,54 @@ require 'sitehub/constants'
 # 5. Expect header (optional)
 
 class SiteHub
+  class Request
+    include StringSanitiser, Constants, HttpHeaders
+
+    attr_reader :env, :rack_request
+    extend Forwardable
+
+    def_delegator :@rack_request, :params
+    def_delegator :@rack_request, :url
+    def_delegator :@rack_request, :path
+
+    def initialize(env)
+      @rack_request = Rack::Request.new(env)
+      @env = filter_http_headers(extract_http_headers_from_rack_env(env))
+    end
+
+    def request_method
+      @request_method ||= rack_request.request_method.downcase.to_sym
+    end
+
+    def body
+      @body ||= rack_request.body.read
+    end
+
+    def headers
+      @env.tap do |headers|
+        # x-forwarded-for
+        headers[X_FORWARDED_FOR_HEADER] = x_forwarded_for
+
+        # x-forwarded-host
+        headers[X_FORWARDED_HOST_HEADER] = x_forwarded_host
+      end
+    end
+
+    def remote_address
+      rack_request.env[RackHttpHeaderKeys::REMOTE_ADDRESS_ENV_KEY]
+    end
+
+    def x_forwarded_host
+      split(env[HttpHeaderKeys::X_FORWARDED_HOST_HEADER])
+        .push(env[HttpHeaderKeys::HOST_HEADER])
+        .join(COMMA)
+    end
+
+    def x_forwarded_for
+      split(env[HttpHeaderKeys::X_FORWARDED_FOR_HEADER]).push(remote_address).join(COMMA)
+    end
+  end
+
   class ForwardProxy
     ERROR_RESPONSE = Rack::Response.new(['error'], 500, {})
 
@@ -35,57 +83,29 @@ class SiteHub
     end
 
     def call(env)
-      source_request = Rack::Request.new(env)
-      request_mapping = env[REQUEST_MAPPING] = request_mapping(source_request)
-      mapped_uri = URI(request_mapping.computed_uri)
+      request = Request.new(env)
+      request_mapping = env[REQUEST_MAPPING] = request_mapping(request)
 
-      downstream_response = proxy_call(request_headers(mapped_uri, source_request.env), mapped_uri, source_request)
-
-      response(downstream_response, source_request)
-    rescue StandardError => e
-      env[ERRORS] << e.message
+      response(proxy_call(request_mapping.computed_uri, request), request)
+    rescue StandardError => exception
+      env[ERRORS] << exception.message
       ERROR_RESPONSE.dup
     end
 
-    def proxy_call(headers, mapped_uri, source_request)
-      http_client.send(source_request.request_method.downcase, mapped_uri) do |request|
-        request.headers = headers
-        request.body = source_request.body.read
-        request.params = source_request.params
+    def proxy_call(uri, sitehub_request)
+      http_client.send(sitehub_request.request_method, uri) do |request|
+        request.headers = sitehub_request.headers
+        request.body = sitehub_request.body
+        request.params = sitehub_request.params
       end
     end
 
-    def response(response, source_request)
-      Rack::Response.new(response.body, response.status, response.headers).tap do |r|
-        r.set_cookie(sitehub_cookie_name, path: (sitehub_cookie_path || source_request.path), value: id)
+    def response(downstream_response, source_request)
+      Rack::Response.new(downstream_response.body,
+                         downstream_response.status,
+                         downstream_response.headers).tap do |response|
+        response.set_cookie(sitehub_cookie_name, path: (sitehub_cookie_path || source_request.path), value: id)
       end
-    end
-
-    def request_headers(mapped_uri, source_env)
-      filter_http_headers(extract_http_headers_from_rack_env(source_env)).tap do |headers|
-        # HOST HEADERS
-        headers[HOST_HEADER] = "#{mapped_uri.host}:#{mapped_uri.port}"
-
-        # x-forwarded-for
-        headers[X_FORWARDED_FOR_HEADER] = x_forwarded_for(source_env)
-
-        # x-forwarded-host
-        headers[X_FORWARDED_HOST_HEADER] = x_forwarded_host(source_env)
-      end
-    end
-
-    def x_forwarded_host(source_env)
-      split(source_env[RackHttpHeaderKeys::X_FORWARDED_HOST])
-        .push(source_env[RackHttpHeaderKeys::HTTP_HOST])
-        .join(',')
-    end
-
-    def x_forwarded_for(headers)
-      split(headers[X_FORWARDED_FOR_HEADER]).push(remote_address(headers)).join(COMMA)
-    end
-
-    def remote_address(env)
-      env[RackHttpHeaderKeys::REMOTE_ADDRESS_ENV_KEY]
     end
 
     def request_mapping(source_request)
