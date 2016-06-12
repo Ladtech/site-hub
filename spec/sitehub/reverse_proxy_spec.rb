@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/ClassLength
 class SiteHub
   describe ReverseProxy do
     include_context :middleware_test
@@ -109,7 +110,6 @@ class SiteHub
             get('/', {}).headers
           end
         end
-
       end
     end
 

@@ -1,5 +1,6 @@
 # rubocop:disable Metrics/ParameterLists
 require 'sitehub/http_headers'
+require 'sitehub/string_sanitiser'
 require 'sitehub/request_mapping'
 require 'sitehub/rules'
 require 'sitehub/resolver'
@@ -17,7 +18,7 @@ class SiteHub
   class ForwardProxy
     ERROR_RESPONSE = Rack::Response.new(['error'], 500, {})
 
-    include HttpHeaders, Rules, Resolver, Constants
+    include HttpHeaders, Rules, Resolver, Constants, StringSanitiser
 
     attr_reader :url, :id, :mapped_path, :http_client, :sitehub_cookie_path, :sitehub_cookie_name
 
@@ -46,6 +47,14 @@ class SiteHub
       ERROR_RESPONSE.dup
     end
 
+    def proxy_call(headers, mapped_uri, source_request)
+      http_client.send(source_request.request_method.downcase, mapped_uri) do |request|
+        request.headers = headers
+        request.body = source_request.body.read
+        request.params = source_request.params
+      end
+    end
+
     def response(response, source_request)
       Rack::Response.new(response.body, response.status, response.headers).tap do |r|
         r.set_cookie(sitehub_cookie_name, path: (sitehub_cookie_path || source_request.path), value: id)
@@ -53,42 +62,30 @@ class SiteHub
     end
 
     def request_headers(mapped_uri, source_env)
-      http_headers(extract_http_headers_from_rack_env(source_env)).tap do |headers|
+      filter_http_headers(extract_http_headers_from_rack_env(source_env)).tap do |headers|
         # HOST HEADERS
         headers[HOST_HEADER] = "#{mapped_uri.host}:#{mapped_uri.port}"
 
         # x-forwarded-for
-        headers.merge!(x_forwarded_for_header(source_env))
+        headers[X_FORWARDED_FOR_HEADER] = x_forwarded_for(source_env)
 
         # x-forwarded-host
-        headers[X_FORWARDED_HOST_HEADER] = address_list(source_env[RackHttpHeaderKeys::X_FORWARDED_HOST])
-                                           .push(source_env[RackHttpHeaderKeys::HTTP_HOST])
-                                           .join(',')
+        headers[X_FORWARDED_HOST_HEADER] = x_forwarded_host(source_env)
       end
     end
 
-    def x_forwarded_for_header(headers)
-      forwarded_address_list = address_list(headers[X_FORWARDED_FOR_HEADER])
-      forwarded_address_list << remote_address(headers)
-
-      { X_FORWARDED_FOR_HEADER => forwarded_address_list.join(COMMA_WITH_SPACE) }
+    def x_forwarded_host(source_env)
+      split(source_env[RackHttpHeaderKeys::X_FORWARDED_HOST])
+        .push(source_env[RackHttpHeaderKeys::HTTP_HOST])
+        .join(',')
     end
 
-    # for extract_http_headers
-    def address_list(header)
-      header.to_s.split(COMMA)
+    def x_forwarded_for(headers)
+      split(headers[X_FORWARDED_FOR_HEADER]).push(remote_address(headers)).join(COMMA)
     end
 
     def remote_address(env)
       env[RackHttpHeaderKeys::REMOTE_ADDRESS_ENV_KEY]
-    end
-
-    def proxy_call(headers, mapped_uri, source_request)
-      http_client.send(source_request.request_method.downcase, mapped_uri) do |request|
-        request.headers = headers
-        request.body = source_request.body.read
-        request.params = source_request.params
-      end
     end
 
     def request_mapping(source_request)

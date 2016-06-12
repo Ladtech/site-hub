@@ -4,18 +4,14 @@ class SiteHub
   # module HttpHeaders - provides methods for translating HTTP headers names to and
   # from RACK to HTTP compliant names.
   module HttpHeaders
-    include Constants::HttpHeaderKeys
-    include Constants
+    include Constants, Constants::HttpHeaderKeys
 
-    HTTP_OR_SSL_PORT = /:80(?!\d+)|:443/
     HTTP_PREFIX = /^HTTP_/
     RACK_HTTP_HEADER_ID = /#{HTTP_PREFIX.source}[A-Z_]+$/
-    COMMA = ','.freeze
-
-    SHOULD_NOT_TRANSFER = [PROXY_CONNECTION].freeze
 
     EXCLUDED_HEADERS = [CONNECTION_HEADER,
                         KEEP_ALIVE,
+                        PROXY_CONNECTION,
                         PROXY_AUTHENTICATE,
                         PROXY_AUTHORIZATION,
                         TE,
@@ -25,48 +21,27 @@ class SiteHub
                         UPGRADE].freeze
 
     #  Call with headers extraced from rack (http-compliant header names)
-    def http_headers(env)
-      # remove hop by hop headers identified in connection header
-      headers = env.each_with_object({}) do |key_value, hash|
-        key, value = *key_value
-        hash[key.downcase] = value
-      end
-      headers = without_hop_by_hop_headers(headers)
-
-      # remove excluded headers
-      remove_excluded_http_headers headers
-    end
-
-    def remove_excluded_http_headers(env)
-      env.reject do |key, _value|
-        excluded_header?(key.downcase)
-      end
-    end
-
-    def without_hop_by_hop_headers(env)
-      hop_by_hop_headers = split_field(env[CONNECTION_HEADER])
-      env.reject do |key, _value|
-        hop_by_hop_headers.member?(key)
-      end
+    def filter_http_headers(env)
+      remove_headers(env, hop_by_hop_headers(env).concat(EXCLUDED_HEADERS))
     end
 
     def extract_http_headers_from_rack_env(env)
-      headers = without_excluded_headers(env)
-
-      headers.each_with_object(Rack::Utils::HeaderHash.new) do |key_value, hash|
-        key, value = key_value
-        hash[header_name(key)] = value
+      without_excluded_headers(env).each_with_object({}) do |key_value, hash|
+        hash[header_name(key_value[0])] = key_value[1]
       end
     end
 
     private
 
-    def excluded_header?(key)
-      EXCLUDED_HEADERS.member?(key) || SHOULD_NOT_TRANSFER.member?(key)
+    def hop_by_hop_headers(env)
+      field = env[CONNECTION_HEADER] || EMPTY_STRING
+      field.split(COMMA).collect(&:downcase)
     end
 
-    def split_field(field)
-      field ? field.split(COMMA).collect(&:downcase) : []
+    def remove_headers(headers, excluded)
+      headers.reject do |key, _value|
+        excluded.member?(key)
+      end
     end
 
     def header_name(name)

@@ -28,7 +28,7 @@ class SiteHub
           rewrite_cookies(downstream_headers, substitute_domain: URI(request_mapping.source_url).host)
         end
 
-        Rack::Response.new(downstream_body, downstream_status, http_headers(downstream_headers))
+        Rack::Response.new(downstream_body, downstream_status, filter_http_headers(downstream_headers))
       end
     end
 

@@ -13,7 +13,7 @@ class SiteHub
   SEMICOLON = ';'.freeze
   SPACE = ' '.freeze
   SEMICOLON_WITH_SPACE = "#{SEMICOLON}#{SPACE}".freeze
-  COMMA_WITH_SPACE = ', '.freeze
+  COMMA = ','.freeze
 
   HYPHEN = '-'.freeze
   QUESTION_MARK = '?'.freeze
