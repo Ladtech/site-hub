@@ -113,7 +113,6 @@ class SiteHub
       CookieMiddleware.new(forward_proxy,
                            sitehub_cookie_path: sitehub_cookie_path,
                            sitehub_cookie_name: sitehub_cookie_name,
-                           mapped_path: mapped_path,
                            id: label.to_sym,
                            rule: rule)
     end

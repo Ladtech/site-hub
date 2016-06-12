@@ -6,7 +6,7 @@ class SiteHub
 
     subject(:app) do
       app = proc { [200, {}, []] }
-      described_class.new(app, sitehub_cookie_name: :cookie_name, id: :id, mapped_path: mapped_path)
+      described_class.new(app, sitehub_cookie_name: :cookie_name, id: :id)
     end
 
     it 'includes Resolver' do
@@ -28,7 +28,7 @@ class SiteHub
 
         it 'drops a cookie using the name of the sitehub_cookie_name containing the id' do
           get(mapped_path)
-          expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :id.to_s, path: app.mapped_path)
+          expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :id.to_s, path: mapped_path)
         end
 
         context 'recorded_routes_cookie_path not set' do
@@ -45,7 +45,6 @@ class SiteHub
             app = proc { [200, {}, []] }
             described_class.new(app,
                                 id: :id,
-                                mapped_path: mapped_path,
                                 sitehub_cookie_path: expected_path,
                                 sitehub_cookie_name: :cookie_name)
           end

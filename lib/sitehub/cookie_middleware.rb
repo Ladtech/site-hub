@@ -3,15 +3,14 @@ class SiteHub
 
     include Rules, Resolver
 
-    attr_reader :app, :sitehub_cookie_name, :sitehub_cookie_path, :id, :mapped_path
+    attr_reader :app, :sitehub_cookie_name, :sitehub_cookie_path, :id
 
-    def initialize(app, sitehub_cookie_path: nil, sitehub_cookie_name:, id:, rule: nil, mapped_path: nil)
+    def initialize(app, sitehub_cookie_path: nil, sitehub_cookie_name:, id:, rule: nil)
       @app = app
       @sitehub_cookie_path = sitehub_cookie_path
       @sitehub_cookie_name = sitehub_cookie_name
       @id = id
       @rule = rule
-      @mapped_path = mapped_path
     end
 
     def call env
