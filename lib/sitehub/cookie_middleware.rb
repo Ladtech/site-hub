@@ -2,10 +2,10 @@ class SiteHub
   class CookieMiddleware
     include Rules, Resolver
 
-    attr_reader :app, :sitehub_cookie_name, :sitehub_cookie_path, :id
+    attr_reader :downstream_client, :sitehub_cookie_name, :sitehub_cookie_path, :id
 
     def initialize(app, sitehub_cookie_path: nil, sitehub_cookie_name:, id:, rule: nil)
-      @app = app
+      @downstream_client = app
       @sitehub_cookie_path = sitehub_cookie_path
       @sitehub_cookie_name = sitehub_cookie_name
       @id = id
@@ -13,7 +13,7 @@ class SiteHub
     end
 
     def call(env)
-      status, headers, body = @app.call(env).to_a
+      status, headers, body = downstream_client.call(env).to_a
 
       source_request = Rack::Request.new(env)
       Rack::Response.new(body, status, headers).tap do |response|
@@ -22,7 +22,7 @@ class SiteHub
     end
 
     def ==(other)
-      other.app == app
+      other.downstream_client == downstream_client
     end
   end
 end

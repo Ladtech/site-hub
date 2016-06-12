@@ -1,5 +1,4 @@
 require 'sitehub/collection/route_collection'
-require 'sitehub/forward_proxy'
 
 class SiteHub
   describe Collection::RouteCollection do

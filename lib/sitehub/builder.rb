@@ -1,5 +1,6 @@
 require 'sitehub/forward_proxies'
 require 'sitehub/transaction_id'
+require 'sitehub/error_handling'
 require 'sitehub/middleware'
 require 'sitehub/forward_proxy_builder'
 require 'sitehub/reverse_proxy'
@@ -54,6 +55,7 @@ class SiteHub
     def add_default_middleware
       use ReverseProxy, reverse_proxies
       use TransactionId
+      use ErrorHandling
       use Logging::AccessLogger, access_logger || ::Logger.new(STDOUT)
       use Logging::ErrorLogger, error_logger || ::Logger.new(STDERR)
       use Rack::FiberPool

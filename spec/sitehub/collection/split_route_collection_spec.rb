@@ -1,5 +1,4 @@
 require 'sitehub/collection/split_route_collection'
-require 'sitehub/forward_proxy'
 
 class SiteHub
   describe Collection::SplitRouteCollection do

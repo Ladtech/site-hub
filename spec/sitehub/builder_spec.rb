@@ -129,6 +129,10 @@ class SiteHub
           expect(subject.build).to be_using(Rack::FiberPool)
         end
 
+        it 'adds a ErrorHandler' do
+          expect(subject.build).to be_using(SiteHub::ErrorHandling)
+        end
+
         context 'reverse proxy' do
           it 'adds a reverse proxy' do
             expect(subject.build).to be_using(ReverseProxy)
@@ -148,6 +152,7 @@ class SiteHub
           expected_middleware = [Rack::FiberPool,
                                  Logging::ErrorLogger,
                                  Logging::AccessLogger,
+                                 SiteHub::ErrorHandling,
                                  TransactionId,
                                  ReverseProxy,
                                  ForwardProxies]

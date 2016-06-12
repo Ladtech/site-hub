@@ -1,4 +1,5 @@
 require 'sitehub/cookie_rewriting'
+require 'sitehub/http_headers'
 require 'sitehub/path_directives'
 require 'sitehub/request_mapping'
 require 'sitehub/constants'

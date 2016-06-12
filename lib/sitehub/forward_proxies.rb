@@ -1,5 +1,4 @@
 require 'sitehub/constants'
-require 'sitehub/forward_proxy'
 require 'rack/request'
 require 'rack/response'
 require 'rack/utils'

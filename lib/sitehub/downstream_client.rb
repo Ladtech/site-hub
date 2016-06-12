@@ -13,9 +13,7 @@ require 'sitehub/constants'
 # 5. Expect header (optional)
 
 class SiteHub
-  class ForwardProxy
-    ERROR_RESPONSE = Rack::Response.new(['error'], 500, {})
-
+  class DownstreamClient
     include Constants
 
     attr_reader :url, :mapped_path, :http_client
@@ -33,9 +31,6 @@ class SiteHub
       request_mapping = env[REQUEST_MAPPING] = request_mapping(request)
 
       proxy_call(request_mapping.computed_uri, request)
-    rescue StandardError => exception
-      env[ERRORS] << exception.message
-      ERROR_RESPONSE.dup
     end
 
     def proxy_call(uri, sitehub_request)
@@ -53,7 +48,7 @@ class SiteHub
     end
 
     def ==(other)
-      other.is_a?(ForwardProxy) && url == other.url
+      url == other.url
     end
   end
 end

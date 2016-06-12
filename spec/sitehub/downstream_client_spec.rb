@@ -1,7 +1,7 @@
-require 'sitehub/forward_proxy'
+require 'sitehub/downstream_client'
 
 class SiteHub
-  describe ForwardProxy do
+  describe DownstreamClient do
     include_context :http_proxy_rules
 
     let(:current_version_url) { 'http://127.0.0.1:10111' }
@@ -27,29 +27,6 @@ class SiteHub
         it 'preserves the headers when forwarding request' do
           get(mapped_path, '', 'HTTP_HEADER' => 'value')
           assert_requested :get, current_version_url, headers: { 'Header' => 'value' }
-        end
-
-        context 'it fails' do
-          before do
-            WebMock.disable!
-          end
-          it 'adds an error to be logged' do
-            env = { ERRORS.to_s => [] }
-            get(mapped_path, {}, env)
-            expect(last_request.env[ERRORS]).to_not be_empty
-          end
-
-          describe 'parameters to callback' do
-            it 'calls the callback with an error response' do
-              expect(described_class::ERROR_RESPONSE).to receive(:dup).and_return(described_class::ERROR_RESPONSE)
-              env = { ERRORS.to_s => [] }
-              get(mapped_path, {}, env)
-
-              expect(last_response.body).to eq(described_class::ERROR_RESPONSE.body.join)
-              expect(last_response.headers).to eq(described_class::ERROR_RESPONSE.headers)
-              expect(last_response.status).to eq(described_class::ERROR_RESPONSE.status)
-            end
-          end
         end
 
         it_behaves_like 'prohibited_header_filter' do

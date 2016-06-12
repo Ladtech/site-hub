@@ -5,6 +5,7 @@ require_relative 'resolver'
 require_relative 'collection/route_collection'
 require_relative 'middleware'
 require_relative 'cookie_middleware'
+require_relative 'downstream_client'
 
 class SiteHub
   class ForwardProxyBuilder
@@ -106,8 +107,8 @@ class SiteHub
     end
 
     def forward_proxy(label:, url:, rule: nil)
-      forward_proxy = ForwardProxy.new(url: url,
-                                       mapped_path: mapped_path)
+      forward_proxy = DownstreamClient.new(url: url,
+                                           mapped_path: mapped_path)
 
       CookieMiddleware.new(forward_proxy,
                            sitehub_cookie_path: sitehub_cookie_path,
