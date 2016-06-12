@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ClassLength
 require 'sitehub/forward_proxy'
 
 class SiteHub
@@ -118,7 +117,6 @@ class SiteHub
           get(mapped_path, {})
           expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
         end
-
       end
     end
   end

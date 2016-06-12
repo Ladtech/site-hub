@@ -1,6 +1,5 @@
 class SiteHub
   class CookieMiddleware
-
     include Rules, Resolver
 
     attr_reader :app, :sitehub_cookie_name, :sitehub_cookie_path, :id
@@ -13,7 +12,7 @@ class SiteHub
       @rule = rule
     end
 
-    def call env
+    def call(env)
       status, headers, body = @app.call(env).to_a
 
       source_request = Rack::Request.new(env)
@@ -22,8 +21,8 @@ class SiteHub
       end
     end
 
-    def == other
-      other.app == self.app
+    def ==(other)
+      other.app == app
     end
   end
 end

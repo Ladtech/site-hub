@@ -7,7 +7,7 @@ class SiteHub
       Class.new do
         include Rules, Resolver
 
-        def initialize(rule=nil)
+        def initialize(rule = nil)
           @rule = rule
         end
       end

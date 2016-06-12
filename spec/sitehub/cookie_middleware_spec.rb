@@ -1,8 +1,7 @@
 require 'sitehub/cookie_middleware'
 class SiteHub
   describe CookieMiddleware do
-
-    let(:mapped_path){'/mapped_path'}
+    let(:mapped_path) { '/mapped_path' }
 
     subject(:app) do
       app = proc { [200, {}, []] }
@@ -18,14 +17,12 @@ class SiteHub
     end
 
     describe '#call' do
-
       it 'calls the app' do
         get('/')
         expect(last_response.status).to eq(200)
       end
 
       context 'recorded routes cookie' do
-
         it 'drops a cookie using the name of the sitehub_cookie_name containing the id' do
           get(mapped_path)
           expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :id.to_s, path: mapped_path)
@@ -55,7 +52,6 @@ class SiteHub
           end
         end
       end
-
     end
   end
 end

@@ -7,7 +7,6 @@ require_relative 'middleware'
 require_relative 'cookie_middleware'
 
 class SiteHub
-
   class ForwardProxyBuilder
     include Middleware
     include Rules, Resolver

@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ParameterLists
 require 'sitehub/request'
 require 'sitehub/request_mapping'
 require 'sitehub/rules'
@@ -46,7 +45,7 @@ class SiteHub
         request.params = sitehub_request.params
       end
 
-      Rack::Response.new(response.body, response.status,response.headers)
+      Rack::Response.new(response.body, response.status, response.headers)
     end
 
     def request_mapping(source_request)
@@ -54,7 +53,7 @@ class SiteHub
     end
 
     def ==(other)
-      other.is_a?(ForwardProxy) && self.url == other.url
+      other.is_a?(ForwardProxy) && url == other.url
     end
   end
 end

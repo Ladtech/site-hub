@@ -45,8 +45,8 @@ class SiteHub
 
     def x_forwarded_host
       split(env[HttpHeaderKeys::X_FORWARDED_HOST_HEADER])
-          .push(env[HttpHeaderKeys::HOST_HEADER])
-          .join(COMMA)
+        .push(env[HttpHeaderKeys::HOST_HEADER])
+        .join(COMMA)
     end
 
     def x_forwarded_for

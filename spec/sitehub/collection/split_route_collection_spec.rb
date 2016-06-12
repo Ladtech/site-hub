@@ -9,14 +9,14 @@ class SiteHub
 
         attr_reader :id
 
-        def initialize(rule=nil, id:)
+        def initialize(rule = nil, id:)
           @id = id
           @rule = rule
         end
       end
     end
 
-    let(:route_1) { collection_entry.new(id: :id1)}
+    let(:route_1) { collection_entry.new(id: :id1) }
     let(:route_2) { collection_entry.new(id: :id2) }
 
     it 'is a collection' do
