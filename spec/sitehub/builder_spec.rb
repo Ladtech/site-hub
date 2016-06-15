@@ -55,16 +55,16 @@ class SiteHub
       it ' sets the logger' do
         subject.access_logger :access_logger
         sitehub = subject.build
-        logger_middleware = find_middleware(sitehub, Logging::AccessLogger)
-        expect(logger_middleware.logger).to eq(Logging::LogWrapper.new(:access_logger))
+        logger_middleware = find_middleware(sitehub, Middleware::Logging::AccessLogger)
+        expect(logger_middleware.logger).to eq(Middleware::Logging::LogWrapper.new(:access_logger))
       end
 
       it 'defaults to STDOUT' do
         allow(::Logger).to receive(:new).and_return(:a_logger)
         expect(::Logger).to receive(:new).with(STDOUT).and_return(:stdout_logger)
         sitehub = subject.build
-        logger_middleware = find_middleware(sitehub, Logging::AccessLogger)
-        expect(logger_middleware.logger).to eq(Logging::LogWrapper.new(:stdout_logger))
+        logger_middleware = find_middleware(sitehub, Middleware::Logging::AccessLogger)
+        expect(logger_middleware.logger).to eq(Middleware::Logging::LogWrapper.new(:stdout_logger))
       end
     end
 
@@ -91,16 +91,16 @@ class SiteHub
       it 'sets the logger' do
         subject.error_logger :error_logger
         sitehub = subject.build
-        logger_middleware = find_middleware(sitehub, SiteHub::Logging::ErrorLogger)
-        expect(logger_middleware.logger).to eq(Logging::LogWrapper.new(:error_logger))
+        logger_middleware = find_middleware(sitehub, Middleware::Logging::ErrorLogger)
+        expect(logger_middleware.logger).to eq(Middleware::Logging::LogWrapper.new(:error_logger))
       end
 
       it 'defaults to STDERR' do
         allow(::Logger).to receive(:new).and_return(:a_logger)
         expect(::Logger).to receive(:new).with(STDERR).and_return(:stderr_logger)
         sitehub = subject.build
-        logger_middleware = find_middleware(sitehub, SiteHub::Logging::ErrorLogger)
-        expect(logger_middleware.logger).to eq(Logging::LogWrapper.new(:stderr_logger))
+        logger_middleware = find_middleware(sitehub, Middleware::Logging::ErrorLogger)
+        expect(logger_middleware.logger).to eq(Middleware::Logging::LogWrapper.new(:stderr_logger))
       end
     end
 
@@ -112,36 +112,36 @@ class SiteHub
 
       context 'default middleware' do
         it 'adds TransactionId middleware to the sitehub' do
-          expect(subject.build).to be_using(TransactionId)
+          expect(subject.build).to be_using(Middleware::TransactionId)
         end
 
         it 'adds a forward proxies' do
-          expect(subject.build).to be_using(ForwardProxies)
+          expect(subject.build).to be_using(Middleware::ForwardProxies)
         end
 
         it 'adds a AccessLogger' do
-          expect(subject.build).to be_using(Logging::AccessLogger)
+          expect(subject.build).to be_using(Middleware::Logging::AccessLogger)
         end
 
         it 'adds a ErrorLogger' do
-          expect(subject.build).to be_using(Logging::ErrorLogger)
+          expect(subject.build).to be_using(Middleware::Logging::ErrorLogger)
         end
         it 'adds a Rack FiberPool' do
           expect(subject.build).to be_using(Rack::FiberPool)
         end
 
         it 'adds a ErrorHandler' do
-          expect(subject.build).to be_using(SiteHub::ErrorHandling)
+          expect(subject.build).to be_using(Middleware::ErrorHandling)
         end
 
         context 'reverse proxy' do
           it 'adds a reverse proxy' do
-            expect(subject.build).to be_using(ReverseProxy)
+            expect(subject.build).to be_using(Middleware::ReverseProxy)
           end
 
           it 'uses configured reverse proxy directives' do
             subject.reverse_proxy(downstream_url: :upstream_path.to_s)
-            reverse_proxy = find_middleware(subject.build, ReverseProxy)
+            reverse_proxy = find_middleware(subject.build, Middleware::ReverseProxy)
 
             expect(reverse_proxy.path_directives).to eq(PathDirectives.new(downstream_url: :upstream_path.to_s))
           end
@@ -151,12 +151,12 @@ class SiteHub
           middleware_stack = collect_middleware(subject.build).collect(&:class)
 
           expected_middleware = [Rack::FiberPool,
-                                 Logging::ErrorLogger,
-                                 Logging::AccessLogger,
-                                 SiteHub::ErrorHandling,
-                                 TransactionId,
-                                 ReverseProxy,
-                                 ForwardProxies]
+                                 Middleware::Logging::ErrorLogger,
+                                 Middleware::Logging::AccessLogger,
+                                 Middleware::ErrorHandling,
+                                 Middleware::TransactionId,
+                                 Middleware::ReverseProxy,
+                                 Middleware::ForwardProxies]
 
           expect(middleware_stack).to eq(expected_middleware)
         end

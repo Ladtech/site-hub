@@ -1,3 +1,12 @@
+$LOAD_PATH.unshift(__dir__)
+require 'middleware/logging'
+require 'middleware/transaction_id'
+require 'middleware/error_handling'
+require 'middleware/forward_proxies'
+require 'middleware/reverse_proxy'
+require 'rack/ssl-enforcer'
+require 'rack/fiber_pool'
+
 class SiteHub
   module Middleware
     def middlewares

@@ -1,13 +1,6 @@
-require 'sitehub/forward_proxies'
 require 'sitehub/getter_setter_methods'
-require 'sitehub/transaction_id'
-require 'sitehub/error_handling'
-require 'sitehub/middleware'
 require 'sitehub/forward_proxy_builder'
-require 'sitehub/reverse_proxy'
-require 'rack/ssl-enforcer'
-require 'sitehub/logging'
-require 'rack/fiber_pool'
+require 'sitehub/middleware'
 require 'logger'
 
 class SiteHub
@@ -42,11 +35,11 @@ class SiteHub
     end
 
     def add_default_middleware
-      use ReverseProxy, reverse_proxies
-      use TransactionId
-      use ErrorHandling
-      use Logging::AccessLogger, access_logger || ::Logger.new(STDOUT)
-      use Logging::ErrorLogger, error_logger || ::Logger.new(STDERR)
+      use Middleware::ReverseProxy, reverse_proxies
+      use Middleware::TransactionId
+      use Middleware::ErrorHandling
+      use Middleware::Logging::AccessLogger, access_logger || ::Logger.new(STDOUT)
+      use Middleware::Logging::ErrorLogger, error_logger || ::Logger.new(STDERR)
       use Rack::FiberPool
       use Rack::SslEnforcer, except: @ssl_exclusions if @force_ssl
     end
