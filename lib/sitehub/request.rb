@@ -51,10 +51,10 @@ class SiteHub
       mapping.computed_uri
     end
 
-    def == other
+    def ==(other)
       other.mapped_path == mapped_path &&
-          other.mapped_url == mapped_url &&
-          other.rack_request.env == rack_request.env
+        other.mapped_url == mapped_url &&
+        other.rack_request.env == rack_request.env
     end
 
     private
@@ -65,8 +65,8 @@ class SiteHub
 
     def x_forwarded_host
       split(env[HttpHeaderKeys::X_FORWARDED_HOST_HEADER])
-          .push(env[HttpHeaderKeys::HOST_HEADER])
-          .join(COMMA)
+        .push(env[HttpHeaderKeys::HOST_HEADER])
+        .join(COMMA)
     end
 
     def x_forwarded_for

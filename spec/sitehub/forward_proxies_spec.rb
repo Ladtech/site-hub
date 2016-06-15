@@ -44,7 +44,7 @@ class SiteHub
         end
 
         it 'matches and subsitutes the captured group' do
-          mapped_endpoint = subject.mapped_route(path: "#{application_root}/123/view", request: request)
+          mapped_endpoint = subject.mapped_proxy(path: "#{application_root}/123/view", request: request)
           expected_endpoint = fuzzy_matcher.resolve(env: {})
           expect(mapped_endpoint).to eq(expected_endpoint)
         end
@@ -52,7 +52,7 @@ class SiteHub
 
       context 'exact match on path' do
         it 'proxies to the requested path' do
-          mapped_endpoint = subject.mapped_route(path: application_root, request: request)
+          mapped_endpoint = subject.mapped_proxy(path: application_root, request: request)
           expected_endpoint = forward_proxy_builder.resolve(env: {})
           expect(mapped_endpoint).to eq(expected_endpoint)
         end
@@ -68,7 +68,7 @@ class SiteHub
 
         it 'matches the first endpoint' do
           expected_endpoint = more_specific_proxy_builder.resolve(env: {})
-          mapped_endpoint = subject.mapped_route(path: "#{application_root}/sub_url", request: request)
+          mapped_endpoint = subject.mapped_proxy(path: "#{application_root}/sub_url", request: request)
           expect(mapped_endpoint).to eq(expected_endpoint)
         end
       end

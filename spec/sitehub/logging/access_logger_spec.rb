@@ -8,9 +8,7 @@ class SiteHub
       RackHttpHeaderKeys = Constants::RackHttpHeaderKeys
       HttpHeaderKeys = Constants::HttpHeaderKeys
 
-      let(:logger) do
-        StringIO.new
-      end
+      let(:logger) { StringIO.new }
 
       let(:app) do
         proc { [200, {}, []] }

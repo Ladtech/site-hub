@@ -10,10 +10,10 @@ class SiteHub
     let(:downstream_mapping) { 'https://downstream.com/app1/orders' }
     let(:downstream_location) { "#{downstream_mapping}/123/confirmation" }
 
-    let(:env){ env_for(path: mapped_path)}
+    let(:env) { env_for(path: mapped_path) }
 
-    let(:request) {Request.new(env: env,mapped_url: downstream_mapping,mapped_path: mapped_path)}
-    let(:request_mapping){request.mapping}
+    let(:request) { Request.new(env: env, mapped_url: downstream_mapping, mapped_path: mapped_path) }
+    let(:request_mapping) { request.mapping }
 
     let(:app) do
       proc { downstream_response }
@@ -116,35 +116,35 @@ class SiteHub
       end
     end
 
-    # describe '#interpolate_location' do
-    #   it 'changes the domain' do
-    #     expect(reverse_proxy.interpolate_location(downstream_location, request_mapping.source_url)).to eq('http://example.org/app1/orders/123/confirmation')
-    #   end
-    #
-    #   context 'there is a directive that applies' do
-    #     context 'matcher is a regexp' do
-    #       subject do
-    #         directive = { %r{#{downstream_mapping}/(.*)/confirmation} => '/confirmation/$1' }
-    #         described_class.new(inner_app, directive)
-    #       end
-    #       it 'changes the path' do
-    #         expect(subject.interpolate_location(downstream_location, request_mapping.source_url)).to eq('http://example.org/confirmation/123')
-    #       end
-    #     end
-    #
-    #     context 'matcher is a string' do
-    #       let(:downstream_url) { 'http://downstream.com/confirmation' }
-    #       subject do
-    #         directive = { downstream_url => '/congratulations' }
-    #         described_class.new(inner_app, directive)
-    #       end
-    #       it 'changes the path' do
-    #         actual = subject.interpolate_location(downstream_url, request_mapping.source_url)
-    #         expected = 'http://example.org/congratulations'
-    #         expect(actual).to eq(expected)
-    #       end
-    #     end
-    #   end
-    # end
+    describe '#interpolate_location' do
+      it 'changes the domain' do
+        expect(reverse_proxy.interpolate_location(downstream_location, request_mapping.source_url)).to eq('http://example.org/app1/orders/123/confirmation')
+      end
+
+      context 'there is a directive that applies' do
+        context 'matcher is a regexp' do
+          subject do
+            directive = { %r{#{downstream_mapping}/(.*)/confirmation} => '/confirmation/$1' }
+            described_class.new(inner_app, directive)
+          end
+          it 'changes the path' do
+            expect(subject.interpolate_location(downstream_location, request_mapping.source_url)).to eq('http://example.org/confirmation/123')
+          end
+        end
+
+        context 'matcher is a string' do
+          let(:downstream_url) { 'http://downstream.com/confirmation' }
+          subject do
+            directive = { downstream_url => '/congratulations' }
+            described_class.new(inner_app, directive)
+          end
+          it 'changes the path' do
+            actual = subject.interpolate_location(downstream_url, request_mapping.source_url)
+            expected = 'http://example.org/congratulations'
+            expect(actual).to eq(expected)
+          end
+        end
+      end
+    end
   end
 end

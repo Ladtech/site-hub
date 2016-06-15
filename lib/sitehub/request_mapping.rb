@@ -26,13 +26,6 @@ class SiteHub
       end
     end
 
-    def ==(other)
-      other.is_a?(RequestMapping) &&
-        source_url == other.source_url &&
-        mapped_url == other.mapped_url &&
-        mapped_path == other.mapped_path
-    end
-
     private
 
     def url_scanner_regex

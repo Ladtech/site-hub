@@ -14,7 +14,6 @@ class SiteHub
 
     describe '#call' do
       context 'downstream request' do
-
         before do
           stub_request(:get, current_version_url).to_return(body: 'body')
         end
