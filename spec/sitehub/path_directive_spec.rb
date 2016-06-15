@@ -37,10 +37,10 @@ class SiteHub
 
     describe '#path_template' do
       it 'returns a duplicate of the path_template every time' do
-        version1 = subject.path_template
-        version2 = subject.path_template
-        expect(version1).to eq(version2)
-        expect(version1).to_not be(version2)
+        first_version = subject.path_template
+        second_version = subject.path_template
+        expect(first_version).to eq(second_version)
+        expect(first_version).to_not be(second_version)
       end
     end
   end

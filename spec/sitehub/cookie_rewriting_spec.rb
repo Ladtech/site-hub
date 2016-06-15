@@ -2,6 +2,8 @@ require 'sitehub/cookie_rewriting'
 
 class SiteHub
   describe CookieRewriting do
+    include_context :module_spec
+
     let(:downstream_domain) { '.downstream_domain.com' }
 
     let(:request_mapping) do
@@ -15,12 +17,6 @@ class SiteHub
     let(:downstream_response) { Rack::Response.new }
     let(:downstream_domain_cookie_name) { 'downstream.cookie' }
 
-    subject do
-      Object.new.tap do |o|
-        o.extend(described_class)
-      end
-    end
-
     before do
       downstream_response.set_cookie(downstream_domain_cookie_name, domain: downstream_domain, value: 'value')
       downstream_response.set_cookie('downstream.cookie2', domain: downstream_domain, value: 'value2', httponly: true)
@@ -31,11 +27,11 @@ class SiteHub
         cookie_header = downstream_response.headers['Set-Cookie']
 
         cookie_strings = cookie_header.lines
-        cookie1 = SiteHub::Cookie.new(cookie_strings[0])
-        cookie2 = SiteHub::Cookie.new(cookie_strings[1])
+        first_cookie = SiteHub::Cookie.new(cookie_strings[0])
+        second_cookie = SiteHub::Cookie.new(cookie_strings[1])
         expected = {
-          cookie1.name => cookie1,
-          cookie2.name => cookie2
+          first_cookie.name => first_cookie,
+          second_cookie.name => second_cookie
         }
         result = subject.cookies_string_as_hash(cookie_header)
         expect(result).to eq(expected)

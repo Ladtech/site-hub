@@ -40,7 +40,7 @@ class SiteHub
     end
 
     def sorted_attributes_and_flags(attributes_and_flags)
-      attributes_and_flags.sort { |entry1, entry2| entry1.name <=> entry2.name }
+      attributes_and_flags.sort { |entry_a, entry_b| entry_a.name <=> entry_b.name }
     end
 
     def to_s

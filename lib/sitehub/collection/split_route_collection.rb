@@ -20,11 +20,10 @@ class SiteHub
 
       def add(id, value, percentage)
         raise InvalidSplitException, FIXNUM_ERR_MSG unless percentage.is_a?(Fixnum)
-        lower = values.last ? values.last.upper : MIN
-        upper = lower + percentage
+        upper_bound = lower_bound + percentage
 
-        raise InvalidSplitException, SPLIT_ERR_MSG if upper > MAX
-        self[id] = Split.new(lower, upper, value)
+        raise InvalidSplitException, SPLIT_ERR_MSG if upper_bound > MAX
+        self[id] = Split.new(lower_bound, upper_bound, value)
       end
 
       def resolve(*args)
@@ -33,15 +32,12 @@ class SiteHub
         result ? result.value.resolve(*args) : nil
       end
 
-      def transform
-        values.each do |split|
-          split.value = yield(split.value)
-        end
+      def transform(&block)
+        values.each { |split| split.update_value(&block) }
       end
 
       def [](key)
-        result = super(key)
-        result && result.value
+        key?(key) ? super(key).value : nil
       end
 
       def valid?
@@ -50,6 +46,12 @@ class SiteHub
 
         warn(INVALID_SPILTS_MSG)
         false
+      end
+
+      private
+
+      def lower_bound
+        values.empty? ? MIN : values.last.upper
       end
     end
   end

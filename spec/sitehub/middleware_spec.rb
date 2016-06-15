@@ -1,13 +1,8 @@
 require 'sitehub/middleware'
 class SiteHub
   describe Middleware do
-    include_context :middleware_test
-
-    subject do
-      Object.new.tap do |o|
-        o.extend(described_class)
-      end
-    end
+    include_context :middleware_test, :module_spec
+    include_context :module_spec
 
     describe '#use' do
       it 'stores the middleware to be used by the forward proxies' do
@@ -28,15 +23,15 @@ class SiteHub
         end
 
         it 'wraps the supplied app in the middleware in the order they were supplied' do
-          middleware_1 = create_middleware
-          middleware_2 = create_middleware
-          subject.use middleware_1
-          subject.use middleware_2
+          first_middleware = create_middleware
+          second_middleware = create_middleware
+          subject.use first_middleware
+          subject.use second_middleware
 
           result = subject.apply_middleware(:app)
 
-          expect(result).to be_a(middleware_1)
-          expect(result).to be_using(middleware_2)
+          expect(result).to be_a(first_middleware)
+          expect(result).to be_using(second_middleware)
         end
 
         context 'args supplied' do

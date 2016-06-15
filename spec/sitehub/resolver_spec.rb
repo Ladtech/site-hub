@@ -1,11 +1,8 @@
 require 'sitehub/resolver'
 class SiteHub
   describe Resolver do
-    subject do
-      Object.new.tap do |o|
-        o.extend(described_class)
-      end
-    end
+    include_context :module_spec
+
     describe '#resolve' do
       it 'returns self' do
         expect(subject.resolve).to be(subject)

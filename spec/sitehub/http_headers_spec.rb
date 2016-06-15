@@ -1,11 +1,7 @@
 require 'sitehub/http_headers'
 class SiteHub
   describe HttpHeaders do
-    subject do
-      Object.new.tap do |o|
-        o.extend(described_class)
-      end
-    end
+    include_context :module_spec
 
     let(:headers_underscored) do
       { 'CONNECTION' => 'close',

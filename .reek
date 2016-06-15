@@ -1,7 +1,11 @@
 ---
-UtilityFunction:
-  enabled: true
-  exclude:
-  - 'collect_middleware'
 IrresponsibleModule:
   enabled: false
+
+UtilityFunction:
+  exclude:
+  - AccessLogger
+TooManyStatements:
+  enabled: true
+  exclude:
+  - "Builder#add_default_middleware"
