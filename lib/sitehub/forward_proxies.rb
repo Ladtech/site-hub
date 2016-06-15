@@ -1,5 +1,5 @@
 require 'sitehub/constants'
-require 'sitehub/resolver'
+require 'sitehub/nil_proxy'
 require 'rack/request'
 require 'rack/response'
 require 'rack/utils'
@@ -8,13 +8,14 @@ require 'em-http'
 class SiteHub
   class ForwardProxies
 
+    NIL_PROXY = NilProxy.new
+
     def call(env)
       source_request = Rack::Request.new(env)
 
       forward_proxy = mapped_route(path: source_request.path, request: source_request)
 
-      return forward_proxy.call(env) if forward_proxy
-      NOT_FOUND
+      forward_proxy.call(env)
     end
 
     def init
@@ -42,16 +43,6 @@ class SiteHub
       end
     end
 
-    class NilProxy
-      include Resolver
-      NOT_FOUND = Rack::Response.new(['page not found'], 404, {})
-      def call env
-        env[REQUEST] = Request.new(env: env, mapped_path: nil, mapped_url: nil)
-        NOT_FOUND
-      end
-    end
-
-    NIL_PROXY = NilProxy.new
     def forward_proxies
       @forward_proxies ||= begin
        {}.tap do|hash|
