@@ -84,19 +84,20 @@ class SiteHub
             end
           end
 
-          # context 'reverse proxy not defined' do
-          #   it 'leaves the header alone' do
-          #     downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
-          #
-          #     expect(reverse_proxy)
-          #         .to receive(:interpolate_location)
-          #                 .with(downstream_location, request_mapping.source_url)
-          #                 .and_return(:nil)
-          #
-          #     reverse_proxy.call(env)
-          #     expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(downstream_location)
-          #   end
-          # end
+          context 'reverse proxy not defined' do
+            pending 'it leaves the header alone'
+            # it 'leaves the header alone' do
+            #   downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
+            #
+            #   expect(reverse_proxy)
+            #       .to receive(:interpolate_location)
+            #               .with(downstream_location, request_mapping.source_url)
+            #               .and_return(:nil)
+            #
+            #   reverse_proxy.call(env)
+            #   expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(downstream_location)
+            # end
+          end
         end
 
         context 'response' do
