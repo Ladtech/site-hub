@@ -26,12 +26,13 @@ class SiteHub
 
         @app.call(env).tap do |response|
           status, headers, _body = response.to_a
-          log_message = format(log_template, *log_content(start_time, env, headers, env[REQUEST_MAPPING], status))
+          log_message = format(log_template, *log_content(start_time, env[REQUEST], headers, status))
           logger.write(log_message)
         end
       end
 
-      def log_content(began_at, env, header, mapped_request, status)
+      def log_content(began_at, request, header, status)
+        env = request.rack_request.env
         now = Time.now
         [
           source_address(env),
@@ -41,7 +42,7 @@ class SiteHub
           env[RackHttpHeaderKeys::REQUEST_METHOD],
           env[RackHttpHeaderKeys::PATH_INFO],
           query_string(env[RackHttpHeaderKeys::QUERY_STRING]),
-          mapped_url(mapped_request),
+          mapped_url(request),
           env[RackHttpHeaderKeys::HTTP_VERSION],
           status.to_s[STATUS_RANGE],
           extract_content_length(header),
@@ -49,8 +50,8 @@ class SiteHub
         ]
       end
 
-      def mapped_url(mapped_request)
-        mapped_request ? mapped_request.mapped_url.to_s : EMPTY_STRING
+      def mapped_url(request)
+        request.mapped? ? request.mapping.mapped_url.to_s : EMPTY_STRING
       end
 
       def query_string(query_string)

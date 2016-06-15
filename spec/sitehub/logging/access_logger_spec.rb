@@ -37,20 +37,22 @@ class SiteHub
 
       describe '#call' do
         let(:env) do
-          { REQUEST_MAPPING => request_mapping,
-            RackHttpHeaderKeys::QUERY_STRING => '',
+          { RackHttpHeaderKeys::QUERY_STRING => '',
             RackHttpHeaderKeys::PATH_INFO => 'path_info',
             RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id,
             RackHttpHeaderKeys::HTTP_VERSION => '1.1' }
         end
 
-        let(:request_mapping) do
-          RequestMapping.new(source_url: :source_url, mapped_url: :mapped_url.to_s, mapped_path: :mapped_path.to_s)
+        let(:request) do
+          Request.new(env: env, mapped_url: :mapped_url.to_s, mapped_path: :mapped_path.to_s)
         end
 
-        before { subject.call(env) }
+        before do
+          env[REQUEST] = request
+          subject.call(env)
+        end
 
-        let(:args) { { request_mapping: request_mapping, downstream_response: Rack::Response.new } }
+        let(:args) { { request: request, downstream_response: Rack::Response.new } }
         it 'logs the request / response details in the required format' do
           expect(subject).to receive(:log_template).and_return(:template.to_s)
           expect(logger).to receive(:write).with(:template.to_s)
@@ -95,7 +97,7 @@ class SiteHub
         end
 
         context '404 returned, i.e. no downstream call made' do
-          let(:request_mapping) { nil }
+          let(:request) { Request.new(env: env, mapped_url: nil, mapped_path: nil) }
           it 'does not log the down stream url' do
             subject.call(env)
             expect(logger.string).to include("=> #{EMPTY_STRING} #{env[RackHttpHeaderKeys::HTTP_VERSION]}")

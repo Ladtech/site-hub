@@ -16,9 +16,7 @@ class SiteHub
     end
 
     def call(env)
-      request = Request.new(env: env, mapped_path: mapped_path, mapped_url: mapped_url)
-
-      env[REQUEST_MAPPING] = request.mapping
+      request = env[REQUEST] = Request.new(env: env, mapped_path: mapped_path, mapped_url: mapped_url)
 
       downstream_client.call(request).tap do |response|
         response.set_cookie(sitehub_cookie_name, path: (sitehub_cookie_path || request.path), value: id)

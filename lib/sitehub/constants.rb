@@ -3,6 +3,7 @@ require 'sitehub/constants/rack_http_header_keys'
 
 class SiteHub
   REQUEST_MAPPING = 'sitehub.request_mapping'.freeze
+  REQUEST = 'sitehub.request'.freeze
   RESPONSE = 'sitehub.response'.freeze
   ASYNC_CALLBACK = 'async.callback'.freeze
   RECORDED_ROUTES_COOKIE = 'sitehub.recorded_route'.freeze

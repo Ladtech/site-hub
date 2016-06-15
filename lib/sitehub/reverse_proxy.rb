@@ -18,7 +18,7 @@ class SiteHub
     def call(env)
       downstream_response = @app.call(env)
 
-      request_mapping = env[REQUEST_MAPPING]
+      request_mapping = env[REQUEST].mapping
 
       downstream_status, downstream_headers, downstream_body = downstream_response.to_a
 

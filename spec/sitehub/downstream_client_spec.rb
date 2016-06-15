@@ -2,6 +2,7 @@ require 'sitehub/downstream_client'
 
 class SiteHub
   describe DownstreamClient do
+    include_context :rack_http_request
     include_context :http_proxy_rules
 
     let(:current_version_url) { 'http://127.0.0.1:10111' }
@@ -13,10 +14,6 @@ class SiteHub
 
     describe '#call' do
       context 'downstream request' do
-        def env_for(path:, method: :get, params: {}, body: nil, env: {})
-          env = env.merge(method: method, params: (body || params))
-          Rack::Test::Session.new(nil).send(:env_for, path, env)
-        end
 
         before do
           stub_request(:get, current_version_url).to_return(body: 'body')

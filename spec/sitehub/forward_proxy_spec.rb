@@ -29,14 +29,14 @@ class SiteHub
         expect(last_response.status).to eq(200)
       end
 
-      it 'stores the request mapping' do
+      it 'stores the SiteHub request definition in env' do
         get(mapped_path)
 
-        expected_mapping = RequestMapping.new(source_url: last_request.url,
-                                              mapped_url: mapped_url,
-                                              mapped_path: mapped_path)
+        expected_request = Request.new(env: last_request.env,
+                                       mapped_url: mapped_url,
+                                       mapped_path: mapped_path)
 
-        expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
+        expect(last_request.env[REQUEST]).to eq(expected_request)
       end
 
       context 'recorded routes cookie' do

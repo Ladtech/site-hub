@@ -9,7 +9,8 @@ class SiteHub
 
     def initialize(source_url:, mapped_url: EMPTY_STRING, mapped_path:)
       @source_url = source_url
-      @mapped_url = mapped_url.dup
+      @mapped_url = mapped_url.to_s.dup
+      mapped_path = mapped_path.to_s.dup
       @mapped_path = mapped_path.is_a?(Regexp) ? mapped_path : Regexp.new(mapped_path)
     end
 
