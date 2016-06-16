@@ -38,6 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'memory_profiler'
   spec.add_development_dependency 'codeclimate-test-reporter'
   spec.add_development_dependency 'reek'
+  spec.add_development_dependency 'timecop'
 
   spec.add_development_dependency 'ruby-prof'
 end

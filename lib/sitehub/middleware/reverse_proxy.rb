@@ -28,7 +28,8 @@ class SiteHub
           rewrite_cookies(downstream_headers, substitute_domain: request_mapping.host)
         end
 
-        Rack::Response.new(downstream_body, downstream_status, HttpHeadersObject.new(downstream_headers))
+        [downstream_status, HttpHeadersObject.new(downstream_headers), downstream_body]
+        # Response.new(downstream_body, downstream_status, HttpHeadersObject.new(downstream_headers))
       end
 
       def transform_headers(downstream_headers, mapping)

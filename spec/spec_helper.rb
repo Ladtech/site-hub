@@ -1,6 +1,7 @@
 require 'rspec'
 require 'rack/test'
 require 'webmock/rspec'
+require 'timecop'
 $LOAD_PATH.unshift("#{__dir__}/..", "#{__dir__}/support")
 
 require 'support/shared_contexts'
@@ -21,6 +22,7 @@ require 'lib/sitehub'
 RSpec.configure do |config|
   include Rack::Test::Methods
   config.before do
+    Timecop.freeze
     WebMock.enable!
   end
 

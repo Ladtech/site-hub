@@ -17,10 +17,10 @@ class SiteHub
         end
 
         def call(env)
-          env[ERRORS] ||= LogStash.new
+          errors = env[ERRORS] ||= LogStash.new
           @app.call(env).tap do
-            unless env[ERRORS].empty?
-              messages = env[ERRORS].collect do |log_entry|
+            unless errors.empty?
+              messages = errors.collect do |log_entry|
                 log_message(error: log_entry.message, transaction_id: env[RackHttpHeaderKeys::TRANSACTION_ID])
               end
 

@@ -5,6 +5,7 @@ IrresponsibleModule:
 UtilityFunction:
   exclude:
   - AccessLogger
+  - NilProxy
 
 TooManyStatements:
   enabled: true
@@ -18,3 +19,4 @@ FeatureEnvy:
 TooManyInstanceVariables:
   exclude:
   - ForwardProxyBuilder
+

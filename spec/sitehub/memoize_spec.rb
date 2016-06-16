@@ -3,8 +3,8 @@ class SiteHub
   describe Memoize do
     context :module_spec
 
-    subject do
-      clazz = Class.new do
+    let(:test_class) do
+      Class.new do
         extend Memoize
 
         def helper(*args)
@@ -13,13 +13,30 @@ class SiteHub
         end
         memoize :helper
       end
-      clazz.new
+    end
+
+    subject do
+      test_class.new
     end
 
     describe '#memoize' do
       it 'memoizes the return of the given method' do
         result = subject.helper
         expect(result).to be(subject.helper)
+      end
+
+      context 'method name has a ? in it' do
+        it 'memoizes the return of the given method' do
+          test_class.class_eval do
+            def true?
+              'answer'
+            end
+            memoize :true?
+          end
+
+          result = subject.true?
+          expect(result).to be(subject.true?)
+        end
       end
 
       context 'args passed' do

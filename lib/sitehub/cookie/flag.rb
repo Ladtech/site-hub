@@ -1,13 +1,13 @@
-require 'sitehub/string_sanitiser'
+require 'sitehub/string_utils'
 require 'sitehub/equality'
 class SiteHub
   class Cookie
     class Flag
-      include StringSanitiser, Equality
+      include Equality
       attr_reader :name
 
       def initialize(flag)
-        @name = sanitise(flag).to_sym
+        @name = StringUtils.sanitise(flag).to_sym
       end
 
       def to_s

@@ -2,7 +2,7 @@ class SiteHub
   class Cookie
     describe Flag do
       let(:name) { 'flag' }
-      let(:string_sanitiser) { Object.new.tap { |object| object.extend(StringSanitiser) } }
+      let(:string_sanitiser) { Object.new.tap { |object| object.extend(StringUtils) } }
       subject do
         described_class.new(name)
       end
