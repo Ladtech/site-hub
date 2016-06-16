@@ -1,10 +1,11 @@
+require 'sitehub/equality'
 require 'sitehub/cookie/attribute'
 require 'sitehub/cookie/flag'
 require 'sitehub/constants'
 class SiteHub
   class Cookie
     attr_reader :attributes_and_flags, :name_attribute
-    include Constants
+    include Constants, Equality
 
     FIRST = 0
 
@@ -32,15 +33,6 @@ class SiteHub
 
     def find(name)
       attributes_and_flags.find { |entry| entry.name == name }
-    end
-
-    def ==(other)
-      other.is_a?(self.class) &&
-        sorted_attributes_and_flags(attributes_and_flags) == sorted_attributes_and_flags(other.attributes_and_flags)
-    end
-
-    def sorted_attributes_and_flags(attributes_and_flags)
-      attributes_and_flags.sort { |entry_a, entry_b| entry_a.name <=> entry_b.name }
     end
 
     def to_s

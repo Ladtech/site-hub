@@ -9,3 +9,4 @@ TooManyStatements:
   enabled: true
   exclude:
   - "Builder#add_default_middleware"
+  - initialize
