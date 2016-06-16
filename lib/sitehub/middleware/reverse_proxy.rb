@@ -26,7 +26,7 @@ class SiteHub
         transform_headers(downstream_headers, request_mapping)
 
         if downstream_headers[HttpHeaders::SET_COOKIE]
-          rewrite_cookies(downstream_headers, substitute_domain: URI(request_mapping.source_url).host)
+          rewrite_cookies(downstream_headers, substitute_domain: request_mapping.host)
         end
 
         Rack::Response.new(downstream_body, downstream_status, filter_http_headers(downstream_headers))

@@ -1,6 +1,9 @@
 require 'sitehub/constants'
+require 'sitehub/memoize'
 class SiteHub
   class RequestMapping
+    extend Memoize
+
     attr_reader :source_url, :mapped_url, :mapped_path
 
     BASE_URL_MATCHER = %r{^\w+://[\w+\.-]+(:\d+)?}
@@ -15,16 +18,20 @@ class SiteHub
     end
 
     def computed_uri
-      @computed_uri ||= begin
-        url_components = url_scanner_regex.match(source_url).captures[USER_SUPPLIED_CAPTURE]
-        mapped_url.tap do |url|
-          url_components.each_with_index do |match, index|
-            url.gsub!(CAPTURE_GROUP_REFERENCE % (index + 1), match)
-          end
+      url_components = url_scanner_regex.match(source_url).captures[USER_SUPPLIED_CAPTURE]
+      mapped_url.tap do |url|
+        url_components.each_with_index do |match, index|
+          url.gsub!(CAPTURE_GROUP_REFERENCE % (index + 1), match)
         end
-        URI(mapped_url)
       end
+      URI(mapped_url)
     end
+    memoize :computed_uri
+
+    def host
+      URI(source_url).host
+    end
+    memoize :host
 
     private
 

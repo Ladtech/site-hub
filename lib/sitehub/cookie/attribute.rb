@@ -11,7 +11,7 @@ class SiteHub
         @value = sanitise(value)
       end
 
-      def update value
+      def update(value)
         @value = value
       end
 

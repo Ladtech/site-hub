@@ -9,9 +9,12 @@ class SiteHub
 
       cookies_hash.values.each do |cookie|
         domain_attribute = cookie.find(:domain) || next
-        value = domain_attribute.value
-        domain_attribute.update(substitute_domain.dup)
-        domain_attribute.update(domain_attribute.value.prepend(FULL_STOP)) if value.start_with?(FULL_STOP)
+        subtitute_domain = substitute_domain.dup
+        if domain_attribute.value.start_with?(FULL_STOP)
+          domain_attribute.update(subtitute_domain.prepend(FULL_STOP))
+        else
+          domain_attribute.update(subtitute_domain)
+        end
       end
       headers[HttpHeaders::SET_COOKIE] = cookies_hash_to_string(cookies_hash)
     end
@@ -26,7 +29,6 @@ class SiteHub
       cookie_string.lines.each_with_object({}) do |cookie_line, cookies|
         cookie = SiteHub::Cookie.new(cookie_line)
         cookies[cookie.name] = cookie
-        cookies
       end
     end
   end
