@@ -5,7 +5,6 @@ require 'sitehub/constants'
 require 'sitehub/middleware/logging/request_log'
 require 'sitehub/response'
 
-# Very heavily based on Rack::CommonLogger
 class SiteHub
   module Middleware
     module Logging
