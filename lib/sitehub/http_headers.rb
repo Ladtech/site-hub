@@ -1,5 +1,5 @@
 class SiteHub
-  class HttpHeadersObject < Hash
+  class HttpHeaders < Hash
     HTTP_PREFIX = /^HTTP_/
     RACK_HTTP_HEADER_ID = /#{HTTP_PREFIX.source}[A-Z_]+$/
 

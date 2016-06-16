@@ -23,7 +23,7 @@ class SiteHub
 
         rewrite_cookies(downstream_headers, substitute_domain: request_mapping.host) if downstream_headers[SET_COOKIE]
 
-        [downstream_status, HttpHeadersObject.new(downstream_headers), downstream_body]
+        [downstream_status, HttpHeaders.new(downstream_headers), downstream_body]
       end
 
       def transform_headers(downstream_headers, mapping)

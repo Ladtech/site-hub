@@ -1,7 +1,7 @@
 require 'sitehub/cookie'
 require 'sitehub/constants'
 class SiteHub
-  #TODO - change in to object and remove .reek exclusions for UtilityFunction
+  # TODO: - change in to object and remove .reek exclusions for UtilityFunction
   module CookieRewriting
     ENDING_WITH_NEWLINE = /#{NEW_LINE}$/
 

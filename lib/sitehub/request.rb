@@ -1,6 +1,6 @@
 require 'rack/request'
 require 'sitehub/string_utils'
-require 'sitehub/http_headers_object'
+require 'sitehub/http_headers'
 require 'sitehub/memoize'
 class SiteHub
   class Request
@@ -17,7 +17,7 @@ class SiteHub
 
     def initialize(env:)
       @rack_request = Rack::Request.new(env)
-      @env = HttpHeadersObject.from_rack_env(env)
+      @env = HttpHeaders.from_rack_env(env)
       @time = Time.now
     end
 

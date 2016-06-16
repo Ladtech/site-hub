@@ -12,7 +12,7 @@ class SiteHub
           env = { RackHttpHeaderKeys::QUERY_STRING => '',
                   RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id,
                   RackHttpHeaderKeys::HTTP_VERSION => '1.1' }
-          HttpHeadersObject.from_rack_env(env)
+          HttpHeaders.from_rack_env(env)
         end
 
         let(:request_headers) do
