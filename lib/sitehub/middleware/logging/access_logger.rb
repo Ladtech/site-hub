@@ -32,11 +32,11 @@ class SiteHub
         end
 
         def call(env)
-          env[REQUEST] = Request.new(env: env)
+          request = env[REQUEST] = Request.new(env: env)
           @app.call(env).tap do |response|
             status, headers, body = response.to_a
             response = Response.new(body, status, headers)
-            logger.write(RequestLog.new(env[REQUEST], response).to_s)
+            logger.write(RequestLog.new(request, response).to_s)
           end
         end
       end
