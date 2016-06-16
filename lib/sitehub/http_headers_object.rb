@@ -13,13 +13,14 @@ class SiteHub
       def remove_rack_specific_headers(env)
         env.reject do |key, value|
           !Constants::RackHttpHeaderKeys::HTTP_HEADER_FILTER_EXCEPTIONS.include?(key.to_s.upcase) &&
-            (!RACK_HTTP_HEADER_ID.match(key) || value.nil?)
+            (!RACK_HTTP_HEADER_ID.match(key) || !value)
         end
       end
 
       def format_keys(env)
         env.each_with_object({}) do |key_value, hash|
-          hash[header_name(key_value[0])] = key_value[1]
+          key, value = *key_value
+          hash[header_name(key)] = value
         end
       end
 
