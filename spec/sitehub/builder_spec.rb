@@ -42,7 +42,8 @@ class SiteHub
         end
 
         it 'passes the block to the route constructor' do
-          expected_route = ForwardProxyBuilder.new(mapped_path: '/path').tap do |route|
+          expected_route = ForwardProxyBuilder.new(mapped_path: '/app',
+                                                   sitehub_cookie_name: RECORDED_ROUTES_COOKIE).tap do |route|
             route.split url: :endpoint, percentage: 100, label: :label
           end
 

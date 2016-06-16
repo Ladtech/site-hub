@@ -1,8 +1,9 @@
 require 'sitehub/string_sanitiser'
+require 'sitehub/equality'
 class SiteHub
   class Cookie
     class Flag
-      include StringSanitiser
+      include StringSanitiser, Equality
       attr_accessor :name
 
       def initialize(flag)
@@ -11,10 +12,6 @@ class SiteHub
 
       def to_s
         name.to_s
-      end
-
-      def ==(other)
-        other.is_a?(Flag) && name == other.name
       end
     end
   end

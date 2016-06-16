@@ -1,4 +1,5 @@
 require 'uuid'
+require 'sitehub/equality'
 require_relative 'collection/split_route_collection'
 require_relative 'rules'
 require_relative 'resolver'
@@ -10,7 +11,7 @@ require_relative 'downstream_client'
 class SiteHub
   class ForwardProxyBuilder
     include Middleware
-    include Rules, Resolver
+    include Rules, Resolver, Equality
 
     class InvalidDefinitionException < Exception
     end
@@ -100,10 +101,6 @@ class SiteHub
     def resolve(id: nil, env:)
       id = id.to_s.to_sym
       endpoints[id] || endpoints.resolve(env: env) || default_proxy
-    end
-
-    def ==(other)
-      other.is_a?(ForwardProxyBuilder) && default_proxy == other.default_proxy && endpoints == other.endpoints
     end
 
     def forward_proxy(label:, url:, rule: nil)

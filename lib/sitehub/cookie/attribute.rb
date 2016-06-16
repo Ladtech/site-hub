@@ -1,8 +1,9 @@
 require 'sitehub/string_sanitiser'
+require 'sitehub/equality'
 class SiteHub
   class Cookie
     class Attribute
-      include StringSanitiser
+      include StringSanitiser, Equality
       attr_accessor :name, :value
 
       def initialize(name, value)
@@ -12,10 +13,6 @@ class SiteHub
 
       def to_s
         "#{name}=#{value}"
-      end
-
-      def ==(other)
-        other.is_a?(Attribute) && name == other.name && value == other.value
       end
     end
   end

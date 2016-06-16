@@ -1,7 +1,10 @@
+require 'sitehub/equality'
 class SiteHub
   module Middleware
     module Logging
       class LogWrapper
+        include Equality
+
         attr_reader :logger
 
         def initialize(logger)
@@ -14,10 +17,6 @@ class SiteHub
           elsif logger.respond_to?(:write)
             logger.write(msg)
           end
-        end
-
-        def ==(other)
-          other.is_a?(LogWrapper) && logger == other.logger
         end
       end
     end

@@ -6,7 +6,7 @@ class SiteHub
     include_context :middleware_test
 
     subject do
-      described_class.new(mapped_path: '/path')
+      described_class.new(mapped_path: '/path', sitehub_cookie_name: :cookie_name)
     end
 
     it 'supports middleware' do
@@ -127,7 +127,7 @@ class SiteHub
     describe 'route' do
       it 'accepts a rule' do
         subject.route url: :url, label: :current, rule: :rule
-        expected_route = ForwardProxy.new(sitehub_cookie_name: nil,
+        expected_route = ForwardProxy.new(sitehub_cookie_name: :cookie_name,
                                           id: :current,
                                           rule: :rule,
                                           mapped_url: :url,
@@ -151,7 +151,7 @@ class SiteHub
 
           subject.route(rule: rule, &proc)
 
-          expected_builder = described_class.new(mapped_path: subject.mapped_path, &proc)
+          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &proc)
           expect(subject.endpoints.values).to eq([expected_builder])
         end
 

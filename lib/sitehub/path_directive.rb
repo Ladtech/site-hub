@@ -1,5 +1,8 @@
+require 'sitehub/equality'
 class SiteHub
   class PathDirective
+    include Equality
+
     attr_reader :matcher, :path_template
 
     def initialize(matcher, path_template)
@@ -23,10 +26,6 @@ class SiteHub
           template.gsub!(RequestMapping::CAPTURE_GROUP_REFERENCE % index, component)
         end
       end
-    end
-
-    def ==(other)
-      other.is_a?(PathDirective) && matcher == other.matcher && path_template == other.path_template
     end
   end
 end
