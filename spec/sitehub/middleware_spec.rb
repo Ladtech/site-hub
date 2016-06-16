@@ -13,6 +13,21 @@ class SiteHub
       end
     end
 
+    describe '#middleware?' do
+      context 'middleware defined' do
+        it 'returns true' do
+          subject.use :middleware
+          expect(subject.middleware?).to eq(true)
+        end
+      end
+
+      context 'no middleware defined' do
+        it 'returns true' do
+          expect(subject.middleware?).to eq(false)
+        end
+      end
+    end
+
     describe '#apply_middleware' do
       context 'middleware defined' do
         it 'wraps the supplied app in the middleware' do

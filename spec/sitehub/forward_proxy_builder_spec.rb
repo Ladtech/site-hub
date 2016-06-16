@@ -98,13 +98,6 @@ class SiteHub
             expect(subject.endpoints).to eq(expected)
           end
 
-          context 'label not supplied' do
-            it 'raises an error' do
-              expect { subject.split(url: :url, percentage: 50) }
-                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
-            end
-          end
-
           context 'url not supplied' do
             it 'raises an error' do
               expect { subject.split(label: :label, percentage: 50) }

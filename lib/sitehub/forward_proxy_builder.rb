@@ -1,5 +1,6 @@
 require 'uuid'
 require 'sitehub/equality'
+require 'sitehub/getter_setter_methods'
 require_relative 'collection/split_route_collection'
 require_relative 'rules'
 require_relative 'resolver'
@@ -10,17 +11,18 @@ require_relative 'downstream_client'
 
 class SiteHub
   class ForwardProxyBuilder
-    include Middleware
-    include Rules, Resolver, Equality
-
     class InvalidDefinitionException < Exception
     end
 
-    INVALID_SPLIT_MSG = 'label and url must be defined if not supplying a block'.freeze
+    INVALID_SPLIT_MSG = 'url must be defined if not supplying a block'.freeze
     ROUTES_WITH_SPLITS_MSG = 'you cant register routes and splits at the same level'.freeze
     INVALID_ROUTE_DEF_MSG = 'rule must be specified when supplying a block'.freeze
 
-    attr_reader :mapped_path, :default_proxy, :routes, :middlewares, :splits, :sitehub_cookie_name
+    extend GetterSetterMethods
+    include Rules, Resolver, Equality, Middleware
+
+    getter_setters :default_proxy, :sitehub_cookie_path
+    attr_reader :mapped_path, :routes, :middlewares, :splits, :sitehub_cookie_name
 
     def initialize(url: nil, mapped_path:, rule: nil, sitehub_cookie_name: nil, &block)
       @mapped_path = mapped_path
@@ -31,14 +33,14 @@ class SiteHub
       rule(rule) if rule
       default(url: url) if url
 
-      return unless block
+      return unless block_given?
 
       instance_eval(&block)
       raise InvalidDefinitionException unless valid?
     end
 
     def valid?
-      return true if @default_proxy
+      return true if default_proxy
       endpoints.valid?
     end
 
@@ -49,20 +51,13 @@ class SiteHub
       @endpoints = collection
     end
 
-    def split(percentage:, url: nil, label: nil, &block)
-      endpoints(splits)
+    # TODO: warn that label and url will not be used if block supplied
+    def split(percentage:, url: nil, label: UUID.generate(:compact), &block)
+      raise InvalidDefinitionException, INVALID_SPLIT_MSG unless block || url
 
-      raise InvalidDefinitionException, INVALID_SPLIT_MSG unless block || [url, label].all?
+      proxy = block_given? ? new(&block).build : forward_proxy(label: label.to_sym, url: url)
 
-      label = label ? label.to_sym : UUID.generate(:compact)
-
-      proxy = block ? new(&block).build : forward_proxy(label: label, url: url)
-
-      endpoints.add label, proxy, percentage
-    end
-
-    def new(&block)
-      self.class.new(mapped_path: mapped_path, &block)
+      endpoints(splits).add label, proxy, percentage
     end
 
     def route(url: nil, label: nil, rule: nil, &block)
@@ -78,23 +73,15 @@ class SiteHub
     end
 
     def default(url:)
-      @default_proxy = forward_proxy(label: :default, url: url)
-    end
-
-    def sitehub_cookie_path(path = nil)
-      return @sitehub_cookie_path unless path
-      @sitehub_cookie_path = path
+      default_proxy(forward_proxy(label: :default, url: url))
     end
 
     def build
-      endpoints.transform do |proxy|
-        apply_middleware(proxy).tap do |wrapped_proxy|
-          wrapped_proxy.extend(Rules)
-          wrapped_proxy.extend(Resolver) unless wrapped_proxy.is_a?(Resolver)
-          wrapped_proxy.rule(proxy.rule)
-        end
+      if middleware?
+        build_with_middleware
+        build_default_with_middleware if default_proxy
       end
-      @default_proxy = apply_middleware(default_proxy) if default_proxy
+
       self
     end
 
@@ -110,6 +97,25 @@ class SiteHub
                        rule: rule,
                        mapped_url: url,
                        mapped_path: mapped_path)
+    end
+
+    private
+
+    def build_with_middleware
+      endpoints.transform do |proxy|
+        apply_middleware(proxy).tap do |wrapped_proxy|
+          wrapped_proxy.extend(Rules, Resolver)
+          wrapped_proxy.rule(proxy.rule)
+        end
+      end
+    end
+
+    def build_default_with_middleware
+      default_proxy(apply_middleware(default_proxy))
+    end
+
+    def new(&block)
+      self.class.new(mapped_path: mapped_path, &block)
     end
   end
 end

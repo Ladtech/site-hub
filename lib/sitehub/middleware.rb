@@ -13,6 +13,10 @@ class SiteHub
       @middleware ||= []
     end
 
+    def middleware?
+      !middlewares.empty?
+    end
+
     def use(middleware_clazz, *args, &block)
       middlewares << [middleware_clazz, args, block || proc {}]
     end

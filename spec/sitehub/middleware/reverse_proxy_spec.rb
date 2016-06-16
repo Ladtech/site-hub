@@ -4,6 +4,7 @@ class SiteHub
     describe ReverseProxy do
       include_context :rack_http_request
       include_context :middleware_test
+      HttpHeaderKeys = Constants::HttpHeaderKeys
 
       let(:mapped_path) { '/orders' }
       let(:user_facing_app_url) { "http://example.org#{mapped_path}" }
@@ -61,7 +62,7 @@ class SiteHub
           context 'downstream response does not contain a cookie' do
             it 'does not attempt to rewrite the cookies' do
               downstream_headers = downstream_response.headers
-              downstream_headers[Constants::HttpHeaderKeys::LOCATION_HEADER] = downstream_location
+              downstream_headers[HttpHeaderKeys::LOCATION_HEADER] = downstream_location
               expect(reverse_proxy).not_to receive(:rewrite_cookies)
               reverse_proxy.call(env)
             end
@@ -72,7 +73,7 @@ class SiteHub
           context 'reverse proxy defined' do
             # Location, Content-Location and URI
             it 'rewrites the header' do
-              downstream_response.headers[Constants::HttpHeaderKeys::LOCATION_HEADER] = downstream_location
+              downstream_response.headers[HttpHeaderKeys::LOCATION_HEADER] = downstream_location
 
               expect(reverse_proxy)
                 .to receive(:interpolate_location)
@@ -80,7 +81,7 @@ class SiteHub
                 .and_return(:interpolated_location)
 
               reverse_proxy.call(env)
-              expect(downstream_response.headers[Constants::HttpHeaderKeys::LOCATION_HEADER]).to eq(:interpolated_location)
+              expect(downstream_response.headers[HttpHeaderKeys::LOCATION_HEADER]).to eq(:interpolated_location)
             end
           end
 

@@ -5,8 +5,16 @@ IrresponsibleModule:
 UtilityFunction:
   exclude:
   - AccessLogger
+
 TooManyStatements:
   enabled: true
   exclude:
   - "Builder#add_default_middleware"
   - initialize
+FeatureEnvy:
+  exclude:
+  - "SiteHub::DownstreamClient#call"
+
+TooManyInstanceVariables:
+  exclude:
+  - ForwardProxyBuilder
