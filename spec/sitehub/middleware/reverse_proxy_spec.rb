@@ -14,7 +14,11 @@ class SiteHub
 
       let(:env) { env_for(path: mapped_path) }
 
-      let(:request) { Request.new(env: env, mapped_url: downstream_mapping, mapped_path: mapped_path) }
+      let(:request) do
+        Request.new(env: env).tap do |request|
+          request.map mapped_path, downstream_mapping
+        end
+      end
       let(:request_mapping) { request.mapping }
 
       let(:app) do

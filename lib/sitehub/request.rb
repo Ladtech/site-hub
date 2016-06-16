@@ -15,12 +15,15 @@ class SiteHub
 
     attr_reader :env, :rack_request, :mapped_path, :mapped_url, :time
 
-    def initialize(env:, mapped_path:, mapped_url:)
+    def initialize(env:)
       @rack_request = Rack::Request.new(env)
       @env = HttpHeadersObject.from_rack_env(env)
-      @mapped_path = mapped_path
-      @mapped_url = mapped_url
       @time = Time.now
+    end
+
+    def map(path, url)
+      @mapped_path = path
+      @mapped_url = url
     end
 
     def request_method
@@ -70,12 +73,6 @@ class SiteHub
     end
 
     memoize :uri, :mapped?, :mapping, :headers, :body, :request_method
-
-    def ==(other)
-      other.mapped_path == mapped_path &&
-        other.mapped_url == mapped_url &&
-        other.rack_request.env == rack_request.env
-    end
 
     private
 

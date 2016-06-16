@@ -32,6 +32,7 @@ class SiteHub
         end
 
         def call(env)
+          env[REQUEST] = Request.new(env: env)
           @app.call(env).tap do |response|
             status, headers, body = response.to_a
             response = Response.new(body, status, headers)

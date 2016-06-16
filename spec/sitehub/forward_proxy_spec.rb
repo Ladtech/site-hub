@@ -4,6 +4,8 @@ class SiteHub
     let(:mapped_path) { '/mapped_path' }
     let(:mapped_url) { 'http://www.somewhere.com/' }
 
+    include_context :rack_http_request
+
     subject(:app) do
       described_class.new(sitehub_cookie_name: :cookie_name,
                           id: :id,
@@ -24,30 +26,29 @@ class SiteHub
     end
 
     describe '#call' do
+      let(:request) { Request.new(env: env_for(path: mapped_path)) }
+
+      before do
+        get(mapped_path, {}, REQUEST => request)
+      end
+
       it 'calls the app' do
-        get(mapped_path)
         expect(last_response.status).to eq(200)
       end
 
-      it 'stores the SiteHub request definition in env' do
-        get(mapped_path)
-
-        expected_request = Request.new(env: last_request.env,
-                                       mapped_url: mapped_url,
-                                       mapped_path: mapped_path)
-
-        expect(last_request.env[REQUEST]).to eq(expected_request)
+      it 'maps the request' do
+        request = last_request.env[REQUEST]
+        expect(request.mapped_path).to eq(mapped_path)
+        expect(request.mapped_url).to eq(mapped_url)
       end
 
       context 'recorded routes cookie' do
         it 'drops a cookie using the name of the sitehub_cookie_name containing the id' do
-          get(mapped_path)
           expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :id.to_s, path: mapped_path)
         end
 
         context 'recorded_routes_cookie_path not set' do
           it 'sets the path to be the request path' do
-            get(mapped_path, {})
             expect(last_response.cookies[:cookie_name.to_s][:path]).to eq(mapped_path)
           end
         end
@@ -64,7 +65,6 @@ class SiteHub
           end
 
           it 'is set as the path' do
-            get(mapped_path, {})
             expect(last_response.cookies[:cookie_name.to_s][:path]).to eq(expected_path)
           end
         end

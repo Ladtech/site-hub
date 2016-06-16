@@ -23,7 +23,9 @@ class SiteHub
 
         let(:request) do
           env = env_for(path: "/#{query_string}", env: request_headers)
-          Request.new(env: env, mapped_path: :mapped_path.to_s, mapped_url: :mapped_url.to_s)
+          Request.new(env: env).tap do |request|
+            request.map :mapped_path.to_s, :mapped_url.to_s
+          end
         end
 
         let(:response) do
@@ -69,7 +71,7 @@ class SiteHub
           context '404 returned, i.e. no downstream call made' do
             let(:request) do
               env = env_for(path: "/#{query_string}", env: request_headers)
-              Request.new(env: env, mapped_path: nil, mapped_url: nil)
+              Request.new(env: env)
             end
             it 'does not log the down stream url' do
               expect(subject.to_s).to include("=> #{EMPTY_STRING} #{request.http_version}")

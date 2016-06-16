@@ -12,15 +12,7 @@ class SiteHub
 
         let(:logger) { StringIO.new }
 
-        let(:response) { Response.new([], 200, {}) }
-
-        let(:request) do
-          Request.new(env: env_for(path: '/'), mapped_url: :mapped_url.to_s, mapped_path: :mapped_path.to_s)
-        end
-
-        let(:app) do
-          proc { response }
-        end
+        let(:env) { env_for(path: '/') }
 
         subject do
           described_class.new(app, logger)
@@ -42,9 +34,17 @@ class SiteHub
         end
 
         describe '#call' do
+          let(:expected_response) { Response.new([], 200, {}) }
+
+          let(:app) do
+            proc { expected_response }
+          end
+
           it 'logs the request / response details' do
-            subject.call(REQUEST => request)
-            expect(logger.string).to eq(RequestLog.new(request, response).to_s)
+            expected_request = Request.new(env: env)
+
+            subject.call(env)
+            expect(logger.string).to eq(RequestLog.new(expected_request, expected_response).to_s)
           end
         end
       end

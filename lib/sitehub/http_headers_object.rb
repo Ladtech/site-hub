@@ -5,7 +5,7 @@ class SiteHub
 
     class << self
       def from_rack_env(env)
-        new(format_keys(remove_rack_specific_headers(env)))
+        new(format_keys(remove_rack_specific_headers(env.dup)))
       end
 
       private

@@ -12,26 +12,35 @@ class SiteHub
       described_class.new
     end
 
+    let(:body) { 'body' }
+    let(:http_headers) { {} }
+    let(:http_method) { :get }
+    let(:env) { env_for(path: mapped_path, env: http_headers, method: http_method) }
+
+    let(:request) do
+      SiteHub::Request.new(env: env).tap do |request|
+        request.map(mapped_path, current_version_url)
+      end
+    end
+
     describe '#call' do
       context 'downstream request' do
         before do
-          stub_request(:get, current_version_url).to_return(body: 'body')
+          stub_request(http_method, current_version_url).to_return(body: 'body')
         end
 
-        it 'preserves the body when forwarding request' do
-          body = 'body'
-          stub_request(:put, current_version_url).with(body: body)
-
-          env = env_for(path: mapped_path, method: :put, body: body)
-
-          subject.call(SiteHub::Request.new(env: env, mapped_path: mapped_path, mapped_url: current_version_url))
+        context 'non get request' do
+          let(:http_method) { :put }
+          it 'preserves the body when forwarding request' do
+            stub_request(http_method, current_version_url).with(body: body)
+            subject.call(request)
+          end
         end
 
         it 'preserves the headers when forwarding request' do
-          env = env_for(path: mapped_path, env: { 'HTTP_HEADER' => 'value' })
-
-          subject.call(SiteHub::Request.new(env: env, mapped_path: mapped_path, mapped_url: current_version_url))
-          assert_requested :get, current_version_url, headers: { 'Header' => 'value' }
+          http_headers['HTTP_HEADER'] = 'value'
+          subject.call(request)
+          assert_requested http_method, current_version_url, headers: { 'Header' => 'value' }
         end
 
         it_behaves_like 'prohibited_header_filter' do
@@ -39,10 +48,12 @@ class SiteHub
 
           subject do
             headers = to_rack_headers(prohibited_headers.merge(permitted_header => 'value'))
-            env = env_for(path: mapped_path, env: headers)
+            headers.each do |key, value|
+              http_headers[key] = value
+            end
 
             subject = described_class.new
-            subject.call(SiteHub::Request.new(env: env, mapped_path: mapped_path, mapped_url: current_version_url))
+            subject.call(request)
 
             WebMock::RequestRegistry.instance.requested_signatures.hash.keys.first.headers
           end
@@ -53,19 +64,15 @@ class SiteHub
           context 'x-forwarded-host header' do
             context 'header not present' do
               it 'assigns it to the requested host' do
-                env = env_for(path: mapped_path)
-
-                subject.call(SiteHub::Request.new(env: env, mapped_path: mapped_path, mapped_url: current_version_url))
+                subject.call(request)
                 assert_requested :get, current_version_url, headers: { 'X-FORWARDED-HOST' => 'example.org' }
               end
             end
 
             context 'header already present' do
               it 'appends the host to the existing value' do
-                env = env_for(path: mapped_path, env: { 'HTTP_X_FORWARDED_HOST' => 'first.host,second.host' })
-
-                subject.call(SiteHub::Request.new(env: env, mapped_path: mapped_path, mapped_url: current_version_url))
-
+                http_headers['HTTP_X_FORWARDED_HOST'] = 'first.host,second.host'
+                subject.call(request)
                 assert_requested :get, current_version_url,
                                  headers: { 'X-FORWARDED-HOST' => 'first.host,second.host,example.org' }
               end
@@ -79,7 +86,7 @@ class SiteHub
                 env = env_for(path: mapped_path)
 
                 subject = described_class.new
-                subject.call(SiteHub::Request.new(env: env, mapped_path: mapped_path, mapped_url: current_version_url))
+                subject.call(request)
 
                 x_forwarded_for_header = Constants::HttpHeaderKeys::X_FORWARDED_FOR_HEADER
                 expected_headers = { x_forwarded_for_header => env['REMOTE_ADDR'] }
@@ -90,10 +97,10 @@ class SiteHub
             context 'already present' do
               it 'appends the value of the remote-addr header to it' do
                 x_forwarded_for_header = Constants::RackHttpHeaderKeys::X_FORWARDED_FOR
-                env = env_for(path: mapped_path, env: { x_forwarded_for_header => 'first_host_ip' })
 
+                http_headers[x_forwarded_for_header] = 'first_host_ip'
                 subject = described_class.new
-                subject.call(SiteHub::Request.new(env: env, mapped_path: mapped_path, mapped_url: current_version_url))
+                subject.call(request)
 
                 expected_header_value = "first_host_ip,#{env['REMOTE_ADDR']}"
                 expected_headers = { Constants::HttpHeaderKeys::X_FORWARDED_FOR_HEADER => expected_header_value }
@@ -103,20 +110,6 @@ class SiteHub
           end
         end
       end
-
-      # context 'response' do
-      #   include_context :http_proxy_rules
-      #
-      #   it 'passes request mapping information in to the environment hash' do
-      #     expected_mapping = RequestMapping.new(source_url: "http://example.org#{mapped_path}",
-      #                                           mapped_url: current_version_url,
-      #                                           mapped_path: mapped_path)
-      #
-      #     stub_request(:get, current_version_url)
-      #     get(mapped_path, {})
-      #     expect(last_request.env[REQUEST_MAPPING]).to eq(expected_mapping)
-      #   end
-      # end
     end
   end
 end
