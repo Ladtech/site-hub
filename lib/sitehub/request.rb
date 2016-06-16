@@ -1,10 +1,11 @@
 require 'rack/request'
 require 'sitehub/string_sanitiser'
-require 'sitehub/http_headers'
+require 'sitehub/http_headers_object'
 
 class SiteHub
+
   class Request
-    include StringSanitiser, Constants, HttpHeaders
+    include StringSanitiser, Constants, Constants::HttpHeaderKeys
 
     extend Forwardable
 
@@ -16,13 +17,13 @@ class SiteHub
 
     def initialize(env:, mapped_path:, mapped_url:)
       @rack_request = Rack::Request.new(env)
-      @env = filter_http_headers(extract_http_headers_from_rack_env(env))
+      @env = HttpHeadersObject.from_rack_env(env)
       @mapped_path = mapped_path
       @mapped_url = mapped_url
     end
 
     def request_method
-      @request_method ||= rack_request.request_method.downcase.to_sym
+      @request_method ||= rack_request.request_method.downcase
     end
 
     def body
@@ -53,8 +54,8 @@ class SiteHub
 
     def ==(other)
       other.mapped_path == mapped_path &&
-        other.mapped_url == mapped_url &&
-        other.rack_request.env == rack_request.env
+          other.mapped_url == mapped_url &&
+          other.rack_request.env == rack_request.env
     end
 
     private
@@ -65,8 +66,8 @@ class SiteHub
 
     def x_forwarded_host
       split(env[HttpHeaderKeys::X_FORWARDED_HOST_HEADER])
-        .push(env[HttpHeaderKeys::HOST_HEADER])
-        .join(COMMA)
+          .push(env[HttpHeaderKeys::HOST_HEADER])
+          .join(COMMA)
     end
 
     def x_forwarded_for

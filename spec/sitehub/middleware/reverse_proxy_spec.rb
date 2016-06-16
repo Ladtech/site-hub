@@ -61,7 +61,7 @@ class SiteHub
           context 'downstream response does not contain a cookie' do
             it 'does not attempt to rewrite the cookies' do
               downstream_headers = downstream_response.headers
-              downstream_headers[HttpHeaders::LOCATION_HEADER] = downstream_location
+              downstream_headers[Constants::HttpHeaderKeys::LOCATION_HEADER] = downstream_location
               expect(reverse_proxy).not_to receive(:rewrite_cookies)
               reverse_proxy.call(env)
             end
@@ -72,7 +72,7 @@ class SiteHub
           context 'reverse proxy defined' do
             # Location, Content-Location and URI
             it 'rewrites the header' do
-              downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
+              downstream_response.headers[Constants::HttpHeaderKeys::LOCATION_HEADER] = downstream_location
 
               expect(reverse_proxy)
                 .to receive(:interpolate_location)
@@ -80,7 +80,7 @@ class SiteHub
                 .and_return(:interpolated_location)
 
               reverse_proxy.call(env)
-              expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(:interpolated_location)
+              expect(downstream_response.headers[Constants::HttpHeaderKeys::LOCATION_HEADER]).to eq(:interpolated_location)
             end
           end
 

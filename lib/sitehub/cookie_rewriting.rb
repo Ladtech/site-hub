@@ -16,7 +16,7 @@ class SiteHub
           domain_attribute.update(subtitute_domain)
         end
       end
-      headers[HttpHeaders::SET_COOKIE] = cookies_hash_to_string(cookies_hash)
+      headers[Constants::HttpHeaderKeys::SET_COOKIE] = cookies_hash_to_string(cookies_hash)
     end
 
     def cookies_hash_to_string(cookies_hash)

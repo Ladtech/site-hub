@@ -1,6 +1,5 @@
 class SiteHub
   module Memoize
-
     def memoize(method)
       method_alias = "_#{method}"
       alias_method method_alias, method

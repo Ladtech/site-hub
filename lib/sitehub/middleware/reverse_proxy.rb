@@ -1,5 +1,4 @@
 require 'sitehub/cookie_rewriting'
-require 'sitehub/http_headers'
 require 'sitehub/path_directives'
 require 'sitehub/request_mapping'
 require 'sitehub/constants'
@@ -7,7 +6,7 @@ require 'sitehub/constants'
 class SiteHub
   module Middleware
     class ReverseProxy
-      include HttpHeaders, CookieRewriting
+      include CookieRewriting, Constants::HttpHeaderKeys
 
       attr_reader :path_directives
 
@@ -25,20 +24,20 @@ class SiteHub
 
         transform_headers(downstream_headers, request_mapping)
 
-        if downstream_headers[HttpHeaders::SET_COOKIE]
+        if downstream_headers[SET_COOKIE]
           rewrite_cookies(downstream_headers, substitute_domain: request_mapping.host)
         end
 
-        Rack::Response.new(downstream_body, downstream_status, filter_http_headers(downstream_headers))
+        Rack::Response.new(downstream_body, downstream_status, HttpHeadersObject.new(downstream_headers))
       end
 
       def transform_headers(downstream_headers, mapping)
-        if downstream_headers[HttpHeaders::LOCATION_HEADER]
-          downstream_uri = URI(downstream_headers[HttpHeaders::LOCATION_HEADER])
+        if downstream_headers[LOCATION_HEADER]
+          downstream_uri = URI(downstream_headers[LOCATION_HEADER])
           mapped_downstream_uri = URI(mapping.mapped_url)
           if downstream_uri.host == mapped_downstream_uri.host && downstream_uri.port == mapped_downstream_uri.port
-            location = interpolate_location(downstream_headers[HttpHeaders::LOCATION_HEADER], mapping.source_url)
-            downstream_headers[HttpHeaders::LOCATION_HEADER] = location
+            location = interpolate_location(downstream_headers[LOCATION_HEADER], mapping.source_url)
+            downstream_headers[LOCATION_HEADER] = location
           end
         end
       end
