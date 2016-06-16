@@ -65,7 +65,8 @@ class SiteHub
         end
 
         def query_string
-          request.query_string.empty? ? EMPTY_STRING : QUESTION_MARK + request.query_string
+          query_string = request.query_string
+          query_string.empty? ? EMPTY_STRING : QUESTION_MARK + query_string
         end
       end
     end

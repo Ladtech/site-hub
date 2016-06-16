@@ -4,19 +4,37 @@ IrresponsibleModule:
 
 UtilityFunction:
   exclude:
-  - AccessLogger
   - NilProxy
+  - collect_middleware
+  - to_rack_headers
+  - env_for
+  - "Rack::Response#cookie_data"
+  - 'SiteHub::CookieRewriting'
 
 TooManyStatements:
   enabled: true
   exclude:
   - "Builder#add_default_middleware"
-  - initialize
+  - "ForwardProxy#initialize"
+  - "SiteHub::ForwardProxyBuilder#initialize"
+
 FeatureEnvy:
   exclude:
   - "SiteHub::DownstreamClient#call"
+  - "SiteHub::PathDirectives"
+  - 'Rack::Response#cookies'
+
+TooManyMethods:
+  exclude:
+  - "SiteHub::Request"
+LongParameterList:
+  exclude:
+  - env_for
+  - "SiteHub::ForwardProxy#initialize"
 
 TooManyInstanceVariables:
   exclude:
   - ForwardProxyBuilder
+  - "SiteHub::Request"
+  - "SiteHub::ForwardProxy"
 

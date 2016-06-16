@@ -1,5 +1,5 @@
 shared_context :rack_test do
-  include_context :async
+  # include_context :async
   include Rack::Test::Methods
 
   def env

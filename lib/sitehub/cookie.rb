@@ -10,7 +10,7 @@ class SiteHub
     FIRST = 0
 
     def initialize(cookie_string)
-      pairs = cookie_string.split(SEMICOLON).map do |entry|
+      @attributes_and_flags = cookie_string.split(SEMICOLON).map do |entry|
         if entry.include?(EQUALS_SIGN)
           Cookie::Attribute.new(*entry.split(EQUALS_SIGN))
         else
@@ -18,8 +18,7 @@ class SiteHub
         end
       end
 
-      name_attribute = pairs.delete_at(FIRST)
-      @attributes_and_flags = pairs
+      name_attribute = @attributes_and_flags.delete_at(FIRST)
       @name_attribute = Cookie::Attribute.new(name_attribute.name.to_s, name_attribute.value)
     end
 

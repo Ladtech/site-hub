@@ -1,6 +1,6 @@
+require 'async/middleware'
 describe 'proxying calls' do
   include_context :site_hub
-  include_context :async
 
   describe 'supported HTTP verbs' do
     before do

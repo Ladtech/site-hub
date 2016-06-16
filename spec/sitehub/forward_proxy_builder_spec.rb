@@ -78,7 +78,7 @@ class SiteHub
 
             subject.split(percentage: 50, &proc)
 
-            expected_builder = described_class.new(mapped_path: subject.mapped_path, &proc)
+            expected_builder = described_class.new(mapped_path: subject.mapped_path, &proc).build
             expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
             expect(subject.endpoints.values).to eq([expected_split])
           end
@@ -144,7 +144,7 @@ class SiteHub
 
           subject.route(rule: rule, &proc)
 
-          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &proc)
+          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &proc).build
           expect(subject.endpoints.values).to eq([expected_builder])
         end
 

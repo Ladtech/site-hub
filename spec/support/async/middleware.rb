@@ -1,3 +1,4 @@
+require_relative 'callback'
 module Async
   class Middleware
     def initialize(app)

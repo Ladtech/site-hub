@@ -11,7 +11,7 @@ class SiteHub
     end
 
     def match?(url)
-      !matcher.match(url).nil?
+      matcher.match(url).is_a?(MatchData)
     end
 
     def path_template

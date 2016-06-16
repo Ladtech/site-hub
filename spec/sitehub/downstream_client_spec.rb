@@ -31,9 +31,17 @@ class SiteHub
 
         context 'non get request' do
           let(:http_method) { :put }
+          let(:env) do
+            env_for(path: mapped_path,
+                    env: http_headers,
+                    params_or_body: body,
+                    method: http_method)
+          end
+
           it 'preserves the body when forwarding request' do
-            stub_request(http_method, current_version_url).with(body: body)
+            stub_request(http_method, current_version_url)
             subject.call(request)
+            assert_requested http_method, current_version_url, body: body
           end
         end
 

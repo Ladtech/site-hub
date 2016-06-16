@@ -1,6 +1,7 @@
 require 'sitehub/cookie'
 require 'sitehub/constants'
 class SiteHub
+  #TODO - change in to object and remove .reek exclusions for UtilityFunction
   module CookieRewriting
     ENDING_WITH_NEWLINE = /#{NEW_LINE}$/
 
@@ -9,14 +10,18 @@ class SiteHub
 
       cookies_hash.values.each do |cookie|
         domain_attribute = cookie.find(:domain) || next
-        subtitute_domain = substitute_domain.dup
-        if domain_attribute.value.start_with?(FULL_STOP)
-          domain_attribute.update(subtitute_domain.prepend(FULL_STOP))
-        else
-          domain_attribute.update(subtitute_domain)
-        end
+        update_domain(domain_attribute, substitute_domain)
       end
       headers[Constants::HttpHeaderKeys::SET_COOKIE] = cookies_hash_to_string(cookies_hash)
+    end
+
+    def update_domain(domain_attribute, substitute_domain)
+      substitute = substitute_domain.dup
+      if domain_attribute.value.start_with?(FULL_STOP)
+        domain_attribute.update(substitute.prepend(FULL_STOP))
+      else
+        domain_attribute.update(substitute)
+      end
     end
 
     def cookies_hash_to_string(cookies_hash)

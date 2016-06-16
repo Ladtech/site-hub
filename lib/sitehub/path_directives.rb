@@ -2,11 +2,8 @@ require 'sitehub/path_directive'
 class SiteHub
   class PathDirectives < Array
     def initialize(map = {})
-      enriched = map.map do |array|
-        matcher = array.first
-        path_template = array.last
-
-        matcher = matcher.is_a?(Regexp) ? matcher : /#{matcher}/
+      enriched = map.collect do |pattern, path_template|
+        matcher = pattern.is_a?(Regexp) ? pattern : /#{pattern}/
         PathDirective.new(matcher, path_template)
       end
 

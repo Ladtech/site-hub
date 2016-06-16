@@ -22,11 +22,10 @@ class SiteHub
     include Rules, Resolver, Equality, Middleware
 
     getter_setters :default_proxy, :sitehub_cookie_path
-    attr_reader :mapped_path, :routes, :middlewares, :splits, :sitehub_cookie_name
+    attr_reader :mapped_path, :routes, :splits, :sitehub_cookie_name
 
     def initialize(url: nil, mapped_path:, rule: nil, sitehub_cookie_name: nil, &block)
       @mapped_path = mapped_path
-      @middlewares = []
       @splits = Collection::SplitRouteCollection.new
       @routes = Collection::RouteCollection.new
       @sitehub_cookie_name = sitehub_cookie_name

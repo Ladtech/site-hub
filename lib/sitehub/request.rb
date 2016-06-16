@@ -61,11 +61,11 @@ class SiteHub
     end
 
     def http_version
-      rack_request.env[RackHttpHeaderKeys::HTTP_VERSION]
+      rack_env[RackHttpHeaderKeys::HTTP_VERSION]
     end
 
     def source_address
-      rack_request.env[RackHttpHeaderKeys::X_FORWARDED_FOR] || rack_request.env[RackHttpHeaderKeys::REMOTE_ADDR]
+      rack_env[RackHttpHeaderKeys::X_FORWARDED_FOR] || rack_env[RackHttpHeaderKeys::REMOTE_ADDR]
     end
 
     def uri
@@ -75,6 +75,10 @@ class SiteHub
     memoize :uri, :mapped?, :mapping, :headers, :body, :request_method
 
     private
+
+    def rack_env
+      rack_request.env
+    end
 
     def remote_address
       rack_request.env[RackHttpHeaderKeys::REMOTE_ADDRESS_ENV_KEY]

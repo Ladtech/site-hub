@@ -1,13 +1,15 @@
 module Rack
   class Response
     def cookies
-      cookie_key_value_array.each_with_object({}) do |cookie_key_value, cookies|
-        name_value_array = cookie_key_value.delete_at(0)
-        name, value = *name_value_array
-        data = cookie_key_value.collect { |pair| [pair[0].to_sym, pair[1]] }.to_h
+      cookie_key_value_array.each_with_object({}) do |cookie_data_hash, cookies|
+        name, value = *cookie_data_hash.delete_at(0)
+        data = cookie_data(cookie_data_hash)
         cookies[name] = { value: value }.merge(data)
-        cookies
       end
+    end
+
+    def cookie_data(cookie_data_hash)
+      cookie_data_hash.collect { |key, assigned_data| [key.to_sym, assigned_data] }.to_h
     end
 
     def cookie_key_value_array
