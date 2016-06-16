@@ -4,7 +4,7 @@ class SiteHub
   class Cookie
     class Flag
       include StringSanitiser, Equality
-      attr_accessor :name
+      attr_reader :name
 
       def initialize(flag)
         @name = sanitise(flag).to_sym

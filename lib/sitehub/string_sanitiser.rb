@@ -1,7 +1,7 @@
 class SiteHub
   module StringSanitiser
     def sanitise(string)
-      string.chomp.strip
+      string.to_s.chomp.strip
     end
 
     def split(header_value)

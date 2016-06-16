@@ -7,8 +7,8 @@ class SiteHub
       attr_reader :name, :value
 
       def initialize(name, value)
-        @name = sanitise(name).to_s.to_sym
-        @value = sanitise(value || EMPTY_STRING)
+        @name = sanitise(name).to_sym
+        @value = sanitise(value)
       end
 
       def update value
