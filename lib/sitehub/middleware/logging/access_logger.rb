@@ -3,18 +3,10 @@ require 'rack/commonlogger'
 require_relative 'log_wrapper'
 require 'sitehub/constants'
 require 'sitehub/middleware/logging/request_log'
+require 'sitehub/response'
 
 # Very heavily based on Rack::CommonLogger
 class SiteHub
-  class Response < Rack::Response
-    attr_reader :status, :headers, :body, :time
-    def initialize(body, status, headers)
-      super
-      @time = Time.now
-    end
-    alias headers header
-  end
-
   module Middleware
     module Logging
       class AccessLogger

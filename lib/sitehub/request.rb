@@ -3,6 +3,7 @@ require 'sitehub/string_utils'
 require 'sitehub/http_headers'
 require 'sitehub/memoize'
 class SiteHub
+  # TODO: write test directly against this class
   class Request
     include Constants, Constants::HttpHeaderKeys
 
