@@ -34,9 +34,9 @@ class SiteHub
           expect(subject.find('http://url.com/orders/123')).to eq(PathDirective.new(matcher, path_template))
         end
       end
-      context 'url does not matches matcher' do
-        it 'returns nil' do
-          expect(subject.find('http://url.com/mismatch')).to eq(nil)
+      context 'url does not match a matcher' do
+        it 'returns default matcher' do
+          expect(subject.find('http://url.com/mismatch')).to eq(described_class::DEFAULT)
         end
       end
     end

@@ -29,24 +29,13 @@ class SiteHub
       def transform_headers(downstream_headers, mapping)
         location_header = downstream_headers[LOCATION_HEADER]
         if location_header
-          downstream_uri = URI(location_header)
-          mapped_downstream_uri = URI(mapping.mapped_url)
-          if downstream_uri.host == mapped_downstream_uri.host && downstream_uri.port == mapped_downstream_uri.port
-            location = interpolate_location(location_header, mapping.source_url)
-            downstream_headers[LOCATION_HEADER] = location
-          end
+          location = transform_location(location_header, mapping.source_url)
+          downstream_headers[LOCATION_HEADER] = location if location
         end
       end
 
-      def interpolate_location(old_location, source_url)
-        path = if path_directives.empty?
-                 URI(old_location).path
-               else
-                 path_directives.find(old_location).apply(old_location)
-               end
-
-        base_url = source_url[RequestMapping::BASE_URL_MATCHER]
-        "#{base_url}#{path}"
+      def transform_location(old_location, source_url)
+        path_directives.find(old_location).apply(old_location, source_url)
       end
     end
   end

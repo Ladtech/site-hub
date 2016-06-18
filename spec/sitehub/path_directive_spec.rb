@@ -21,27 +21,29 @@ class SiteHub
 
     describe '#apply' do
       subject do
-        described_class.new(Regexp.new('http://www.upstream.com/orders/(.*)'), '/$1')
+        described_class.new(Regexp.new('http://www.downstream.com/orders/(.*)'), '/$1')
       end
 
-      let(:url) { 'http://www.upstream.com/orders/123' }
+      let(:url) { 'http://www.downstream.com/orders/123' }
+      let(:source_url_base){'http://www.upstream.com'}
+      let(:source_url) { "#{source_url_base}/some/where/123" }
 
       it 'uses the url to populate the path template' do
-        expect(subject.apply(url)).to eq('/123')
+        expect(subject.apply(url, source_url)).to eq("#{source_url_base}/123")
       end
 
       it 'retains the query string' do
-        expect(subject.apply("#{url}?param=value")).to eq('/123?param=value')
+        expect(subject.apply("#{url}?param=value", source_url)).to eq("#{source_url_base}/123?param=value")
       end
+
+      it 'leaves path template unchanged' do
+        before = subject.path_template.dup
+        subject.apply("#{url}?param=value", source_url)
+        expect(subject.path_template).to eq(before)
+      end
+
     end
 
-    describe '#path_template' do
-      it 'returns a duplicate of the path_template every time' do
-        first_version = subject.path_template
-        second_version = subject.path_template
-        expect(first_version).to eq(second_version)
-        expect(first_version).to_not be(second_version)
-      end
-    end
+
   end
 end

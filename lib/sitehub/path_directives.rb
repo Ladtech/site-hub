@@ -1,6 +1,10 @@
 require 'sitehub/path_directive'
+require 'sitehub/nil_path_directive'
 class SiteHub
   class PathDirectives < Array
+
+    DEFAULT = NilPathDirective.new
+
     def initialize(map = {})
       enriched = map.collect do |pattern, path_template|
         matcher = pattern.is_a?(Regexp) ? pattern : /#{pattern}/
@@ -11,9 +15,10 @@ class SiteHub
     end
 
     def find(url)
-      super() do |directive|
+      result = super() do |directive|
         directive.match?(url)
       end
+      result || DEFAULT
     end
   end
 end

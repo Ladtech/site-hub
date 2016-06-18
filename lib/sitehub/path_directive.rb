@@ -14,18 +14,17 @@ class SiteHub
       matcher.match(url).is_a?(MatchData)
     end
 
-    def path_template
-      @path_template.dup
-    end
+    def apply(downstream_url, source_url)
+      url_components = matcher.match(downstream_url).captures
 
-    def apply(url)
-      url_components = matcher.match(url).captures
-
-      path_template.tap do |template|
+      path = path_template.dup.tap do |template|
         url_components.each.with_index(1) do |component, index|
           template.gsub!(RequestMapping::CAPTURE_GROUP_REFERENCE % index, component)
         end
       end
+
+      base_url = source_url[RequestMapping::BASE_URL_MATCHER]
+      "#{base_url}#{path}"
     end
   end
 end

@@ -24,6 +24,7 @@ class SiteHub
       let(:app) do
         proc { downstream_response }
       end
+
       let(:downstream_response) { Rack::Response.new('downstream', 200, 'header1' => 'header1') }
 
       subject(:reverse_proxy) { described_class.new(app, []) }
@@ -80,7 +81,7 @@ class SiteHub
               downstream_response.headers[HttpHeaderKeys::LOCATION_HEADER] = downstream_location
 
               expect(reverse_proxy)
-                .to receive(:interpolate_location)
+                .to receive(:transform_location)
                 .with(downstream_location, request_mapping.source_url)
                 .and_return(:interpolated_location)
 
@@ -90,18 +91,17 @@ class SiteHub
           end
 
           context 'reverse proxy not defined' do
-            pending 'it leaves the header alone'
-            # it 'leaves the header alone' do
-            #   downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
-            #
-            #   expect(reverse_proxy)
-            #       .to receive(:interpolate_location)
-            #               .with(downstream_location, request_mapping.source_url)
-            #               .and_return(:nil)
-            #
-            #   reverse_proxy.call(env)
-            #   expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(downstream_location)
-            # end
+            it 'leaves the header alone' do
+              downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
+
+              expect(reverse_proxy)
+                  .to receive(:transform_location)
+                          .with(downstream_location, request_mapping.source_url)
+                          .and_return(nil)
+
+              reverse_proxy.call(env)
+              expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(downstream_location)
+            end
           end
         end
 
@@ -126,32 +126,19 @@ class SiteHub
       end
 
       describe '#interpolate_location' do
-        it 'changes the domain' do
-          expect(reverse_proxy.interpolate_location(downstream_location, request_mapping.source_url)).to eq('http://example.org/app1/orders/123/confirmation')
-        end
 
         context 'there is a directive that applies' do
-          context 'matcher is a regexp' do
-            subject do
-              directive = { %r{#{downstream_mapping}/(.*)/confirmation} => '/confirmation/$1' }
-              described_class.new(inner_app, directive)
-            end
-            it 'changes the path' do
-              expect(subject.interpolate_location(downstream_location, request_mapping.source_url)).to eq('http://example.org/confirmation/123')
-            end
+          subject do
+            directive = { %r{#{downstream_mapping}/(.*)/confirmation} => '/confirmation/$1' }
+            described_class.new(inner_app, directive)
           end
+          it 'changes the location' do
+            expect(subject.transform_location(downstream_location, request_mapping.source_url)).to eq('http://example.org/confirmation/123')
+          end        end
 
-          context 'matcher is a string' do
-            let(:downstream_url) { 'http://downstream.com/confirmation' }
-            subject do
-              directive = { downstream_url => '/congratulations' }
-              described_class.new(inner_app, directive)
-            end
-            it 'changes the path' do
-              actual = subject.interpolate_location(downstream_url, request_mapping.source_url)
-              expected = 'http://example.org/congratulations'
-              expect(actual).to eq(expected)
-            end
+        context 'there is no applicable directive' do
+          it 'returns the downstream location' do
+            expect(subject.transform_location(downstream_location, request_mapping.source_url)).to eq(downstream_location)
           end
         end
       end
