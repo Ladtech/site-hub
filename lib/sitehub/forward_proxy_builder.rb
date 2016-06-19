@@ -51,7 +51,6 @@ class SiteHub
       @endpoints = collection
     end
 
-    # TODO: warn that label and url will not be used if block supplied
     def split(percentage:, url: nil, label: nil, &block)
       raise InvalidDefinitionException, INVALID_SPLIT_MSG unless block || url
 
@@ -66,15 +65,15 @@ class SiteHub
     end
 
     def route(url: nil, label: nil, rule: nil, &block)
-      endpoints(routes)
+      endpoint = if block
+                   raise InvalidDefinitionException, INVALID_ROUTE_DEF_MSG unless rule
+                   warn(IGNORING_URL_LABEL_MSG) if url || label
+                   self.class.new(mapped_path: mapped_path, rule: rule, &block).build
+                 else
+                   forward_proxy(url: url, label: label ||= UUID.generate(:compact), rule: rule)
+                 end
 
-      if block
-        raise InvalidDefinitionException, INVALID_ROUTE_DEF_MSG unless rule
-        builder = self.class.new(mapped_path: mapped_path, rule: rule, &block).build
-        endpoints.add UUID.generate(:compact), builder
-      else
-        endpoints.add label.to_sym, forward_proxy(url: url, label: label, rule: rule)
-      end
+      endpoints(routes).add(label, endpoint)
     end
 
     def default(url:)

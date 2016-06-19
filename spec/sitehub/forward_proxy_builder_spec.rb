@@ -133,7 +133,7 @@ class SiteHub
       end
     end
 
-    describe 'route' do
+    describe '#route' do
       it 'accepts a rule' do
         subject.route url: :url, label: :current, rule: :rule
         expected_route = ForwardProxy.new(sitehub_cookie_name: :cookie_name,
@@ -145,22 +145,41 @@ class SiteHub
       end
 
       context 'block supplied' do
-        context 'rule not supplied' do
-          it 'raise an error' do
-            expected_message = described_class::INVALID_ROUTE_DEF_MSG
-            expect { subject.route {} }.to raise_exception described_class::InvalidDefinitionException, expected_message
+        let(:block) do
+          proc do
+            route url: :url, label: :label1
+          end
+        end
+
+        describe '#errors and warnings' do
+          context 'rule not supplied' do
+            it 'raise an error' do
+              expected_message = described_class::INVALID_ROUTE_DEF_MSG
+              expect { subject.route {} }
+                .to raise_exception described_class::InvalidDefinitionException, expected_message
+            end
+          end
+
+          context 'url' do
+            it 'gives a warning to say that the url will not be used' do
+              expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
+              subject.route(rule: :rule, url: :url, &block)
+            end
+          end
+
+          context 'label' do
+            it 'gives a warning to say that the url will not be used' do
+              expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
+              subject.route(rule: :rule, label: :label, &block)
+            end
           end
         end
 
         it 'stores a proxy builder' do
           rule = proc { true }
-          proc = proc do
-            route url: :url, label: :label1
-          end
+          subject.route(rule: rule, &block)
 
-          subject.route(rule: rule, &proc)
-
-          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &proc).build
+          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &block).build
           expect(subject.endpoints.values).to eq([expected_builder])
         end
 
