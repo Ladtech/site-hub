@@ -22,10 +22,13 @@ class SiteHub
     extend GetterSetterMethods
     include Rules, Resolver, Equality, Middleware
 
+    transient :id
+
     getter_setters :default_proxy, :sitehub_cookie_path
-    attr_reader :mapped_path, :routes, :splits, :sitehub_cookie_name
+    attr_reader :mapped_path, :sitehub_cookie_name, :id
 
     def initialize(url: nil, mapped_path:, rule: nil, sitehub_cookie_name: nil, &block)
+      @id = UUID.generate(:compact)
       @mapped_path = mapped_path
       @splits = Collection::SplitRouteCollection.new
       @routes = Collection::RouteCollection.new
@@ -58,22 +61,22 @@ class SiteHub
                 warn(IGNORING_URL_LABEL_MSG) if url || label
                 new(&block).build
               else
-                forward_proxy(label: label ||= UUID.generate(:compact), url: url)
+                forward_proxy(label: label, url: url)
               end
 
-      endpoints(splits).add label, proxy, percentage
+      splits.add proxy.id, proxy, percentage
     end
 
     def route(url: nil, label: nil, rule: nil, &block)
       endpoint = if block
                    raise InvalidDefinitionException, INVALID_ROUTE_DEF_MSG unless rule
                    warn(IGNORING_URL_LABEL_MSG) if url || label
-                   self.class.new(mapped_path: mapped_path, rule: rule, &block).build
+                   new(rule: rule, &block).build
                  else
-                   forward_proxy(url: url, label: label ||= UUID.generate(:compact), rule: rule)
+                   forward_proxy(url: url, label: label, rule: rule)
                  end
 
-      endpoints(routes).add(label, endpoint)
+      routes.add(endpoint.id, endpoint)
     end
 
     def default(url:)
@@ -95,6 +98,7 @@ class SiteHub
     end
 
     def forward_proxy(label:, url:, rule: nil)
+      label ||= UUID.generate(:compact)
       ForwardProxy.new(sitehub_cookie_path: sitehub_cookie_path,
                        sitehub_cookie_name: sitehub_cookie_name,
                        id: label.to_sym,
@@ -104,6 +108,14 @@ class SiteHub
     end
 
     private
+
+    def routes
+      endpoints(@routes)
+    end
+
+    def splits
+      endpoints(@splits)
+    end
 
     def build_with_middleware
       endpoints.transform do |proxy|
@@ -118,8 +130,8 @@ class SiteHub
       default_proxy(apply_middleware(default_proxy))
     end
 
-    def new(&block)
-      self.class.new(mapped_path: mapped_path, &block)
+    def new(rule: nil, &block)
+      self.class.new(mapped_path: mapped_path, rule: rule, &block)
     end
   end
 end
