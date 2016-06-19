@@ -1,5 +1,6 @@
 require 'sitehub/equality'
 class SiteHub
+  # TODO: Find better name for class now that it returns more than a path
   class PathDirective
     include Equality
 
@@ -23,8 +24,7 @@ class SiteHub
         end
       end
 
-      base_url = source_url[RequestMapping::BASE_URL_MATCHER]
-      "#{base_url}#{path}"
+      "#{source_url[RequestMapping::BASE_URL_MATCHER]}#{path}"
     end
   end
 end

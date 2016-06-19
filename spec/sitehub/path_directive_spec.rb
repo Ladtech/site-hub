@@ -25,7 +25,7 @@ class SiteHub
       end
 
       let(:url) { 'http://www.downstream.com/orders/123' }
-      let(:source_url_base){'http://www.upstream.com'}
+      let(:source_url_base) { 'http://www.upstream.com' }
       let(:source_url) { "#{source_url_base}/some/where/123" }
 
       it 'uses the url to populate the path template' do
@@ -41,9 +41,6 @@ class SiteHub
         subject.apply("#{url}?param=value", source_url)
         expect(subject.path_template).to eq(before)
       end
-
     end
-
-
   end
 end

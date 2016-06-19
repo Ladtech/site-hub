@@ -1,4 +1,3 @@
-# rubocop:disable Metrics/ModuleLength
 class SiteHub
   module Middleware
     describe ReverseProxy do
@@ -76,31 +75,16 @@ class SiteHub
 
         context 'location header' do
           context 'reverse proxy defined' do
+            subject(:reverse_proxy) do
+              directive = { downstream_mapping => '/rewritten' }
+              described_class.new(app, directive)
+            end
             # Location, Content-Location and URI
             it 'rewrites the header' do
-              downstream_response.headers[HttpHeaderKeys::LOCATION_HEADER] = downstream_location
-
-              expect(reverse_proxy)
-                .to receive(:transform_location)
-                .with(downstream_location, request_mapping.source_url)
-                .and_return(:interpolated_location)
-
+              downstream_response.headers[HttpHeaderKeys::LOCATION_HEADER] = downstream_mapping
               reverse_proxy.call(env)
-              expect(downstream_response.headers[HttpHeaderKeys::LOCATION_HEADER]).to eq(:interpolated_location)
-            end
-          end
-
-          context 'reverse proxy not defined' do
-            it 'leaves the header alone' do
-              downstream_response.headers[HttpHeaders::LOCATION_HEADER] = downstream_location
-
-              expect(reverse_proxy)
-                  .to receive(:transform_location)
-                          .with(downstream_location, request_mapping.source_url)
-                          .and_return(nil)
-
-              reverse_proxy.call(env)
-              expect(downstream_response.headers[HttpHeaders::LOCATION_HEADER]).to eq(downstream_location)
+              # TODO: come up with better way for getting source request address and reuse the test suite
+              expect(downstream_response.headers[HttpHeaderKeys::LOCATION_HEADER]).to eq('http://example.org/rewritten')
             end
           end
         end
@@ -121,24 +105,6 @@ class SiteHub
             let(:subject) do
               get('/', {}, REQUEST => request).headers
             end
-          end
-        end
-      end
-
-      describe '#interpolate_location' do
-
-        context 'there is a directive that applies' do
-          subject do
-            directive = { %r{#{downstream_mapping}/(.*)/confirmation} => '/confirmation/$1' }
-            described_class.new(inner_app, directive)
-          end
-          it 'changes the location' do
-            expect(subject.transform_location(downstream_location, request_mapping.source_url)).to eq('http://example.org/confirmation/123')
-          end        end
-
-        context 'there is no applicable directive' do
-          it 'returns the downstream location' do
-            expect(subject.transform_location(downstream_location, request_mapping.source_url)).to eq(downstream_location)
           end
         end
       end

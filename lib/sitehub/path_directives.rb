@@ -2,7 +2,6 @@ require 'sitehub/path_directive'
 require 'sitehub/nil_path_directive'
 class SiteHub
   class PathDirectives < Array
-
     DEFAULT = NilPathDirective.new
 
     def initialize(map = {})
