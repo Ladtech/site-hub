@@ -1,5 +1,5 @@
 require 'sitehub/cookie_rewriting'
-require 'sitehub/path_directives'
+require 'sitehub/location_rewriters'
 require 'sitehub/request_mapping'
 require 'sitehub/constants'
 
@@ -12,7 +12,7 @@ class SiteHub
 
       def initialize(app, directives)
         @app = app
-        @path_directives = PathDirectives.new(directives)
+        @path_directives = LocationRewriters.new(directives)
       end
 
       def call(env)

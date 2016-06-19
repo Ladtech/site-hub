@@ -1,6 +1,6 @@
-require 'sitehub/nil_path_directive'
+require 'sitehub/location_rewriters_spec'
 class SiteHub
-  describe NilPathDirective do
+  describe NilLocationRewriter do
     describe 'apply' do
       it 'returns the location parameter' do
         expect(subject.apply(:location, :source_url)).to eq(:location)

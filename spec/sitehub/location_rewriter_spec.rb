@@ -1,6 +1,6 @@
-require 'sitehub/path_directive'
+require 'sitehub/location_rewriter'
 class SiteHub
-  describe PathDirective do
+  describe LocationRewriter do
     subject do
       described_class.new(%r{/match}, '/path_template')
     end

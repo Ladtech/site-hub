@@ -17,6 +17,7 @@ class SiteHub
     INVALID_SPLIT_MSG = 'url must be defined if not supplying a block'.freeze
     ROUTES_WITH_SPLITS_MSG = 'you cant register routes and splits at the same level'.freeze
     INVALID_ROUTE_DEF_MSG = 'rule must be specified when supplying a block'.freeze
+    IGNORING_URL_LABEL_MSG = 'Block supplied, ignoring URL and Label parameters'.freeze
 
     extend GetterSetterMethods
     include Rules, Resolver, Equality, Middleware
@@ -51,10 +52,15 @@ class SiteHub
     end
 
     # TODO: warn that label and url will not be used if block supplied
-    def split(percentage:, url: nil, label: UUID.generate(:compact), &block)
+    def split(percentage:, url: nil, label: nil, &block)
       raise InvalidDefinitionException, INVALID_SPLIT_MSG unless block || url
 
-      proxy = block_given? ? new(&block).build : forward_proxy(label: label.to_sym, url: url)
+      proxy = if block
+                warn(IGNORING_URL_LABEL_MSG) if url || label
+                new(&block).build
+              else
+                forward_proxy(label: label ||= UUID.generate(:compact), url: url)
+              end
 
       endpoints(splits).add label, proxy, percentage
     end

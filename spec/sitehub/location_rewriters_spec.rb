@@ -1,6 +1,6 @@
-require 'sitehub/path_directives'
+require 'sitehub/location_rewriters'
 class SiteHub
-  describe PathDirectives do
+  describe LocationRewriters do
     it 'is an array' do
       expect(subject).to be_kind_of(Array)
     end
@@ -10,7 +10,7 @@ class SiteHub
         it 'leaves the key has a regexp' do
           key = %r{/.*/}
           value = '/'
-          expect(described_class.new(key => value)).to eq([PathDirective.new(key, value)])
+          expect(described_class.new(key => value)).to eq([LocationRewriter.new(key, value)])
         end
       end
 
@@ -18,7 +18,7 @@ class SiteHub
         it 'converts the key to a regexp' do
           key = 'string'
           value = '/'
-          expect(described_class.new(key => value)).to eq([PathDirective.new(Regexp.new(key), value)])
+          expect(described_class.new(key => value)).to eq([LocationRewriter.new(Regexp.new(key), value)])
         end
       end
     end
@@ -31,7 +31,7 @@ class SiteHub
       end
       context 'url matches matcher' do
         it 'returns the path directive' do
-          expect(subject.find('http://url.com/orders/123')).to eq(PathDirective.new(matcher, path_template))
+          expect(subject.find('http://url.com/orders/123')).to eq(LocationRewriter.new(matcher, path_template))
         end
       end
       context 'url does not match a matcher' do

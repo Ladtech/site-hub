@@ -1,7 +1,6 @@
 require 'sitehub/equality'
 class SiteHub
-  # TODO: Find better name for class now that it returns more than a path
-  class PathDirective
+  class LocationRewriter
     include Equality
 
     attr_reader :matcher, :path_template

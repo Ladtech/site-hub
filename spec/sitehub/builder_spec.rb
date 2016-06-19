@@ -144,7 +144,7 @@ class SiteHub
             subject.reverse_proxy(downstream_url: :upstream_path.to_s)
             reverse_proxy = find_middleware(subject.build, Middleware::ReverseProxy)
 
-            expect(reverse_proxy.path_directives).to eq(PathDirectives.new(downstream_url: :upstream_path.to_s))
+            expect(reverse_proxy.path_directives).to eq(LocationRewriters.new(downstream_url: :upstream_path.to_s))
           end
         end
 

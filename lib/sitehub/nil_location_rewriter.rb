@@ -1,5 +1,5 @@
 class SiteHub
-  class NilPathDirective
+  class NilLocationRewriter
     def apply(url, _source_url)
       url
     end

@@ -21,7 +21,7 @@ TooManyStatements:
 FeatureEnvy:
   exclude:
   - "SiteHub::DownstreamClient#call"
-  - "SiteHub::PathDirectives"
+  - "SiteHub::LocationRewriters"
   - 'Rack::Response#cookies'
 
 TooManyMethods:
