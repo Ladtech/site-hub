@@ -3,7 +3,6 @@ require 'sitehub/string_utils'
 require 'sitehub/http_headers'
 require 'sitehub/memoize'
 class SiteHub
-  # TODO: write test directly against this class
   class Request
     include Constants, Constants::HttpHeaderKeys
 
@@ -28,7 +27,7 @@ class SiteHub
     end
 
     def request_method
-      rack_request.request_method.downcase
+      rack_request.request_method.downcase.to_sym
     end
 
     def body
@@ -54,7 +53,7 @@ class SiteHub
     end
 
     def remote_user
-      env[RackHttpHeaderKeys::REMOTE_USER]
+      rack_request.env[RackHttpHeaderKeys::REMOTE_USER]
     end
 
     def transaction_id
@@ -73,7 +72,7 @@ class SiteHub
       mapping.computed_uri
     end
 
-    memoize :uri, :mapped?, :mapping, :headers, :body, :request_method
+    memoize :url, :path, :uri, :mapped?, :mapping, :headers, :body, :request_method
 
     private
 

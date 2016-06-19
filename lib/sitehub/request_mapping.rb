@@ -3,6 +3,7 @@ require 'sitehub/memoize'
 class SiteHub
   class RequestMapping
     extend Memoize
+    include Equality
 
     attr_reader :source_url, :mapped_url, :mapped_path
 

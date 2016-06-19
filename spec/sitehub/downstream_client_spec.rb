@@ -52,7 +52,7 @@ class SiteHub
         end
 
         it_behaves_like 'prohibited_header_filter' do
-          include_context :rack_headers
+          include_context :rack_http_request
 
           subject do
             headers = to_rack_headers(prohibited_headers.merge(permitted_header => 'value'))
@@ -64,57 +64,6 @@ class SiteHub
             subject.call(request)
 
             WebMock::RequestRegistry.instance.requested_signatures.hash.keys.first.headers
-          end
-        end
-
-        context 'headers' do
-          # used to identify the originally requested host
-          context 'x-forwarded-host header' do
-            context 'header not present' do
-              it 'assigns it to the requested host' do
-                subject.call(request)
-                assert_requested :get, current_version_url, headers: { 'X-FORWARDED-HOST' => 'example.org' }
-              end
-            end
-
-            context 'header already present' do
-              it 'appends the host to the existing value' do
-                http_headers['HTTP_X_FORWARDED_HOST'] = 'first.host,second.host'
-                subject.call(request)
-                assert_requested :get, current_version_url,
-                                 headers: { 'X-FORWARDED-HOST' => 'first.host,second.host,example.org' }
-              end
-            end
-          end
-
-          # used for identifying the originating IP address of a request.
-          context 'x-forwarded-for' do
-            context 'header not present' do
-              it 'introduces it assigned to the value the remote-addr http header' do
-                env = env_for(path: mapped_path)
-
-                subject = described_class.new
-                subject.call(request)
-
-                x_forwarded_for_header = Constants::HttpHeaderKeys::X_FORWARDED_FOR_HEADER
-                expected_headers = { x_forwarded_for_header => env['REMOTE_ADDR'] }
-                assert_requested :get, current_version_url, headers: expected_headers
-              end
-            end
-
-            context 'already present' do
-              it 'appends the value of the remote-addr header to it' do
-                x_forwarded_for_header = Constants::RackHttpHeaderKeys::X_FORWARDED_FOR
-
-                http_headers[x_forwarded_for_header] = 'first_host_ip'
-                subject = described_class.new
-                subject.call(request)
-
-                expected_header_value = "first_host_ip,#{env['REMOTE_ADDR']}"
-                expected_headers = { Constants::HttpHeaderKeys::X_FORWARDED_FOR_HEADER => expected_header_value }
-                assert_requested :get, current_version_url, headers: expected_headers
-              end
-            end
           end
         end
       end
