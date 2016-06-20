@@ -1,21 +1,22 @@
-require 'sitehub/string_sanitiser'
+require 'sitehub/string_utils'
+require 'sitehub/equality'
 class SiteHub
   class Cookie
     class Attribute
-      include StringSanitiser
-      attr_accessor :name, :value
+      include Equality
+      attr_reader :name, :value
 
       def initialize(name, value)
-        @name = sanitise(name).to_s.to_sym
-        @value = sanitise(value || EMPTY_STRING)
+        @name = StringUtils.sanitise(name).to_sym
+        @value = StringUtils.sanitise(value)
+      end
+
+      def update(value)
+        @value = value
       end
 
       def to_s
         "#{name}=#{value}"
-      end
-
-      def ==(other)
-        other.is_a?(Attribute) && name == other.name && value == other.value
       end
     end
   end

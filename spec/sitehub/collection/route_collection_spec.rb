@@ -1,9 +1,18 @@
 require 'sitehub/collection/route_collection'
-require 'sitehub/forward_proxy'
 
 class SiteHub
   describe Collection::RouteCollection do
-    let(:route_without_rule) { ForwardProxy.new(url: :url, id: :id, sitehub_cookie_name: :cookie_name) }
+    let(:collection_entry) do
+      Class.new do
+        include Rules, Resolver
+
+        def initialize(rule = nil)
+          @rule = rule
+        end
+      end
+    end
+
+    let(:route_without_rule) { collection_entry.new }
 
     it 'is a collection' do
       expect(subject).to be_a(Collection)
@@ -47,7 +56,7 @@ class SiteHub
     describe '#resolve' do
       context 'no rule on route' do
         it 'returns the route' do
-          route_without_rule = ForwardProxy.new(url: :url, id: :id, sitehub_cookie_name: :cookie_name)
+          route_without_rule = collection_entry.new
           subject.add(:id, route_without_rule)
           expect(subject.resolve({})).to be(route_without_rule)
         end
@@ -57,9 +66,7 @@ class SiteHub
           request_env = {}
           rule = proc { |env| env[:env_passed_in] = true }
 
-          proxy = ForwardProxy.new(url: :url,
-                                   id: :id,
-                                   sitehub_cookie_name: :cookie_name)
+          proxy = collection_entry.new
           proxy.rule(rule)
           subject.add(:id, proxy)
           subject.resolve(env: request_env)
@@ -68,10 +75,7 @@ class SiteHub
 
         context 'rule applies' do
           it 'returns the route' do
-            route_with_rule = ForwardProxy.new(url: :url,
-                                               id: :id,
-                                               rule: proc { true },
-                                               sitehub_cookie_name: :cookie_name)
+            route_with_rule = collection_entry.new(proc { true })
             subject.add(:id, route_with_rule)
             expect(subject.resolve({})).to be(route_with_rule)
           end
@@ -79,10 +83,7 @@ class SiteHub
 
         context 'rule does not apply' do
           it 'returns nil' do
-            route_with_rule = ForwardProxy.new(url: :url,
-                                               id: :id,
-                                               sitehub_cookie_name: :cookie_name,
-                                               rule: proc { false })
+            route_with_rule = collection_entry.new(proc { false })
             subject.add(:id, route_with_rule)
             expect(subject.resolve({})).to eq(nil)
           end

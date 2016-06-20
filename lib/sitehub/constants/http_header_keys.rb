@@ -16,6 +16,8 @@ class SiteHub
       CONTENT_ENCODING = 'content-encoding'.freeze
       SET_COOKIE = 'Set-Cookie'.freeze
       CONTENT_LENGTH = 'Content-Length'.freeze
+      UPGRADE = 'upgrade'.freeze
+      TRANSACTION_ID = 'sitehub-transaction-id'.freeze
     end
   end
 end

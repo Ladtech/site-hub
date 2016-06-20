@@ -1,5 +1,41 @@
 ---
+IrresponsibleModule:
+  enabled: false
+
 UtilityFunction:
+  exclude:
+  - NilProxy
+  - collect_middleware
+  - env_for
+  - "Rack::Response#cookie_data"
+  - 'SiteHub::CookieRewriting'
+  - format_as_rack_header_name
+
+TooManyStatements:
   enabled: true
   exclude:
-  - 'collect_middleware'
+  - "Builder#add_default_middleware"
+  - "ForwardProxy#initialize"
+  - "SiteHub::ForwardProxyBuilder#initialize"
+
+FeatureEnvy:
+  exclude:
+  - "SiteHub::DownstreamClient#call"
+  - "SiteHub::LocationRewriters"
+  - 'Rack::Response#cookies'
+  - 'format_http_to_rack_headers'
+
+TooManyMethods:
+  exclude:
+  - "SiteHub::Request"
+LongParameterList:
+  exclude:
+  - env_for
+  - "SiteHub::ForwardProxy#initialize"
+
+TooManyInstanceVariables:
+  exclude:
+  - ForwardProxyBuilder
+  - "SiteHub::Request"
+  - "SiteHub::ForwardProxy"
+

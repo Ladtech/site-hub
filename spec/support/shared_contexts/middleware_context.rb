@@ -10,11 +10,11 @@ shared_context :middleware_test do
   end
 
   def collect_middleware(rack_app)
-    middleware = [rack_app]
-    while (rack_app = rack_app.instance_variable_get(:@app))
-      middleware << rack_app
+    [rack_app].tap do |middleware|
+      while (rack_app = rack_app.instance_variable_get(:@app))
+        middleware << rack_app
+      end
     end
-    middleware
   end
 
   def find_middleware(rack_app, clazz)
@@ -31,10 +31,10 @@ shared_context :middleware_test do
   def create_middleware
     Class.new do
       attr_reader :app, :arg
-      def initialize(app, arg = nil, &block)
+      def initialize(app, arg = nil)
         @app = app
         @arg = arg
-        yield if block
+        yield if block_given?
       end
 
       def call(env)

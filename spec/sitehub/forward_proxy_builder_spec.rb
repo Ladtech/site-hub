@@ -6,7 +6,7 @@ class SiteHub
     include_context :middleware_test
 
     subject do
-      described_class.new(mapped_path: '/path')
+      described_class.new(mapped_path: '/path', sitehub_cookie_name: :cookie_name)
     end
 
     it 'supports middleware' do
@@ -70,42 +70,55 @@ class SiteHub
       end
 
       context 'split supplied' do
+        let(:block) do
+          proc do
+            default url: :url
+          end
+        end
+
+        context 'url' do
+          it 'gives a warning to say that the url will not be used' do
+            expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
+            subject.split(percentage: 50, url: :url, &block)
+          end
+        end
+
+        context 'label' do
+          it 'gives a warning to say that the url will not be used' do
+            expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
+            subject.split(percentage: 50, label: :label, &block)
+          end
+        end
+
         context 'block supplied' do
           it 'stores a forward proxy builder' do
-            proc = proc do
-              default url: :url
-            end
+            subject.split(percentage: 50, &block)
 
-            subject.split(percentage: 50, &proc)
-
-            expected_builder = described_class.new(mapped_path: subject.mapped_path, &proc)
+            expected_builder = described_class.new(mapped_path: subject.mapped_path, &block).build
             expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
             expect(subject.endpoints.values).to eq([expected_split])
           end
         end
+      end
 
-        context 'block not supplied' do
-          it 'stores a split for the version' do
-            subject.split url: :url, label: :label, percentage: 50
+      context 'block not supplied' do
+        it 'stores a split for the version' do
+          subject.split url: :url, label: :label, percentage: 50
 
-            expected_proxy = { ForwardProxy.new(url: :url, id: :label, sitehub_cookie_name: :cookie_name) => 50 }
-            expected = Collection::SplitRouteCollection.new(expected_proxy)
+          expected_proxy = ForwardProxy.new(id: :label,
+                                            sitehub_cookie_name: :cookie_name,
+                                            mapped_url: :url,
+                                            mapped_path: subject.mapped_path)
 
-            expect(subject.endpoints).to eq(expected)
-          end
+          expected = Collection::SplitRouteCollection.new(expected_proxy => 50)
 
-          context 'label not supplied' do
-            it 'raises an error' do
-              expect { subject.split(url: :url, percentage: 50) }
-                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
-            end
-          end
+          expect(subject.endpoints).to eq(expected)
+        end
 
-          context 'url not supplied' do
-            it 'raises an error' do
-              expect { subject.split(label: :label, percentage: 50) }
-                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
-            end
+        context 'url not supplied' do
+          it 'raises an error' do
+            expect { subject.split(label: :label, percentage: 50) }
+              .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
           end
         end
       end
@@ -120,30 +133,53 @@ class SiteHub
       end
     end
 
-    describe 'route' do
+    describe '#route' do
       it 'accepts a rule' do
         subject.route url: :url, label: :current, rule: :rule
-        expected_route = ForwardProxy.new(url: :url, id: :current, rule: :rule, sitehub_cookie_name: :cookie_name)
-        expect(subject.endpoints).to eq(expected_route.id => expected_route)
+        expected_route = ForwardProxy.new(sitehub_cookie_name: :cookie_name,
+                                          id: :current,
+                                          rule: :rule,
+                                          mapped_url: :url,
+                                          mapped_path: subject.mapped_path)
+        expect(subject.endpoints).to eq(current: expected_route)
       end
 
       context 'block supplied' do
-        context 'rule not supplied' do
-          it 'raise an error' do
-            expected_message = described_class::INVALID_ROUTE_DEF_MSG
-            expect { subject.route {} }.to raise_exception described_class::InvalidDefinitionException, expected_message
+        let(:block) do
+          proc do
+            route url: :url, label: :label1
+          end
+        end
+
+        describe '#errors and warnings' do
+          context 'rule not supplied' do
+            it 'raise an error' do
+              expected_message = described_class::INVALID_ROUTE_DEF_MSG
+              expect { subject.route {} }
+                .to raise_exception described_class::InvalidDefinitionException, expected_message
+            end
+          end
+
+          context 'url' do
+            it 'gives a warning to say that the url will not be used' do
+              expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
+              subject.route(rule: :rule, url: :url, &block)
+            end
+          end
+
+          context 'label' do
+            it 'gives a warning to say that the url will not be used' do
+              expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
+              subject.route(rule: :rule, label: :label, &block)
+            end
           end
         end
 
         it 'stores a proxy builder' do
           rule = proc { true }
-          proc = proc do
-            route url: :url, label: :label1
-          end
+          subject.route(rule: rule, &block)
 
-          subject.route(rule: rule, &proc)
-
-          expected_builder = described_class.new(mapped_path: subject.mapped_path, &proc)
+          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &block).build
           expect(subject.endpoints.values).to eq([expected_builder])
         end
 
@@ -223,6 +259,7 @@ class SiteHub
         end
       end
     end
+
     describe '#resolve' do
       subject { described_class.new(mapped_path: '/') }
 
@@ -233,7 +270,7 @@ class SiteHub
         end
 
         it 'passes the env to the when resolving the correct route' do
-          expect_any_instance_of(subject.routes.class).to receive(:resolve).with(env: :env).and_call_original
+          expect_any_instance_of(subject.endpoints.class).to receive(:resolve).with(env: :env).and_call_original
           subject.resolve(env: :env)
         end
       end
@@ -249,22 +286,6 @@ class SiteHub
           it 'returns the default' do
             subject.default url: :url
             expect(subject.resolve(env: {})).to eq(subject.default_proxy)
-          end
-        end
-      end
-
-      context 'endpoints' do
-        context 'called with a collection' do
-          it 'sets endpoints to be that collection' do
-            subject.endpoints(:collection)
-            expect(subject.endpoints).to eq(:collection)
-          end
-        end
-
-        context 'already set with a different collection' do
-          it 'raise an error' do
-            subject.endpoints(:collection1)
-            expect { subject.endpoints(:collection2) }.to raise_exception described_class::InvalidDefinitionException
           end
         end
       end
@@ -294,6 +315,22 @@ class SiteHub
               expect(subject.resolve(id: :new, env: {})).to eq(application_version1)
             end
           end
+        end
+      end
+    end
+
+    context '#endpoints' do
+      context 'called with a collection' do
+        it 'sets endpoints to be that collection' do
+          subject.endpoints(:collection)
+          expect(subject.endpoints).to eq(:collection)
+        end
+      end
+
+      context 'already set with a different collection' do
+        it 'raise an error' do
+          subject.endpoints(:collection1)
+          expect { subject.endpoints(:collection2) }.to raise_exception described_class::InvalidDefinitionException
         end
       end
     end

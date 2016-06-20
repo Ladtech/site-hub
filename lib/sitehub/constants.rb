@@ -3,6 +3,7 @@ require 'sitehub/constants/rack_http_header_keys'
 
 class SiteHub
   REQUEST_MAPPING = 'sitehub.request_mapping'.freeze
+  REQUEST = 'sitehub.request'.freeze
   RESPONSE = 'sitehub.response'.freeze
   ASYNC_CALLBACK = 'async.callback'.freeze
   RECORDED_ROUTES_COOKIE = 'sitehub.recorded_route'.freeze
@@ -13,7 +14,7 @@ class SiteHub
   SEMICOLON = ';'.freeze
   SPACE = ' '.freeze
   SEMICOLON_WITH_SPACE = "#{SEMICOLON}#{SPACE}".freeze
-  COMMA_WITH_SPACE = ', '.freeze
+  COMMA = ','.freeze
 
   HYPHEN = '-'.freeze
   QUESTION_MARK = '?'.freeze

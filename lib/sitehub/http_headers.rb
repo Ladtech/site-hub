@@ -1,73 +1,70 @@
-require 'sitehub/constants'
 class SiteHub
-  module HttpHeaders
-    include Constants::HttpHeaderKeys
-    include Constants
-
-    HTTP_OR_SSL_PORT = /:80(?!\d+)|:443/
+  class HttpHeaders < Hash
     HTTP_PREFIX = /^HTTP_/
     RACK_HTTP_HEADER_ID = /#{HTTP_PREFIX.source}[A-Z_]+$/
-    COMMAND_FOLLOWED_BY_SPACES = /,\s+/
 
-    SHOULD_NOT_TRANSFER = [PROXY_CONNECTION].freeze
+    class << self
+      def from_rack_env(env)
+        new(format_keys(remove_rack_specific_headers(env.dup)))
+      end
 
-    HOP_BY_HOP = [CONNECTION_HEADER,
-                  KEEP_ALIVE,
-                  PROXY_AUTHENTICATE,
-                  PROXY_AUTHORIZATION,
-                  TE,
-                  TRAILERS,
-                  TRANSFER_ENCODING,
-                  CONTENT_ENCODING].freeze
+      private
 
-    def split_field(f)
-      f ? f.split(COMMAND_FOLLOWED_BY_SPACES).collect(&:downcase) : []
-    end
-
-    def sanitise_headers(src)
-      connections = split_field(src[CONNECTION_HEADER])
-
-      {}.tap do |sanitised_headers|
-        src.each do |key, value|
-          key = key.downcase.gsub(UNDERSCORE, HYPHEN)
-          next if HOP_BY_HOP.member?(key) || connections.member?(key) || SHOULD_NOT_TRANSFER.member?(key)
-          sanitised_headers[key] = value
+      def remove_rack_specific_headers(env)
+        env.reject do |key, value|
+          !Constants::RackHttpHeaderKeys::HTTP_HEADER_FILTER_EXCEPTIONS.include?(key.to_s.upcase) &&
+            (!RACK_HTTP_HEADER_ID.match(key) || !value)
         end
+      end
 
-        sanitised_headers[LOCATION_HEADER].gsub!(HTTP_OR_SSL_PORT, EMPTY_STRING) if sanitised_headers[LOCATION_HEADER]
+      def format_keys(env)
+        env.each_with_object({}) do |key_value, hash|
+          key, value = *key_value
+          hash[header_name(key)] = value
+        end
+      end
+
+      def header_name(name)
+        name.sub(HTTP_PREFIX, EMPTY_STRING).downcase.gsub(UNDERSCORE, HYPHEN)
       end
     end
 
-    def extract_http_headers(env)
-      headers = remove_excluded_headers(env)
+    include Constants, Constants::HttpHeaderKeys
 
-      headers = headers.to_a.each_with_object(Rack::Utils::HeaderHash.new) do |k_v, hash|
-        k, v = k_v
-        hash[reconstruct_header_name(k)] = v
-        hash
+    EXCLUDED_HEADERS = [CONNECTION_HEADER,
+                        KEEP_ALIVE,
+                        PROXY_CONNECTION,
+                        PROXY_AUTHENTICATE,
+                        PROXY_AUTHORIZATION,
+                        TE,
+                        TRAILERS,
+                        TRANSFER_ENCODING,
+                        CONTENT_ENCODING,
+                        UPGRADE].freeze
+
+    def initialize(env)
+      env.each do |key, value|
+        self[key] = value
       end
 
-      remote_address = env[RackHttpHeaderKeys::REMOTE_ADDRESS_ENV_KEY]
-      headers.merge!(X_FORWARDED_FOR_HEADER => x_forwarded_for_value(headers, remote_address))
+      filter_prohibited_headers
     end
 
-    def x_forwarded_for_value(headers, remote_address)
-      (forwarded_address_list(headers) << remote_address).join(COMMA_WITH_SPACE)
+    private
+
+    def filter_prohibited_headers
+      remove_headers(hop_by_hop_headers.concat(EXCLUDED_HEADERS))
     end
 
-    def forwarded_address_list(headers)
-      headers[X_FORWARDED_FOR_HEADER].to_s.split(COMMAND_FOLLOWED_BY_SPACES)
+    def hop_by_hop_headers
+      field = self[CONNECTION_HEADER] || EMPTY_STRING
+      field.split(COMMA).collect(&:downcase)
     end
 
-    def remove_excluded_headers(env)
-      env.reject do |k, v|
-        !RackHttpHeaderKeys::HTTP_HEADER_FILTER_EXCEPTIONS.include?(k.to_s.upcase) &&
-          (!RACK_HTTP_HEADER_ID.match(k) || v.nil?)
+    def remove_headers(excluded)
+      reject! do |key, _value|
+        excluded.member?(key)
       end
-    end
-
-    def reconstruct_header_name(name)
-      name.sub(HTTP_PREFIX, EMPTY_STRING).gsub(UNDERSCORE, HYPHEN)
     end
   end
 end

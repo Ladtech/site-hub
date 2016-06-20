@@ -1,10 +1,22 @@
 require 'sitehub/collection/split_route_collection'
-require 'sitehub/forward_proxy'
 
 class SiteHub
   describe Collection::SplitRouteCollection do
-    let(:route_1) { ForwardProxy.new(url: :url, id: :id1, sitehub_cookie_name: :cookie_name) }
-    let(:route_2) { ForwardProxy.new(url: :url, id: :id2, sitehub_cookie_name: :cookie_name) }
+    let(:collection_entry) do
+      Class.new do
+        include Rules, Resolver
+
+        attr_reader :id
+
+        def initialize(rule = nil, id:)
+          @id = id
+          @rule = rule
+        end
+      end
+    end
+
+    let(:route_1) { collection_entry.new(id: :id1) }
+    let(:route_2) { collection_entry.new(id: :id2) }
 
     it 'is a collection' do
       expect(subject).to be_a(Collection)
