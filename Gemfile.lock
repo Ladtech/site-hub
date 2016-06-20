@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sitehub (0.4.3)
+    sitehub (0.4.5)
       em-http-request
       em-synchrony
       faraday
