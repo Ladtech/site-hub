@@ -2,6 +2,7 @@ require 'rack/request'
 require 'sitehub/string_utils'
 require 'sitehub/http_headers'
 require 'sitehub/memoize'
+require 'forwardable'
 class SiteHub
   class Request
     include Constants, Constants::HttpHeaderKeys
