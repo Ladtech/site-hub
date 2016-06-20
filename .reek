@@ -6,10 +6,10 @@ UtilityFunction:
   exclude:
   - NilProxy
   - collect_middleware
-  - rack_header_key
   - env_for
   - "Rack::Response#cookie_data"
   - 'SiteHub::CookieRewriting'
+  - format_as_rack_header_name
 
 TooManyStatements:
   enabled: true
@@ -23,7 +23,7 @@ FeatureEnvy:
   - "SiteHub::DownstreamClient#call"
   - "SiteHub::LocationRewriters"
   - 'Rack::Response#cookies'
-  - 'to_rack_headers'
+  - 'format_http_to_rack_headers'
 
 TooManyMethods:
   exclude:

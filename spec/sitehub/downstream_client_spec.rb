@@ -2,7 +2,7 @@ require 'sitehub/downstream_client'
 
 class SiteHub
   describe DownstreamClient do
-    include_context :rack_http_request
+    include_context :rack_request
     include_context :http_proxy_rules
 
     let(:current_version_url) { 'http://127.0.0.1:10111' }
@@ -52,10 +52,10 @@ class SiteHub
         end
 
         it_behaves_like 'prohibited_header_filter' do
-          include_context :rack_http_request
+          include_context :rack_request
 
           subject do
-            headers = to_rack_headers(prohibited_headers.merge(permitted_header => 'value'))
+            headers = format_http_to_rack_headers(prohibited_headers.merge(permitted_header => 'value'))
             headers.each do |key, value|
               http_headers[key] = value
             end

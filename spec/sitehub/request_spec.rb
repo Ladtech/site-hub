@@ -4,20 +4,13 @@ class SiteHub
     HttpHeaderKeys = Constants::HttpHeaderKeys
     RackHttpHeaderKeys = Constants::RackHttpHeaderKeys
 
-    include_context :rack_http_request
+    include_context :rack_request
     include_context :http_proxy_rules
 
     let(:rack_env) { env_for(method: :get) }
 
     subject(:request) do
       described_class.new(env: rack_env)
-    end
-
-    it_behaves_like 'prohibited_header_filter' do
-      let(:rack_env) { to_rack_headers(prohibited_headers.merge(permitted_header => 'value')) }
-      subject do
-        request.headers
-      end
     end
 
     describe '#initialize' do
@@ -55,6 +48,13 @@ class SiteHub
     end
 
     describe '#headers' do
+      it_behaves_like 'prohibited_header_filter' do
+        let(:rack_env) { format_http_to_rack_headers(prohibited_headers.merge(permitted_header => 'value')) }
+        subject do
+          request.headers
+        end
+      end
+
       it_behaves_like 'a memoized helper'
 
       let(:x_forwarded_host) { HttpHeaderKeys::X_FORWARDED_HOST_HEADER }
@@ -67,7 +67,7 @@ class SiteHub
         end
 
         context 'header already present' do
-          let(:rack_env) { env_for(env: { rack_header_key(x_forwarded_host) => 'first.host,second.host' }) }
+          let(:rack_env) { env_for(env: { format_as_rack_header_name(x_forwarded_host) => 'first.host,second.host' }) }
 
           it 'appends the host to the existing value' do
             expect(subject.headers[x_forwarded_host]).to eq('first.host,second.host,example.org')
@@ -86,7 +86,7 @@ class SiteHub
         end
 
         context 'already present' do
-          let(:rack_env) { env_for(env: { rack_header_key(x_forwarded_for) => 'first_host_ip' }) }
+          let(:rack_env) { env_for(env: { format_as_rack_header_name(x_forwarded_for) => 'first_host_ip' }) }
 
           it 'appends the value of the remote-addr header to it' do
             expect(subject.headers[x_forwarded_for]).to eq("first_host_ip,#{rack_env['REMOTE_ADDR']}")
@@ -135,7 +135,7 @@ class SiteHub
 
     describe '#transation_id' do
       let(:transaction_id) { HttpHeaderKeys::TRANSACTION_ID }
-      let(:rack_env) { env_for(env: { rack_header_key(transaction_id) => :transaction_id }) }
+      let(:rack_env) { env_for(env: { format_as_rack_header_name(transaction_id) => :transaction_id }) }
 
       it 'returns the value of transaction_id header' do
         expect(subject.transaction_id).to eq(:transaction_id)
@@ -155,7 +155,7 @@ class SiteHub
       context 'x-forwarded-for header set' do
         let(:x_forwarded_for) { HttpHeaderKeys::X_FORWARDED_FOR_HEADER }
         let(:address) { 'first_host_ip' }
-        let(:rack_env) { env_for(env: { rack_header_key(x_forwarded_for) => address }) }
+        let(:rack_env) { env_for(env: { format_as_rack_header_name(x_forwarded_for) => address }) }
 
         it 'appends the value of the remote-addr header to it' do
           expect(subject.source_address).to eq(address)

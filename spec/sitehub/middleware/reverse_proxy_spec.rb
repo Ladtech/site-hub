@@ -1,7 +1,7 @@
 class SiteHub
   module Middleware
     describe ReverseProxy do
-      include_context :rack_http_request
+      include_context :rack_request
       include_context :middleware_test
       HttpHeaderKeys = Constants::HttpHeaderKeys
 

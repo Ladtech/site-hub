@@ -1,12 +1,12 @@
-shared_context :rack_http_request do
-  def rack_header_key(key)
+shared_context :rack_request do
+  def format_as_rack_header_name(key)
     rack_key = key.upcase.tr('-', '_')
-    %w(CONTENT_TYPE REMOTE_ADDR).include?(key) ? rack_key : "HTTP_#{rack_key}"
+    %w(CONTENT_TYPE CONTENT_LENGTH REMOTE_ADDR).include?(key) ? rack_key : "HTTP_#{rack_key}"
   end
 
-  def to_rack_headers(hash)
+  def format_http_to_rack_headers(hash)
     hash.each_with_object({}) do |key_value, converted_headers|
-      env_key = rack_header_key(key_value[0])
+      env_key = format_as_rack_header_name(key_value[0])
       converted_headers[env_key] = key_value[1]
     end
   end

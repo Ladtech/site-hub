@@ -4,7 +4,7 @@ class SiteHub
     let(:mapped_path) { '/mapped_path' }
     let(:mapped_url) { 'http://www.somewhere.com/' }
 
-    include_context :rack_http_request
+    include_context :rack_request
 
     subject(:app) do
       described_class.new(sitehub_cookie_name: :cookie_name,

@@ -4,14 +4,14 @@ class SiteHub
   module Middleware
     module Logging
       describe RequestLog do
-        include_context :rack_http_request
+        include_context :rack_request
 
-        RackHttpHeaderKeys = Constants::RackHttpHeaderKeys
+        let(:rack_http_header_keys) { Constants::RackHttpHeaderKeys }
 
         let(:response_headers) do
-          env = { RackHttpHeaderKeys::QUERY_STRING => '',
-                  RackHttpHeaderKeys::TRANSACTION_ID => :transaction_id,
-                  RackHttpHeaderKeys::HTTP_VERSION => '1.1' }
+          env = { rack_http_header_keys::QUERY_STRING => '',
+                  rack_http_header_keys::TRANSACTION_ID => :transaction_id,
+                  rack_http_header_keys::HTTP_VERSION => '1.1' }
           HttpHeaders.from_rack_env(env)
         end
 
@@ -39,7 +39,7 @@ class SiteHub
 
         describe '#to_s' do
           context 'query string' do
-            let(:query_string) { RackHttpHeaderKeys::QUERY_STRING }
+            let(:query_string) { rack_http_header_keys::QUERY_STRING }
             context 'present' do
               let(:query_string) { '?query' }
               it 'logs it' do
@@ -56,7 +56,7 @@ class SiteHub
           end
 
           it 'logs the transaction id' do
-            request_headers[RackHttpHeaderKeys::TRANSACTION_ID] = :transaction_id
+            request_headers[rack_http_header_keys::TRANSACTION_ID] = :transaction_id
             expect(subject.to_s).to include('transaction_id:transaction_id')
           end
 

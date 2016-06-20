@@ -6,9 +6,7 @@ class SiteHub
   module Middleware
     module Logging
       describe AccessLogger do
-        RackHttpHeaderKeys = Constants::RackHttpHeaderKeys
-        HttpHeaderKeys = Constants::HttpHeaderKeys
-        include_context :rack_http_request
+        include_context :rack_request
 
         let(:logger) { StringIO.new }
 
