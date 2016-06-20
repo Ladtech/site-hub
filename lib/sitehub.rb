@@ -1,4 +1,5 @@
 require 'sitehub/constants'
+require 'sitehub/middleware'
 require 'sitehub/builder'
 class SiteHub
   class << self
