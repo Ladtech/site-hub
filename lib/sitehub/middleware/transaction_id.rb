@@ -10,7 +10,8 @@ class SiteHub
       end
 
       def call(env)
-        env[RackHttpHeaderKeys::TRANSACTION_ID] ||= UUID.generate(:compact)
+        request = env[REQUEST]
+        request.headers[HttpHeaderKeys::TRANSACTION_ID] ||= UUID.generate(:compact)
         @app.call env
       end
     end
