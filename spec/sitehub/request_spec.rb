@@ -22,9 +22,11 @@ class SiteHub
 
     describe '#map' do
       it 'sets mapped_url and mapped_path' do
-        subject.map(:path, :url)
-        expect(subject.mapped_path).to be(:path)
-        expect(subject.mapped_url).to be(:url)
+        path = 'path'
+        url = 'url'
+        subject.map(path, url)
+        expect(subject.mapped_path).to be(path)
+        expect(subject.mapped_url).to be(url)
       end
     end
 
@@ -58,6 +60,21 @@ class SiteHub
       it_behaves_like 'a memoized helper'
 
       let(:x_forwarded_host) { HttpHeaderKeys::X_FORWARDED_HOST_HEADER }
+
+      context 'host header' do
+        context 'request mapped' do
+          it 'is set to the host identified in mapped url' do
+            expected_uri = URI('http://host:9292/somewhere')
+            subject.map('/mapped_path', expected_uri.to_s)
+            expect(subject.headers[HttpHeaderKeys::HOST_HEADER]).to eq("#{expected_uri.host}:#{expected_uri.port}")
+          end
+        end
+        context 'request not mapped' do
+          it 'is not set' do
+            expect(subject.headers[HttpHeaderKeys::HOST_HEADER]).to be_nil
+          end
+        end
+      end
 
       context 'x-forwarded-host header' do
         context 'header not present' do
@@ -121,6 +138,7 @@ class SiteHub
 
       context 'request has not been mapped' do
         it 'returns false' do
+          subject.map(nil, nil)
           expect(subject.mapped?).to eq(false)
         end
       end

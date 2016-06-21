@@ -44,7 +44,7 @@ class SiteHub
 
     def initialize(env)
       env.each do |key, value|
-        self[key] = value
+        self[key.to_s.downcase] = value
       end
 
       filter_prohibited_headers

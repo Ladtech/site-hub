@@ -37,16 +37,19 @@ class SiteHub
 
     def headers
       @env.tap do |headers|
-        # x-forwarded-for
         headers[X_FORWARDED_FOR_HEADER] = x_forwarded_for
 
-        # x-forwarded-host
         headers[X_FORWARDED_HOST_HEADER] = x_forwarded_host
+
+        headers[HOST_HEADER] = if mapped?
+                                 mapped_uri = URI(mapped_url)
+                                 "#{mapped_uri.host}:#{mapped_uri.port}"
+                               end
       end
     end
 
     def mapping
-      RequestMapping.new(source_url: rack_request.url, mapped_url: mapped_url, mapped_path: mapped_path)
+      RequestMapping.new(source_url: rack_request.url, mapped_url: mapped_url.to_s, mapped_path: mapped_path)
     end
 
     def mapped?
