@@ -39,5 +39,12 @@ class SiteHub
         described_class.new(prohibited_headers.merge(permitted_header => 'value'))
       end
     end
+
+    describe '#initialize' do
+      it 'downcases all keys' do
+        expected_http_format = { 'upper-case' => :value }
+        expect(described_class.new('UPPER-CASE' => :value)).to eq(expected_http_format)
+      end
+    end
   end
 end
