@@ -56,8 +56,11 @@ class SiteHub
   class ConfigLoader
 
     attr_reader :config_server, :app
-    def initialize app, config_server_url
+    def initialize _app, config_server_url
       @config_server = ConfigServer.new(config_server_url)
+    end
+
+    def call env
       config = config_server.get
       @app = Core.new do
         config[:proxies].each do |proxy|
@@ -74,9 +77,7 @@ class SiteHub
           end
         end
       end.build
-    end
 
-    def call env
       @app.call env
     end
   end
