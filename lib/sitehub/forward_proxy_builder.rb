@@ -18,6 +18,7 @@ class SiteHub
     ROUTES_WITH_SPLITS_MSG = 'you cant register routes and splits at the same level'.freeze
     INVALID_ROUTE_DEF_MSG = 'rule must be specified when supplying a block'.freeze
     IGNORING_URL_LABEL_MSG = 'Block supplied, ignoring URL and Label parameters'.freeze
+    URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
     extend GetterSetterMethods
     include Rules, Resolver, Equality, Middleware
@@ -98,6 +99,7 @@ class SiteHub
     end
 
     def forward_proxy(label:, url:, rule: nil)
+      raise InvalidDefinitionException, URL_REQUIRED_MSG unless url
       label ||= UUID.generate(:compact)
       ForwardProxy.new(sitehub_cookie_path: sitehub_cookie_path,
                        sitehub_cookie_name: sitehub_cookie_name,

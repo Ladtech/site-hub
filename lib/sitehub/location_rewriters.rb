@@ -4,6 +4,8 @@ class SiteHub
   class LocationRewriters < Array
     DEFAULT = NilLocationRewriter.new
 
+    include Equality
+
     def initialize(map = {})
       enriched = map.collect do |pattern, path_template|
         matcher = pattern.is_a?(Regexp) ? pattern : /#{pattern}/

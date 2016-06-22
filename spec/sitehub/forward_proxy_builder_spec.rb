@@ -340,6 +340,14 @@ class SiteHub
         described_class.new(mapped_path: '/path', sitehub_cookie_name: :expected_cookie_name)
       end
 
+      context 'url not supplied' do
+        it 'raises an error' do
+          expected_exception = described_class::InvalidDefinitionException
+          expected_message = described_class::URL_REQUIRED_MSG
+          expect{subject.forward_proxy(label: nil, url: nil)}.to raise_error(expected_exception, expected_message)
+        end
+      end
+
       it 'sets the sitehub_cookie_path' do
         subject.sitehub_cookie_path :cookie_path
         proxy = subject.forward_proxy(label: :label, url: :url)

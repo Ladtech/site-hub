@@ -6,7 +6,7 @@ require 'sitehub/constants'
 class SiteHub
   module Middleware
     class ReverseProxy
-      include CookieRewriting, Constants::HttpHeaderKeys
+      include CookieRewriting, Constants::HttpHeaderKeys, Equality
 
       attr_reader :path_directives
 

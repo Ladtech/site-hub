@@ -124,7 +124,31 @@ class SiteHub
         end
 
         it 'adds a ErrorHandler' do
-          expect(subject.build).to be_using(Middleware::ErrorHandling)
+
+        end
+
+        context 'config server specified' do
+
+          before do
+            subject.config_server :server_url
+          end
+
+          it 'adds a ConfigLoader' do
+            expect(subject.build).to be_using(Middleware::ConfigLoader)
+          end
+
+          it 'adds it just before the reverse proxy' do
+            middleware_stack = collect_middleware(subject.build).collect(&:class)
+
+            expected_middleware = [Rack::FiberPool,
+                                   Middleware::Logging::ErrorLogger,
+                                   Middleware::Logging::AccessLogger,
+                                   Middleware::ErrorHandling,
+                                   Middleware::TransactionId,
+                                   Middleware::ConfigLoader]
+
+            expect(middleware_stack).to eq(expected_middleware)
+          end
         end
 
         it 'adds them in the right order' do

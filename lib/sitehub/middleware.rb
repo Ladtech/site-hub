@@ -4,6 +4,7 @@ require 'middleware/transaction_id'
 require 'middleware/error_handling'
 require 'middleware/forward_proxies'
 require 'middleware/reverse_proxy'
+require 'middleware/config_loader'
 require 'rack/ssl-enforcer'
 require 'rack/fiber_pool'
 

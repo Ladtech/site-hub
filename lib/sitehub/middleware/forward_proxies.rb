@@ -10,6 +10,8 @@ class SiteHub
     class ForwardProxies
       NIL_PROXY = NilProxy.new
 
+      include Equality
+
       def call(env)
         source_request = Rack::Request.new(env)
 

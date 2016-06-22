@@ -2,6 +2,70 @@ class SiteHub
   describe Core do
     include_context :middleware_test
 
+    let(:config) {
+      {
+          proxies: [
+              {
+                  path: '/route_1',
+                  sitehub_cookie_name: 'sitehub.recorded_route',
+
+                  splits: {},
+                  routes: [
+                      {
+                          label: :label_1,
+                          url: 'http://lvl-up.uk/'
+                      },
+                  ]
+              }
+          ]
+      }
+    }
+
+
+    describe '::from_hash' do
+
+      context 'invalid config' do
+        context 'proxies missing' do
+          it 'throws and error' do
+            expect { described_class.from_hash({}) }.to raise_error
+          end
+        end
+      end
+
+      context 'proxies' do
+        context 'splits' do
+          context 'sitehub_cookie_name' do
+            pending 'sets it'
+          end
+
+          context 'sitehub_cookie_path' do
+            pending 'sets it'
+          end
+
+          pending 'returns core with splits'
+        end
+
+        context 'routes' do
+          context 'sitehub_cookie_name' do
+            pending 'sets it'
+          end
+
+          context 'sitehub_cookie_path' do
+            pending 'sets it'
+          end
+          pending 'returns core with routes'
+        end
+
+        context 'default' do
+          it 'sets the default'
+        end
+      end
+
+      context 'reverse_proxies' do
+        pending 'sets them'
+      end
+    end
+
     subject do
       described_class.new
     end
