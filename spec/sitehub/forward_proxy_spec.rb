@@ -26,7 +26,8 @@ class SiteHub
     end
 
     describe '#call' do
-      let(:request) { Request.new(env: env_for(path: mapped_path)) }
+      let(:rack_headers) { {} }
+      let(:request) { Request.new(env: env_for(path: mapped_path, env: rack_headers)) }
 
       before do
         get(mapped_path, {}, REQUEST => request)
@@ -45,6 +46,14 @@ class SiteHub
       context 'recorded routes cookie' do
         it 'drops a cookie using the name of the sitehub_cookie_name containing the id' do
           expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :id.to_s, path: mapped_path)
+        end
+
+        context 'cookie already set' do
+          let(:rack_headers) { { 'HTTP_COOKIE' => 'cookie_name=existing_value' } }
+
+          it 'leaves it alone' do
+            expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :existing_value.to_s, path: mapped_path)
+          end
         end
 
         context 'recorded_routes_cookie_path not set' do

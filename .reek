@@ -16,6 +16,7 @@ TooManyStatements:
   exclude:
   - "Builder#add_default_middleware"
   - "ForwardProxy#initialize"
+  - "ForwardProxy#call"
   - "SiteHub::ForwardProxyBuilder#initialize"
 
 FeatureEnvy:

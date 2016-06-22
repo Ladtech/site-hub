@@ -19,9 +19,14 @@ class SiteHub
       request = env[REQUEST]
       request.map(mapped_path, mapped_url)
 
-      downstream_client.call(request).tap do |response|
-        response.set_cookie(sitehub_cookie_name, path: (sitehub_cookie_path || request.path), value: id)
-      end
+      response = downstream_client.call(request)
+      value = request.cookies[sitehub_cookie_name.to_s] || id
+      response.set_cookie(sitehub_cookie_name, path: resolve_sitehub_cookie_path(request), value: value)
+      response
+    end
+
+    def resolve_sitehub_cookie_path(request)
+      sitehub_cookie_path || request.path
     end
 
     def ==(other)
