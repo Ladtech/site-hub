@@ -13,7 +13,8 @@ module Rack
     end
 
     def cookie_key_value_array
-      header['Set-Cookie'].lines.collect { |line| line.scan(%r{([\.\w]+)=([\.\w/]+)}) }
+      value = header['Set-Cookie'] || ''
+      value.lines.collect { |line| line.scan(%r{([\.\w]+)=([\.\w/]+)}) }
     end
   end
 end

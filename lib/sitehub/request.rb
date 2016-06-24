@@ -13,6 +13,7 @@ class SiteHub
     def_delegator :@rack_request, :url
     def_delegator :@rack_request, :path
     def_delegator :@rack_request, :query_string
+    def_delegator :@rack_request, :cookies
 
     attr_reader :env, :rack_request, :mapped_path, :mapped_url, :time
 
