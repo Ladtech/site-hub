@@ -5,6 +5,38 @@ class SiteHub
   describe ForwardProxyBuilder do
     include_context :middleware_test
 
+    describe '::from_hash' do
+      context do
+        context 'splits' do
+          context 'sitehub_cookie_name' do
+            pending 'sets it'
+          end
+
+          context 'sitehub_cookie_path' do
+            pending 'sets it'
+          end
+
+          pending 'returns core with splits'
+        end
+
+        context 'routes' do
+          context 'sitehub_cookie_name' do
+            pending 'sets it'
+          end
+
+          context 'sitehub_cookie_path' do
+            pending 'sets it'
+          end
+          pending 'returns core with routes'
+        end
+
+        context 'default' do
+          it 'sets the default'
+        end
+      end
+
+    end
+
     subject do
       described_class.new(mapped_path: '/path', sitehub_cookie_name: :cookie_name)
     end

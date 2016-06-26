@@ -20,6 +20,24 @@ class SiteHub
     IGNORING_URL_LABEL_MSG = 'Block supplied, ignoring URL and Label parameters'.freeze
     URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
+    class << self
+      def from_hash hash, sitehub_cookie_name
+        new(sitehub_cookie_name: sitehub_cookie_name, mapped_path: hash[:path]) do
+          extend CollectionMethods
+
+          collection(hash, :splits).each do |split|
+            split(percentage: split[:percentage], url: split[:url], label: split[:label])
+          end
+
+          collection(hash, :routes).each do |route|
+            route(url: route[:url], label: route[:label])
+          end
+
+          default url: hash[:default] if hash[:default]
+        end
+      end
+    end
+
     extend GetterSetterMethods
     include Rules, Resolver, Equality, Middleware
 

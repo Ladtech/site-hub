@@ -34,7 +34,7 @@ class SiteHub
           config_server.get
         end
 
-        @app = Core.from_hash(config)
+        @app = Core.from_hash(config).build
       end
     end
 

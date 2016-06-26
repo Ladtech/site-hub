@@ -6,6 +6,9 @@ class SiteHub
   class InvalidProxyDefinitionException < Exception
   end
 
+  class ConfigError < Exception
+  end
+
 
   module CollectionMethods
     def collection(hash, item)
@@ -14,39 +17,33 @@ class SiteHub
 
     def collection!(hash, item)
       return hash[item] if hash[item]
-      raise "missing: #{item}"
+      raise ConfigError, "missing: #{item}"
     end
   end
 
   class Core
     class << self
+      #TODO default action for missing key, throw exception?
       def from_hash config
         new do
           extend CollectionMethods
+          sitehub_cookie_name config[:sitehub_cookie_name] if config[:sitehub_cookie_name]
+
+
           collection!(config, :proxies).each do |proxy|
-            proxy(proxy[:path]) do
-              extend CollectionMethods
-
-              collection(proxy, :splits).each do |split|
-                split(percentage: split[:percentage], url: split[:url], label: split[:label])
-              end
-
-              collection(proxy, :routes).each do |route|
-                route(url: route[:url], label: route[:label])
-              end
-
-              default url: proxy[:default] if proxy[:default]
-            end
+            forward_proxies << ForwardProxyBuilder.from_hash(proxy, sitehub_cookie_name)
           end
 
           collection(config, :reverse_proxies).each do |proxy|
             reverse_proxy proxy[:mapped_url] => proxy[:path]
           end
-        end.build
+        end
       end
     end
 
+    include Equality
     extend GetterSetterMethods
+
 
     getter_setter :sitehub_cookie_name, RECORDED_ROUTES_COOKIE
     attr_reader :forward_proxies, :reverse_proxies

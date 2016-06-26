@@ -2,67 +2,74 @@ class SiteHub
   describe Core do
     include_context :middleware_test
 
-    let(:config) {
+    let(:config) do
       {
           proxies: [
               {
                   path: '/route_1',
-                  sitehub_cookie_name: 'sitehub.recorded_route',
-
-                  splits: {},
                   routes: [
                       {
                           label: :label_1,
                           url: 'http://lvl-up.uk/'
-                      },
+                      }
                   ]
               }
           ]
       }
-    }
-
+    end
 
     describe '::from_hash' do
 
       context 'invalid config' do
         context 'proxies missing' do
           it 'throws and error' do
-            expect { described_class.from_hash({}) }.to raise_error
+            expect { described_class.from_hash({}) }.to raise_error(ConfigError)
           end
         end
       end
 
-      context 'proxies' do
-        context 'splits' do
-          context 'sitehub_cookie_name' do
-            pending 'sets it'
-          end
 
-          context 'sitehub_cookie_path' do
-            pending 'sets it'
+      subject(:expected) do
+        described_class.new do
+          proxy '/route_1' do
+            route label: :label_1, url: 'http://lvl-up.uk/'
           end
+        end
+      end
 
-          pending 'returns core with splits'
+      context 'proxies defined' do
+        it 'creates them' do
+          expect(described_class.from_hash(config)).to eq(expected)
+        end
+      end
+
+      context 'sitehub_cookie_name' do
+        subject(:expected) do
+          described_class.new do
+            sitehub_cookie_name 'custom_name'
+            proxy('/route_1') { route label: :label_1, url: 'http://lvl-up.uk/' }
+          end
         end
 
-        context 'routes' do
-          context 'sitehub_cookie_name' do
-            pending 'sets it'
-          end
+        it 'sets it' do
+          core = described_class.from_hash(config.merge(sitehub_cookie_name: 'custom_name'))
 
-          context 'sitehub_cookie_path' do
-            pending 'sets it'
-          end
-          pending 'returns core with routes'
-        end
-
-        context 'default' do
-          it 'sets the default'
+          expect(core.sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
+          expect(core.forward_proxies.forward_proxies['/route_1'].sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
         end
       end
 
       context 'reverse_proxies' do
-        pending 'sets them'
+        let(:expected) do
+          described_class.new do
+            reverse_proxy url: :path
+          end
+        end
+
+        it 'sets them' do
+          config[:reverse_proxies] = [{downstream_url: :url, path: :path}]
+          expect(expected.reverse_proxies).to eq({url: :path})
+        end
       end
     end
 

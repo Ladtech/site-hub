@@ -57,7 +57,7 @@ class SiteHub
             expect(env).to eq(:env)
             response
           end
-          expect(Core).to receive(:from_hash).and_return(app)
+          expect(Core).to receive(:from_hash).and_return(double(build: app))
 
 
           expect(subject.call(:env)).to eq(response)
