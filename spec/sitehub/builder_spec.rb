@@ -106,10 +106,6 @@ class SiteHub
     end
 
     describe '#build' do
-      it 'initializes the forward_proxies' do
-        expect(subject.forward_proxies).to receive(:init).and_call_original
-        subject.build
-      end
 
       context 'default middleware' do
         it 'adds TransactionId middleware to the sitehub' do

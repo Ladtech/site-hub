@@ -31,7 +31,7 @@ class SiteHub
 
 
           collection!(config, :proxies).each do |proxy|
-            forward_proxies << ForwardProxyBuilder.from_hash(proxy, sitehub_cookie_name)
+            forward_proxies.add_proxy mapped_path: proxy[:mapped_path], proxy: ForwardProxyBuilder.from_hash(proxy, sitehub_cookie_name)
           end
 
           collection(config, :reverse_proxies).each do |proxy|
@@ -49,9 +49,12 @@ class SiteHub
     attr_reader :forward_proxies, :reverse_proxies
 
     def initialize(&block)
-      @forward_proxies = Middleware::ForwardProxies.new
       @reverse_proxies = {}
       instance_eval(&block) if block
+    end
+
+    def forward_proxies
+      @forward_proxies ||= Middleware::ForwardProxies.new(sitehub_cookie_name)
     end
 
     def build
@@ -59,17 +62,11 @@ class SiteHub
     end
 
     def proxy(opts = {}, &block)
-      if opts.is_a?(Hash)
-        mapped_path, url = *opts.to_a.flatten
-      else
-        mapped_path = opts
-        url = nil
-      end
+      mapped_path, url = *(opts.respond_to?(:to_a) ? opts.to_a : [opts]).flatten
 
-      forward_proxies << ForwardProxyBuilder.new(sitehub_cookie_name: sitehub_cookie_name,
-                                                 url: url,
-                                                 mapped_path: mapped_path,
-                                                 &block)
+      forward_proxies.add_proxy(url: url,
+                                mapped_path: mapped_path,
+                                &block)
     end
 
     def reverse_proxy(hash)

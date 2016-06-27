@@ -4,11 +4,11 @@ require 'active_support/cache'
 
 class SiteHub
   class Builder
-    attr_reader :core
 
     include Middleware
     extend GetterSetterMethods
 
+    attr_reader :core
     getter_setters :access_logger, :error_logger, :config_server
 
     def force_ssl(except: [])
@@ -19,10 +19,6 @@ class SiteHub
     def initialize(&block)
       @core = Core.new
       instance_eval(&block) if block
-    end
-
-    def forward_proxies
-      @forward_proxies ||= ForwardProxies.new(sitehub_cookie_name)
     end
 
     def build

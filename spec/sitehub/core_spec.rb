@@ -55,7 +55,7 @@ class SiteHub
           core = described_class.from_hash(config.merge(sitehub_cookie_name: 'custom_name'))
 
           expect(core.sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
-          expect(core.forward_proxies.forward_proxies['/route_1'].sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
+          expect(core.forward_proxies['/route_1'].sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
         end
       end
 
@@ -111,7 +111,7 @@ class SiteHub
                                                    sitehub_cookie_name: RECORDED_ROUTES_COOKIE).tap do |route|
             route.default(url: :endpoint)
           end
-          expect(subject.forward_proxies.forward_proxies['/app1']).to eq(expected_proxy)
+          expect(subject.forward_proxies['/app1']).to eq(expected_proxy)
         end
       end
 
@@ -130,7 +130,7 @@ class SiteHub
             route.split url: :endpoint, percentage: 100, label: :label
           end
 
-          expect(subject.forward_proxies.forward_proxies['/app'].endpoints).to eq(expected_route.endpoints)
+          expect(subject.forward_proxies['/app'].endpoints).to eq(expected_route.endpoints)
         end
       end
     end

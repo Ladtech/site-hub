@@ -4,7 +4,6 @@ require 'rack/request'
 require 'rack/response'
 require 'rack/utils'
 require 'em-http'
-require 'forwardable'
 
 class SiteHub
   module Middleware
@@ -33,11 +32,18 @@ class SiteHub
         self
       end
 
-      def add_proxy(url: nil, mapped_path:, &block)
+      def add_proxy(url: nil, mapped_path: nil, proxy: nil, &block)
+        self[proxy.mapped_path] = proxy and return if proxy
+
         self[mapped_path] = ForwardProxyBuilder.new(sitehub_cookie_name: sitehub_cookie_name,
                                                     url: url,
                                                     mapped_path: mapped_path,
                                                     &block)
+      end
+
+      def [] key
+        result = super
+        return result
       end
 
       def mapped_proxy(path:, request:)
