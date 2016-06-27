@@ -4,11 +4,19 @@ require 'rack/request'
 require 'rack/response'
 require 'rack/utils'
 require 'em-http'
+require 'forwardable'
 
 class SiteHub
   module Middleware
-    class ForwardProxies
+    class ForwardProxies < Hash
       NIL_PROXY = NilProxy.new
+
+      attr_reader :sitehub_cookie_name
+
+      def initialize(sitehub_cookie_name)
+        @sitehub_cookie_name = sitehub_cookie_name
+        self.default = NIL_PROXY
+      end
 
       def call(env)
         source_request = Rack::Request.new(env)
@@ -19,33 +27,28 @@ class SiteHub
       end
 
       def init
-        forward_proxies.values.each(&:build)
+        values.each(&:build)
         self
       end
 
-      def <<(route)
-        forward_proxies[route.mapped_path] = route
+      def add_proxy(url: nil, mapped_path:, &block)
+        self[mapped_path] = ForwardProxyBuilder.new(sitehub_cookie_name: sitehub_cookie_name,
+                                                    url: url,
+                                                    mapped_path: mapped_path,
+                                                    &block)
       end
 
       def mapped_proxy(path:, request:)
-        forward_proxies[mapping(path)].resolve(id: request.cookies[RECORDED_ROUTES_COOKIE], env: request.env)
+        self[mapping(path)].resolve(id: request.cookies[sitehub_cookie_name], env: request.env)
       end
 
       def mapping(path)
-        forward_proxies.keys.find do |key|
+        keys.find do |key|
           case key
           when Regexp
             key.match(path)
           else
             path == key
-          end
-        end
-      end
-
-      def forward_proxies
-        @forward_proxies ||= begin
-          {}.tap do |hash|
-            hash.default = NIL_PROXY
           end
         end
       end

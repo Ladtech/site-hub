@@ -23,6 +23,7 @@ FeatureEnvy:
   exclude:
   - "SiteHub::DownstreamClient#call"
   - "SiteHub::LocationRewriters"
+  - "SiteHub::Builder#proxy"
   - 'Rack::Response#cookies'
   - 'format_http_to_rack_headers'
 
