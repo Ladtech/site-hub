@@ -5,15 +5,17 @@ class SiteHub
     describe ForwardProxies do
       let(:base_url) { 'http://google.com' }
       let(:application_root) { '/application_url' }
+
       let(:forward_proxy_builder) do
-        ForwardProxyBuilder.new(mapped_path: application_root).tap do |builder|
-          builder.split url: base_url, label: :current, percentage: 100
-        end
+        subject.values.first
       end
 
       subject do
-        described_class.new.tap do |route_set|
-          route_set << forward_proxy_builder
+        base_url = base_url()
+        described_class.new(:cookie_name).tap do |route_set|
+          route_set.add_proxy(mapped_path: application_root) do |builder|
+            builder.split url: base_url, label: :current, percentage: 100
+          end
         end
       end
 
@@ -23,24 +25,28 @@ class SiteHub
 
       describe '#init' do
         it 'builds all of the forward_proxies' do
-          expect(subject.forward_proxies[application_root]).to receive(:build).and_call_original
+          expect(subject[application_root]).to receive(:build).and_call_original
           subject.init
         end
       end
 
       describe '#mapped_route' do
         let(:request) { Rack::Request.new({}) }
-        let(:more_specific_proxy_builder) do
-          ForwardProxyBuilder.new(url: "#{base_url}/sub_url", mapped_path: "#{application_root}/sub_url")
+
+        it 'uses the id in the sitehub_cookie to resolve the correct route' do
+          request.cookies[:cookie_name] = :preset_id
+          expect(forward_proxy_builder).to receive(:resolve).with(id: :preset_id, env: request.env).and_call_original
+          subject.mapped_proxy(path: application_root, request: request)
         end
 
         context 'regex match on path' do
           let(:fuzzy_matcher) do
-            ForwardProxyBuilder.new(url: "#{base_url}/$1/view", mapped_path: %r{#{application_root}/(.*)/view})
+            subject.values.first
           end
+
           subject do
-            described_class.new.tap do |route_set|
-              route_set << fuzzy_matcher
+            described_class.new(:cookie_name).tap do |route_set|
+              route_set.add_proxy url: "#{base_url}/$1/view", mapped_path: %r{#{application_root}/(.*)/view}
             end
           end
 
@@ -60,10 +66,14 @@ class SiteHub
         end
 
         context 'when more specific route is configured first' do
+          let(:more_specific_proxy_builder) do
+            subject.values.first
+          end
+
           subject do
-            described_class.new.tap do |route_set|
-              route_set << more_specific_proxy_builder
-              route_set << forward_proxy_builder
+            described_class.new(:cookie_name).tap do |route_set|
+              route_set.add_proxy(url: "#{base_url}/sub_url", mapped_path: "#{application_root}/sub_url")
+              route_set.add_proxy(mapped_path: application_root, url: base_url)
             end
           end
 

@@ -24,12 +24,8 @@ class SiteHub
       downstream_client.call(request).tap do |response|
         response.set_cookie(sitehub_cookie_name,
                             path: resolve_sitehub_cookie_path(request),
-                            value: resolve_sitehub_cookie_value(request))
+                            value: id)
       end
-    end
-
-    def resolve_sitehub_cookie_value(request)
-      request.cookies[sitehub_cookie_name.to_s] || id
     end
 
     def resolve_sitehub_cookie_path(request)

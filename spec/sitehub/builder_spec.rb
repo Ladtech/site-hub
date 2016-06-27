@@ -37,10 +37,18 @@ class SiteHub
         expect(subject.sitehub_cookie_name).to eq(RECORDED_ROUTES_COOKIE)
       end
 
-      it 'is passed to forward_proxy_builders' do
-        subject.sitehub_cookie_name :expected_cookie_name
-        proxy = subject.proxy '/app1' => :endpoint
-        expect(proxy.sitehub_cookie_name).to eq(:expected_cookie_name)
+      context 'forward_proxies' do
+        subject do
+          described_class.new do
+            sitehub_cookie_name :expected_cookie_name
+            proxy '/app1' => :endpoint
+          end
+        end
+
+        it 'forwards it' do
+          proxy = subject.proxy '/app1' => :endpoint
+          expect(proxy.sitehub_cookie_name).to eq(:expected_cookie_name)
+        end
       end
     end
 
@@ -108,8 +116,22 @@ class SiteHub
           expect(subject.build).to be_using(Middleware::TransactionId)
         end
 
-        it 'adds a forward proxies' do
-          expect(subject.build).to be_using(Middleware::ForwardProxies)
+        context 'forward proxies' do
+          subject do
+            described_class.new do
+              sitehub_cookie_name :custom_cookie_name
+              proxy '/app1' => :endpoint
+            end
+          end
+
+          it 'adds a forward proxies' do
+            expect(subject.build).to be_using(Middleware::ForwardProxies)
+          end
+
+          it 'configures it with the sitehub_cookie_name' do
+            forward_proxies = find_middleware(subject.build, Middleware::ForwardProxies)
+            expect(forward_proxies.sitehub_cookie_name).to eq(:custom_cookie_name)
+          end
         end
 
         it 'adds a AccessLogger' do

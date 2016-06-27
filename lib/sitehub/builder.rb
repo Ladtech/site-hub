@@ -21,6 +21,10 @@ class SiteHub
       instance_eval(&block) if block
     end
 
+    def forward_proxies
+      @forward_proxies ||= ForwardProxies.new(sitehub_cookie_name)
+    end
+
     def build
       add_default_middleware
       use ConfigLoader, config_server if config_server

@@ -51,8 +51,8 @@ class SiteHub
         context 'cookie already set' do
           let(:rack_headers) { { 'HTTP_COOKIE' => 'cookie_name=existing_value' } }
 
-          it 'leaves it alone' do
-            expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :existing_value.to_s, path: mapped_path)
+          it 'replaces the value as this is the proxy it should stick with' do
+            expect(last_response.cookies[:cookie_name.to_s]).to eq(value: :id.to_s, path: mapped_path)
           end
         end
 
