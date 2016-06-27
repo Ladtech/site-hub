@@ -21,6 +21,7 @@ class SiteHub
     URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
     class << self
+      # TODO support nest splits and routes
       def from_hash hash, sitehub_cookie_name
         new(sitehub_cookie_name: sitehub_cookie_name, mapped_path: hash[:path]) do
           extend CollectionMethods
