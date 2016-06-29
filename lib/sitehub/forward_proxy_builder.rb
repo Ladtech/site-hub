@@ -152,7 +152,7 @@ class SiteHub
     end
 
     def new(rule: nil, &block)
-      self.class.new(mapped_path: mapped_path, rule: rule, &block)
+      self.class.new(mapped_path: mapped_path, sitehub_cookie_name: sitehub_cookie_name, rule: rule, &block)
     end
   end
 end

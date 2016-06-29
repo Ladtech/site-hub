@@ -1,3 +1,4 @@
+require 'sitehub/getter_setter_methods'
 require 'sitehub/constants'
 require 'sitehub/nil_proxy'
 require 'rack/request'
@@ -12,10 +13,10 @@ class SiteHub
 
       include Equality
 
-      attr_reader :sitehub_cookie_name
+      extend GetterSetterMethods
+      getter_setter :sitehub_cookie_name, RECORDED_ROUTES_COOKIE
 
-      def initialize(sitehub_cookie_name)
-        @sitehub_cookie_name = sitehub_cookie_name
+      def initialize
         self.default = NIL_PROXY
       end
 
@@ -41,11 +42,6 @@ class SiteHub
                                                     &block)
       end
 
-      def [] key
-        result = super
-        return result
-      end
-
       def mapped_proxy(path:, request:)
         self[mapping(path)].resolve(id: request.cookies[sitehub_cookie_name], env: request.env)
       end
@@ -53,10 +49,10 @@ class SiteHub
       def mapping(path)
         keys.find do |key|
           case key
-          when Regexp
-            key.match(path)
-          else
-            path == key
+            when Regexp
+              key.match(path)
+            else
+              path == key
           end
         end
       end

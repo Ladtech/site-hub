@@ -126,7 +126,7 @@ class SiteHub
           it 'stores a forward proxy builder' do
             subject.split(percentage: 50, &block)
 
-            expected_builder = described_class.new(mapped_path: subject.mapped_path, &block).build
+            expected_builder = described_class.new(sitehub_cookie_name: subject.sitehub_cookie_name, mapped_path: subject.mapped_path, &block).build
             expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
             expect(subject.endpoints.values).to eq([expected_split])
           end
@@ -211,7 +211,7 @@ class SiteHub
           rule = proc { true }
           subject.route(rule: rule, &block)
 
-          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &block).build
+          expected_builder = described_class.new(sitehub_cookie_name: subject.sitehub_cookie_name, rule: rule, mapped_path: subject.mapped_path, &block).build
           expect(subject.endpoints.values).to eq([expected_builder])
         end
 

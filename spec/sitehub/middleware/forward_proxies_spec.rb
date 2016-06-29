@@ -12,7 +12,7 @@ class SiteHub
 
       subject do
         base_url = base_url()
-        described_class.new(:cookie_name).tap do |route_set|
+        described_class.new.tap do |route_set|
           route_set.add_proxy(mapped_path: application_root) do |builder|
             builder.split url: base_url, label: :current, percentage: 100
           end
@@ -34,6 +34,7 @@ class SiteHub
         let(:request) { Rack::Request.new({}) }
 
         it 'uses the id in the sitehub_cookie to resolve the correct route' do
+          subject.sitehub_cookie_name :cookie_name
           request.cookies[:cookie_name] = :preset_id
           expect(forward_proxy_builder).to receive(:resolve).with(id: :preset_id, env: request.env).and_call_original
           subject.mapped_proxy(path: application_root, request: request)
@@ -45,7 +46,7 @@ class SiteHub
           end
 
           subject do
-            described_class.new(:cookie_name).tap do |route_set|
+            described_class.new.tap do |route_set|
               route_set.add_proxy url: "#{base_url}/$1/view", mapped_path: %r{#{application_root}/(.*)/view}
             end
           end
@@ -71,7 +72,7 @@ class SiteHub
           end
 
           subject do
-            described_class.new(:cookie_name).tap do |route_set|
+            described_class.new.tap do |route_set|
               route_set.add_proxy(url: "#{base_url}/sub_url", mapped_path: "#{application_root}/sub_url")
               route_set.add_proxy(mapped_path: application_root, url: base_url)
             end

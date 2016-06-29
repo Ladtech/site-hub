@@ -1,6 +1,6 @@
-require 'sitehub/getter_setter_methods'
 require 'sitehub/forward_proxy_builder'
 require 'json-schema'
+require 'forwardable'
 
 class SiteHub
   class InvalidProxyDefinitionException < Exception
@@ -42,19 +42,16 @@ class SiteHub
     end
 
     include Equality
-    extend GetterSetterMethods
+    extend Forwardable
 
+    def_delegator :forward_proxies, :sitehub_cookie_name
 
-    getter_setter :sitehub_cookie_name, RECORDED_ROUTES_COOKIE
     attr_reader :forward_proxies, :reverse_proxies
 
     def initialize(&block)
       @reverse_proxies = {}
+      @forward_proxies = Middleware::ForwardProxies.new
       instance_eval(&block) if block
-    end
-
-    def forward_proxies
-      @forward_proxies ||= Middleware::ForwardProxies.new(sitehub_cookie_name)
     end
 
     def build
