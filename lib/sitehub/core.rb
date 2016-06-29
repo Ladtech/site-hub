@@ -35,7 +35,7 @@ class SiteHub
           end
 
           collection(config, :reverse_proxies).each do |proxy|
-            reverse_proxy proxy[:mapped_url] => proxy[:path]
+            reverse_proxy proxy[:downstream_url] => proxy[:path]
           end
         end
       end

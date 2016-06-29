@@ -60,14 +60,14 @@ class SiteHub
       end
 
       context 'reverse_proxies' do
+        before do
+          config[:reverse_proxies] = [{downstream_url: :url, path: :path}]
+        end
         let(:expected) do
-          described_class.new do
-            reverse_proxy url: :path
-          end
+          described_class.from_hash(config)
         end
 
         it 'sets them' do
-          config[:reverse_proxies] = [{downstream_url: :url, path: :path}]
           expect(expected.reverse_proxies).to eq({url: :path})
         end
       end
