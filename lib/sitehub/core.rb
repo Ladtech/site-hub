@@ -31,7 +31,7 @@ class SiteHub
 
 
           collection!(config, :proxies).each do |proxy|
-            forward_proxies.add_proxy mapped_path: proxy[:mapped_path], proxy: ForwardProxyBuilder.from_hash(proxy, sitehub_cookie_name)
+            forward_proxies.add_proxy proxy: ForwardProxyBuilder.from_hash(proxy, sitehub_cookie_name)
           end
 
           collection(config, :reverse_proxies).each do |proxy|
