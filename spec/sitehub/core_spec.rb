@@ -97,20 +97,23 @@ class SiteHub
     end
 
     describe '#proxy' do
+
+      let(:expected_route) do
+        RouteBuilder.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
+                         mapped_path: '/app')
+      end
+
       context 'no version explicitly defined' do
         subject do
           described_class.new do
             sitehub_cookie_name RECORDED_ROUTES_COOKIE
-            proxy '/app1' => :endpoint
+            proxy '/app' => :endpoint
           end
         end
 
         it 'the defined route is defined as the default' do
-          expected_proxy = RouteBuilder.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
-                                            mapped_path: '/app1').tap do |route|
-            route.default(url: :endpoint)
-          end
-          expect(subject.routes['/app1']).to eq(expected_proxy)
+          expected_route.default(url: :endpoint)
+          expect(subject.routes['/app']).to eq(expected_route)
         end
       end
 
@@ -124,11 +127,7 @@ class SiteHub
         end
 
         it 'passes the block to the route constructor' do
-          expected_route = RouteBuilder.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
-                                            mapped_path: '/app').tap do |route|
-            route.split url: :endpoint, percentage: 100, label: :label
-          end
-
+          expected_route.split url: :endpoint, percentage: 100, label: :label
           expect(subject.routes['/app'].endpoints).to eq(expected_route.endpoints)
         end
       end
