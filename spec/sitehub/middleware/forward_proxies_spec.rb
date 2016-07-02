@@ -1,5 +1,7 @@
 require 'sitehub/middleware/forward_proxies'
 
+#TODO implement tests for add_proxy method
+
 class SiteHub
   module Middleware
     describe ForwardProxies do

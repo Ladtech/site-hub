@@ -36,10 +36,12 @@ class SiteHub
       def add_proxy(url: nil, mapped_path: nil, proxy: nil, &block)
         self[proxy.mapped_path] = proxy and return if proxy
 
-        self[mapped_path] = ForwardProxyBuilder.new(sitehub_cookie_name: sitehub_cookie_name,
-                                                    url: url,
-                                                    mapped_path: mapped_path,
-                                                    &block)
+        #TODO url constructor parameter is used here only
+        self[mapped_path] = ForwardProxyBuilder.new(mapped_path: mapped_path,
+                                                    &block).tap do |builder|
+          builder.sitehub_cookie_name sitehub_cookie_name
+          builder.default(url: url) if url
+        end
       end
 
       def mapped_proxy(path:, request:)
@@ -49,10 +51,10 @@ class SiteHub
       def mapping(path)
         keys.find do |key|
           case key
-            when Regexp
-              key.match(path)
-            else
-              path == key
+          when Regexp
+            key.match(path)
+          else
+            path == key
           end
         end
       end

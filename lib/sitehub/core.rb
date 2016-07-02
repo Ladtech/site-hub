@@ -9,7 +9,6 @@ class SiteHub
   class ConfigError < Exception
   end
 
-
   module CollectionMethods
     def collection(hash, item)
       hash[item] || []
@@ -23,12 +22,11 @@ class SiteHub
 
   class Core
     class << self
-      #TODO default action for missing key, throw exception?
-      def from_hash config
+      # TODO: default action for missing key, throw exception?
+      def from_hash(config)
         new do
           extend CollectionMethods
           sitehub_cookie_name config[:sitehub_cookie_name] if config[:sitehub_cookie_name]
-
 
           collection!(config, :proxies).each do |proxy|
             forward_proxies.add_proxy proxy: ForwardProxyBuilder.from_hash(proxy, sitehub_cookie_name)
@@ -44,9 +42,9 @@ class SiteHub
     include Equality
     extend Forwardable
 
-    def_delegator :forward_proxies, :sitehub_cookie_name
 
     attr_reader :forward_proxies, :reverse_proxies
+    def_delegator :forward_proxies, :sitehub_cookie_name
 
     def initialize(&block)
       @reverse_proxies = {}

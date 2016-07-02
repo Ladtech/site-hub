@@ -4,22 +4,21 @@ class SiteHub
 
     let(:config) do
       {
-          proxies: [
+        proxies: [
+          {
+            path: '/route_1',
+            routes: [
               {
-                  path: '/route_1',
-                  routes: [
-                      {
-                          label: :label_1,
-                          url: 'http://lvl-up.uk/'
-                      }
-                  ]
+                label: :label_1,
+                url: 'http://lvl-up.uk/'
               }
-          ]
+            ]
+          }
+        ]
       }
     end
 
     describe '::from_hash' do
-
       context 'invalid config' do
         context 'proxies missing' do
           it 'throws and error' do
@@ -27,7 +26,6 @@ class SiteHub
           end
         end
       end
-
 
       subject(:expected) do
         described_class.new do
@@ -61,14 +59,14 @@ class SiteHub
 
       context 'reverse_proxies' do
         before do
-          config[:reverse_proxies] = [{downstream_url: :url, path: :path}]
+          config[:reverse_proxies] = [{ downstream_url: :url, path: :path }]
         end
         let(:expected) do
           described_class.from_hash(config)
         end
 
         it 'sets them' do
-          expect(expected.reverse_proxies).to eq({url: :path})
+          expect(expected.reverse_proxies).to eq(url: :path)
         end
       end
     end
@@ -102,13 +100,14 @@ class SiteHub
       context 'no version explicitly defined' do
         subject do
           described_class.new do
+            sitehub_cookie_name RECORDED_ROUTES_COOKIE
             proxy '/app1' => :endpoint
           end
         end
 
-        it 'the defined route is used 100% of the time' do
-          expected_proxy = ForwardProxyBuilder.new(mapped_path: '/app1',
-                                                   sitehub_cookie_name: RECORDED_ROUTES_COOKIE).tap do |route|
+        it 'the defined route is defined as the default' do
+          expected_proxy = ForwardProxyBuilder.new(mapped_path: '/app1').tap do |route|
+            route.sitehub_cookie_name RECORDED_ROUTES_COOKIE
             route.default(url: :endpoint)
           end
           expect(subject.forward_proxies['/app1']).to eq(expected_proxy)
@@ -125,8 +124,7 @@ class SiteHub
         end
 
         it 'passes the block to the route constructor' do
-          expected_route = ForwardProxyBuilder.new(mapped_path: '/app',
-                                                   sitehub_cookie_name: RECORDED_ROUTES_COOKIE).tap do |route|
+          expected_route = ForwardProxyBuilder.new(mapped_path: '/app').tap do |route|
             route.split url: :endpoint, percentage: 100, label: :label
           end
 

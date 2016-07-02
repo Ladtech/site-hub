@@ -4,7 +4,6 @@ require 'active_support/cache'
 
 class SiteHub
   class Builder
-
     include Middleware
     extend GetterSetterMethods
 

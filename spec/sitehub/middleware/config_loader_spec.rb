@@ -1,28 +1,26 @@
 class SiteHub
   module Middleware
     describe ConfigLoader do
+      let(:server_url) { 'http://www.server.url' }
 
-      let(:server_url){'http://www.server.url'}
-
-      let(:config) {
+      let(:config) do
         {
-            proxies: [
+          proxies: [
+            {
+              path: '/route_1',
+              sitehub_cookie_name: 'sitehub.recorded_route',
+
+              splits: {},
+              routes: [
                 {
-                    path: '/route_1',
-                    sitehub_cookie_name: 'sitehub.recorded_route',
-
-                    splits: {},
-                    routes: [
-                        {
-                            label: :label_1,
-                            url: 'http://lvl-up.uk/'
-                        },
-                    ]
+                  label: :label_1,
+                  url: 'http://lvl-up.uk/'
                 }
-            ]
+              ]
+            }
+          ]
         }
-      }
-
+      end
 
       before do
         stub_request(:get, server_url).to_return(body: config.to_json)
@@ -33,7 +31,6 @@ class SiteHub
       end
 
       describe '#load_config' do
-
         it 'loads config' do
           expect(subject.app).to be_nil
           subject.load_config
@@ -58,7 +55,6 @@ class SiteHub
             response
           end
           expect(Core).to receive(:from_hash).and_return(double(build: app))
-
 
           expect(subject.call(:env)).to eq(response)
         end

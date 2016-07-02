@@ -106,8 +106,10 @@ class SiteHub
     end
 
     describe '#build' do
-
       context 'default middleware' do
+        it 'returns a fiber pool' do
+          expect(subject.build).to be_a(Rack::FiberPool)
+        end
         it 'adds TransactionId middleware to the sitehub' do
           expect(subject.build).to be_using(Middleware::TransactionId)
         end
@@ -137,16 +139,11 @@ class SiteHub
         it 'adds a ErrorLogger' do
           expect(subject.build).to be_using(Middleware::Logging::ErrorLogger)
         end
-        it 'adds a Rack FiberPool' do
-          expect(subject.build).to be_using(Rack::FiberPool)
-        end
 
         it 'adds a ErrorHandler' do
-
         end
 
         context 'config server specified' do
-
           before do
             subject.config_server :server_url
           end
@@ -158,8 +155,7 @@ class SiteHub
           it 'adds it just before the reverse proxy' do
             middleware_stack = collect_middleware(subject.build).collect(&:class)
 
-            expected_middleware = [Rack::FiberPool,
-                                   Middleware::Logging::ErrorLogger,
+            expected_middleware = [Middleware::Logging::ErrorLogger,
                                    Middleware::Logging::AccessLogger,
                                    Middleware::ErrorHandling,
                                    Middleware::TransactionId,
@@ -172,8 +168,7 @@ class SiteHub
         it 'adds them in the right order' do
           middleware_stack = collect_middleware(subject.build).collect(&:class)
 
-          expected_middleware = [Rack::FiberPool,
-                                 Middleware::Logging::ErrorLogger,
+          expected_middleware = [Middleware::Logging::ErrorLogger,
                                  Middleware::Logging::AccessLogger,
                                  Middleware::ErrorHandling,
                                  Middleware::TransactionId,

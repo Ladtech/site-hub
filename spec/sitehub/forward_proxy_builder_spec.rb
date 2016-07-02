@@ -34,11 +34,10 @@ class SiteHub
           it 'sets the default'
         end
       end
-
     end
 
     subject do
-      described_class.new(mapped_path: '/path', sitehub_cookie_name: :cookie_name)
+      described_class.new(mapped_path: '/path') #, sitehub_cookie_name: :cookie_name
     end
 
     it 'supports middleware' do
@@ -49,7 +48,10 @@ class SiteHub
       context 'with a block' do
         it 'evaluates the block in the context of the instance' do
           self_inside_block = nil
-          instance = described_class.new(url: '/app1', mapped_path: '/path') { self_inside_block = self }
+          instance = described_class.new(mapped_path: '/path') do
+            self_inside_block = self
+            default(url: :url)
+          end
           expect(self_inside_block).to eq(instance)
         end
       end
@@ -97,7 +99,7 @@ class SiteHub
           subject.split percentage: 10, url: :url, label: :label
 
           expect { subject.split percentage: 10, url: :url, label: :label }
-            .to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
+              .to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
         end
       end
 
@@ -126,7 +128,8 @@ class SiteHub
           it 'stores a forward proxy builder' do
             subject.split(percentage: 50, &block)
 
-            expected_builder = described_class.new(sitehub_cookie_name: subject.sitehub_cookie_name, mapped_path: subject.mapped_path, &block).build
+
+            expected_builder = described_class.new(mapped_path: subject.mapped_path, &block).build # sitehub_cookie_name: subject.sitehub_cookie_name
             expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
             expect(subject.endpoints.values).to eq([expected_split])
           end
@@ -137,12 +140,16 @@ class SiteHub
         it 'stores a split for the version' do
           subject.split url: :url, label: :label, percentage: 50
 
-          expected_proxy = ForwardProxy.new(id: :label,
-                                            sitehub_cookie_name: :cookie_name,
-                                            mapped_url: :url,
-                                            mapped_path: subject.mapped_path)
+          proxy = ForwardProxy.new(mapped_url: :url,
+                                   mapped_path: subject.mapped_path)
 
-          expected = Collection::SplitRouteCollection.new(expected_proxy => 50)
+
+          expected_route = Route.new(proxy,
+                                     id: :label,
+                                     sitehub_cookie_name: nil,
+                                     sitehub_cookie_path: nil)
+
+          expected = Collection::SplitRouteCollection.new(expected_route => 50)
 
           expect(subject.endpoints).to eq(expected)
         end
@@ -150,7 +157,7 @@ class SiteHub
         context 'url not supplied' do
           it 'raises an error' do
             expect { subject.split(label: :label, percentage: 50) }
-              .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
           end
         end
       end
@@ -160,7 +167,7 @@ class SiteHub
           subject.route url: :url, label: :label
 
           expect { subject.split(url: :url, label: :label, percentage: 50) }
-            .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+              .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
         end
       end
     end
@@ -168,11 +175,17 @@ class SiteHub
     describe '#route' do
       it 'accepts a rule' do
         subject.route url: :url, label: :current, rule: :rule
-        expected_route = ForwardProxy.new(sitehub_cookie_name: :cookie_name,
-                                          id: :current,
-                                          rule: :rule,
-                                          mapped_url: :url,
-                                          mapped_path: subject.mapped_path)
+
+
+        proxy = ForwardProxy.new(mapped_url: :url,
+                                 mapped_path: subject.mapped_path)
+
+        expected_route = Route.new(proxy,
+                                   id: :current,
+                                   sitehub_cookie_name: nil,
+                                   sitehub_cookie_path: nil).tap do |route|
+          route.rule(:rule)
+        end
         expect(subject.endpoints).to eq(current: expected_route)
       end
 
@@ -188,7 +201,7 @@ class SiteHub
             it 'raise an error' do
               expected_message = described_class::INVALID_ROUTE_DEF_MSG
               expect { subject.route {} }
-                .to raise_exception described_class::InvalidDefinitionException, expected_message
+                  .to raise_exception described_class::InvalidDefinitionException, expected_message
             end
           end
 
@@ -211,7 +224,10 @@ class SiteHub
           rule = proc { true }
           subject.route(rule: rule, &block)
 
-          expected_builder = described_class.new(sitehub_cookie_name: subject.sitehub_cookie_name, rule: rule, mapped_path: subject.mapped_path, &block).build
+          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
+            builder.sitehub_cookie_name subject.sitehub_cookie_name
+          end.build
+
           expect(subject.endpoints.values).to eq([expected_builder])
         end
 
@@ -233,61 +249,28 @@ class SiteHub
 
       context 'middleware not specified' do
         it 'leaves it the proxies alone' do
-          subject.route url: :url, label: :current, rule: rule
-          proxy_before_build = subject.endpoints[:current]
+          subject.route url: :url, label: :current
+          expect(subject.endpoints[:current]).to be_using_rack_stack(ForwardProxy)
           subject.build
-          proxy_after_build = subject.endpoints[:current]
-          expect(proxy_after_build).to be(proxy_before_build)
-          expect(proxy_after_build.rule).to be(rule)
-        end
-
-        it 'does not extend the endpoint with Resolver' do
-          subject.route url: :url, label: :current, rule: rule
-          expect(subject.endpoints[:current]).to_not receive(:extend).with(Resolver)
-          subject.build
+          expect(subject.endpoints[:current]).to be_using_rack_stack(ForwardProxy)
         end
       end
 
       context 'middleware specified' do
         before do
           subject.use middleware
-          subject.route url: :url, label: :current, rule: rule
         end
 
         it 'wraps the forward proxies in the middleware' do
-          proxy_before_build = subject.endpoints[:current]
-
+          subject.route url: :url, label: :current
           subject.build
-          proxy_after_build = subject.endpoints[:current]
-          expect(proxy_after_build).to be_a(middleware)
-          expect(proxy_after_build.app).to be(proxy_before_build)
-        end
-
-        it 'extends the middleware with Resolver' do
-          subject.build
-          expect(subject.endpoints[:current]).to be_a(Resolver)
-        end
-
-        it 'extends the middleware with Rules' do
-          subject.build
-          expect(subject.endpoints[:current]).to be_a(Rules)
-        end
-
-        context 'rule on route' do
-          it 'adds it to the rule to the middleware object' do
-            subject.build
-            expect(subject.endpoints[:current].rule).to eq(rule)
-          end
+          expect(subject.endpoints[:current]).to be_using_rack_stack(middleware, ForwardProxy)
         end
 
         it 'wraps the default in the middleware' do
           subject.default url: :url
-          default_proxy_before_build = subject.default_proxy
-
           subject.build
-          default_proxy_after_build = subject.default_proxy
-          expect(default_proxy_after_build).to be_a(middleware)
-          expect(default_proxy_after_build.app).to be(default_proxy_before_build)
+          expect(subject.default_proxy).to be_using_rack_stack(middleware, ForwardProxy)
         end
       end
     end
@@ -369,15 +352,7 @@ class SiteHub
 
     describe '#forward_proxy' do
       subject do
-        described_class.new(mapped_path: '/path', sitehub_cookie_name: :expected_cookie_name)
-      end
-
-      context 'url not supplied' do
-        it 'raises an error' do
-          expected_exception = described_class::InvalidDefinitionException
-          expected_message = described_class::URL_REQUIRED_MSG
-          expect{subject.forward_proxy(label: nil, url: nil)}.to raise_error(expected_exception, expected_message)
-        end
+        described_class.new(mapped_path: '/path')
       end
 
       it 'sets the sitehub_cookie_path' do
@@ -387,6 +362,7 @@ class SiteHub
       end
 
       it 'sets the sitehub_cookie_name' do
+        subject.sitehub_cookie_name :expected_cookie_name
         proxy = subject.forward_proxy(label: :label, url: :url)
         expect(proxy.sitehub_cookie_name).to eq(:expected_cookie_name)
       end

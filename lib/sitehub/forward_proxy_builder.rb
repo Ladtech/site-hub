@@ -21,9 +21,10 @@ class SiteHub
     URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
     class << self
-      # TODO support nest splits and routes
-      def from_hash hash, sitehub_cookie_name
-        new(sitehub_cookie_name: sitehub_cookie_name, mapped_path: hash[:path]) do
+      # TODO: support nest splits and routes
+      def from_hash(hash, sitehub_cookie_name)
+        new(mapped_path: hash[:path]) do
+          sitehub_cookie_name sitehub_cookie_name
           extend CollectionMethods
 
           collection(hash, :splits).each do |split|
@@ -40,21 +41,19 @@ class SiteHub
     end
 
     extend GetterSetterMethods
-    include Rules, Resolver, Equality, Middleware
+    include Rules, Equality, Middleware
 
     transient :id
 
-    getter_setters :default_proxy, :sitehub_cookie_path
-    attr_reader :mapped_path, :sitehub_cookie_name, :id
+    getter_setters :default_proxy, :sitehub_cookie_path, :sitehub_cookie_name
+    attr_reader :mapped_path, :id
 
-    def initialize(url: nil, mapped_path:, rule: nil, sitehub_cookie_name: nil, &block)
+    def initialize(mapped_path:, rule: nil, &block)
       @id = UUID.generate(:compact)
       @mapped_path = mapped_path
       @splits = Collection::SplitRouteCollection.new
       @routes = Collection::RouteCollection.new
-      @sitehub_cookie_name = sitehub_cookie_name
-      rule(rule) if rule
-      default(url: url) if url
+      rule(rule)
 
       return unless block_given?
 
@@ -62,9 +61,17 @@ class SiteHub
       raise InvalidDefinitionException unless valid?
     end
 
-    def valid?
-      return true if default_proxy
-      endpoints.valid?
+    def build
+      if middleware?
+        build_with_middleware
+        build_default_with_middleware if default_proxy
+      end
+
+      self
+    end
+
+    def default(url:)
+      default_proxy(forward_proxy(label: :default, url: url))
     end
 
     def endpoints(collection = nil)
@@ -74,17 +81,21 @@ class SiteHub
       @endpoints = collection
     end
 
-    def split(percentage:, url: nil, label: nil, &block)
-      raise InvalidDefinitionException, INVALID_SPLIT_MSG unless block || url
+    def forward_proxy(label:, url:, rule: nil)
+      proxy = ForwardProxy.new(mapped_url: url, mapped_path: mapped_path)
 
-      proxy = if block
-                warn(IGNORING_URL_LABEL_MSG) if url || label
-                new(&block).build
-              else
-                forward_proxy(label: label, url: url)
-              end
+      id = (label || UUID.generate(:compact)).to_sym
+      Route.new(proxy,
+                id: id,
+                sitehub_cookie_path: sitehub_cookie_path,
+                sitehub_cookie_name: sitehub_cookie_name).tap do |wrapper|
+        wrapper.rule(rule)
+      end
+    end
 
-      splits.add proxy.id, proxy, percentage
+    def resolve(id: nil, env:)
+      id = id.to_s.to_sym
+      endpoints[id] || endpoints.resolve(env: env) || default_proxy
     end
 
     def route(url: nil, label: nil, rule: nil, &block)
@@ -99,60 +110,61 @@ class SiteHub
       routes.add(endpoint.id, endpoint)
     end
 
-    def default(url:)
-      default_proxy(forward_proxy(label: :default, url: url))
+
+    def split(percentage:, url: nil, label: nil, &block)
+      raise InvalidDefinitionException, INVALID_SPLIT_MSG unless block || url
+
+      proxy = if block
+                warn(IGNORING_URL_LABEL_MSG) if url || label
+                new(&block).build
+              else
+                forward_proxy(label: label, url: url)
+              end
+
+      splits.add proxy.id, proxy, percentage
     end
 
-    def build
-      if middleware?
-        build_with_middleware
-        build_default_with_middleware if default_proxy
-      end
-
-      self
-    end
-
-    def resolve(id: nil, env:)
-      id = id.to_s.to_sym
-      endpoints[id] || endpoints.resolve(env: env) || default_proxy
-    end
-
-    def forward_proxy(label:, url:, rule: nil)
-      raise InvalidDefinitionException, URL_REQUIRED_MSG unless url
-      label ||= UUID.generate(:compact)
-      ForwardProxy.new(sitehub_cookie_path: sitehub_cookie_path,
-                       sitehub_cookie_name: sitehub_cookie_name,
-                       id: label.to_sym,
-                       rule: rule,
-                       mapped_url: url,
-                       mapped_path: mapped_path)
+    def valid?
+      return true if default_proxy
+      endpoints.valid?
     end
 
     private
 
-    def routes
-      endpoints(@routes)
+    def add_middleware_to_proxy(proxy)
+      middlewares.each do |middleware_args_and_block|
+        middleware_class, args, block = middleware_args_and_block
+        proxy.use middleware_class, *args, &block
+      end
+    end
+
+
+    def build_default_with_middleware
+      add_middleware_to_proxy(default_proxy)
+      default_proxy.init
+    end
+
+    def build_with_middleware
+      endpoints.values.each do |proxy|
+        add_middleware_to_proxy(proxy)
+        proxy.init
+      end
+    end
+
+    def new(rule: nil, &block)
+      self.class.new(mapped_path: mapped_path, rule: rule, &block).tap do |builder|
+        builder.sitehub_cookie_name sitehub_cookie_name
+        builder.sitehub_cookie_path sitehub_cookie_path
+      end
     end
 
     def splits
       endpoints(@splits)
     end
 
-    def build_with_middleware
-      endpoints.transform do |proxy|
-        apply_middleware(proxy).tap do |wrapped_proxy|
-          wrapped_proxy.extend(Rules, Resolver)
-          wrapped_proxy.rule(proxy.rule)
-        end
-      end
+    def routes
+      endpoints(@routes)
     end
 
-    def build_default_with_middleware
-      default_proxy(apply_middleware(default_proxy))
-    end
-
-    def new(rule: nil, &block)
-      self.class.new(mapped_path: mapped_path, sitehub_cookie_name: sitehub_cookie_name, rule: rule, &block)
-    end
   end
 end

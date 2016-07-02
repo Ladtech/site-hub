@@ -6,6 +6,7 @@ require 'middleware/forward_proxies'
 require 'middleware/reverse_proxy'
 require 'middleware/config_loader'
 require 'rack/ssl-enforcer'
+require 'middleware/route'
 require 'rack/fiber_pool'
 
 class SiteHub

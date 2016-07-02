@@ -10,7 +10,7 @@ shared_context :middleware_test do
   end
 
   def collect_middleware(rack_app)
-    [rack_app].tap do |middleware|
+    [].tap do |middleware|
       while (rack_app = rack_app.instance_variable_get(:@app))
         middleware << rack_app
       end
@@ -25,6 +25,12 @@ shared_context :middleware_test do
   RSpec::Matchers.define :be_using do |expected, *_args|
     match do |actual|
       !find_middleware(actual, expected).nil?
+    end
+  end
+
+  RSpec::Matchers.define :be_using_rack_stack do |*expected|
+    match do |actual|
+      collect_middleware(actual).collect(&:class) == expected
     end
   end
 
