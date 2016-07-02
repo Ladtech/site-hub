@@ -10,7 +10,7 @@ require_relative 'forward_proxy'
 require_relative 'downstream_client'
 
 class SiteHub
-  class ForwardProxyBuilder
+  class RouteBuilder
     class InvalidDefinitionException < Exception
     end
 

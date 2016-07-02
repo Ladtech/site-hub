@@ -1,8 +1,8 @@
 # rubocop:disable Metrics/ClassLength
-require 'sitehub/forward_proxy_builder'
+require 'sitehub/route_builder'
 
 class SiteHub
-  describe ForwardProxyBuilder do
+  describe RouteBuilder do
     include_context :middleware_test
 
     describe '::from_hash' do
@@ -157,7 +157,7 @@ class SiteHub
         context 'url not supplied' do
           it 'raises an error' do
             expect { subject.split(label: :label, percentage: 50) }
-                .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+                .to raise_error(RouteBuilder::InvalidDefinitionException)
           end
         end
       end
@@ -167,7 +167,7 @@ class SiteHub
           subject.route url: :url, label: :label
 
           expect { subject.split(url: :url, label: :label, percentage: 50) }
-              .to raise_error(ForwardProxyBuilder::InvalidDefinitionException)
+              .to raise_error(RouteBuilder::InvalidDefinitionException)
         end
       end
     end

@@ -106,7 +106,7 @@ class SiteHub
         end
 
         it 'the defined route is defined as the default' do
-          expected_proxy = ForwardProxyBuilder.new(mapped_path: '/app1').tap do |route|
+          expected_proxy = RouteBuilder.new(mapped_path: '/app1').tap do |route|
             route.sitehub_cookie_name RECORDED_ROUTES_COOKIE
             route.default(url: :endpoint)
           end
@@ -124,7 +124,7 @@ class SiteHub
         end
 
         it 'passes the block to the route constructor' do
-          expected_route = ForwardProxyBuilder.new(mapped_path: '/app').tap do |route|
+          expected_route = RouteBuilder.new(mapped_path: '/app').tap do |route|
             route.split url: :endpoint, percentage: 100, label: :label
           end
 

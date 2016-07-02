@@ -37,8 +37,8 @@ class SiteHub
         self[proxy.mapped_path] = proxy and return if proxy
 
         #TODO url constructor parameter is used here only
-        self[mapped_path] = ForwardProxyBuilder.new(mapped_path: mapped_path,
-                                                    &block).tap do |builder|
+        self[mapped_path] = RouteBuilder.new(mapped_path: mapped_path,
+                                             &block).tap do |builder|
           builder.sitehub_cookie_name sitehub_cookie_name
           builder.default(url: url) if url
         end

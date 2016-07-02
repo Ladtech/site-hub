@@ -1,4 +1,4 @@
-require 'sitehub/forward_proxy_builder'
+require 'sitehub/route_builder'
 require 'json-schema'
 require 'forwardable'
 
@@ -29,7 +29,7 @@ class SiteHub
           sitehub_cookie_name config[:sitehub_cookie_name] if config[:sitehub_cookie_name]
 
           collection!(config, :proxies).each do |proxy|
-            forward_proxies.add_proxy proxy: ForwardProxyBuilder.from_hash(proxy, sitehub_cookie_name)
+            forward_proxies.add_proxy proxy: RouteBuilder.from_hash(proxy, sitehub_cookie_name)
           end
 
           collection(config, :reverse_proxies).each do |proxy|
