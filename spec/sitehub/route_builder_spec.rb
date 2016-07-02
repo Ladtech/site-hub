@@ -37,7 +37,8 @@ class SiteHub
     end
 
     subject do
-      described_class.new(mapped_path: '/path') #, sitehub_cookie_name: :cookie_name
+      described_class.new(sitehub_cookie_name: :cookie_name,
+                          mapped_path: '/path')
     end
 
     it 'supports middleware' do
@@ -48,7 +49,8 @@ class SiteHub
       context 'with a block' do
         it 'evaluates the block in the context of the instance' do
           self_inside_block = nil
-          instance = described_class.new(mapped_path: '/path') do
+          instance = described_class.new(sitehub_cookie_name: :name,
+                                         mapped_path: '/path') do
             self_inside_block = self
             default(url: :url)
           end
@@ -129,7 +131,8 @@ class SiteHub
             subject.split(percentage: 50, &block)
 
 
-            expected_builder = described_class.new(mapped_path: subject.mapped_path, &block).build # sitehub_cookie_name: subject.sitehub_cookie_name
+            expected_builder = described_class.new(sitehub_cookie_name: :cookie_name,
+                                                   mapped_path: subject.mapped_path, &block).build # sitehub_cookie_name: subject.sitehub_cookie_name
             expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
             expect(subject.endpoints.values).to eq([expected_split])
           end
@@ -146,7 +149,7 @@ class SiteHub
 
           expected_route = Route.new(proxy,
                                      id: :label,
-                                     sitehub_cookie_name: nil,
+                                     sitehub_cookie_name: :cookie_name,
                                      sitehub_cookie_path: nil)
 
           expected = Collection::SplitRouteCollection.new(expected_route => 50)
@@ -182,7 +185,7 @@ class SiteHub
 
         expected_route = Route.new(proxy,
                                    id: :current,
-                                   sitehub_cookie_name: nil,
+                                   sitehub_cookie_name: :cookie_name,
                                    sitehub_cookie_path: nil).tap do |route|
           route.rule(:rule)
         end
@@ -224,7 +227,8 @@ class SiteHub
           rule = proc { true }
           subject.route(rule: rule, &block)
 
-          expected_builder = described_class.new(rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
+          expected_builder = described_class.new(sitehub_cookie_name: :cookie_name,
+                                                 rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
             builder.sitehub_cookie_name subject.sitehub_cookie_name
           end.build
 
@@ -276,7 +280,8 @@ class SiteHub
     end
 
     describe '#resolve' do
-      subject { described_class.new(mapped_path: '/') }
+      subject { described_class.new(sitehub_cookie_name: :cookie_name,
+                                    mapped_path: '/') }
 
       context 'routes defined' do
         it 'returns that route' do
@@ -352,7 +357,8 @@ class SiteHub
 
     describe '#forward_proxy' do
       subject do
-        described_class.new(mapped_path: '/path')
+        described_class.new(sitehub_cookie_name: :cookie_name,
+                            mapped_path: '/path')
       end
 
       it 'sets the sitehub_cookie_path' do

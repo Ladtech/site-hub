@@ -23,8 +23,7 @@ class SiteHub
     class << self
       # TODO: support nest splits and routes
       def from_hash(hash, sitehub_cookie_name)
-        new(mapped_path: hash[:path]) do
-          sitehub_cookie_name sitehub_cookie_name
+        new(sitehub_cookie_name: sitehub_cookie_name, mapped_path: hash[:path]) do
           extend CollectionMethods
 
           collection(hash, :splits).each do |split|
@@ -48,9 +47,10 @@ class SiteHub
     getter_setters :default_proxy, :sitehub_cookie_path, :sitehub_cookie_name
     attr_reader :mapped_path, :id
 
-    def initialize(mapped_path:, rule: nil, &block)
+    def initialize(sitehub_cookie_name:, mapped_path:, rule: nil, &block)
       @id = UUID.generate(:compact)
       @mapped_path = mapped_path
+      @sitehub_cookie_name = sitehub_cookie_name
       @splits = Collection::SplitRouteCollection.new
       @routes = Collection::RouteCollection.new
       rule(rule)
@@ -152,7 +152,10 @@ class SiteHub
     end
 
     def new(rule: nil, &block)
-      self.class.new(mapped_path: mapped_path, rule: rule, &block).tap do |builder|
+      self.class.new(sitehub_cookie_name: sitehub_cookie_name,
+                     mapped_path: mapped_path,
+                     rule: rule,
+                     &block).tap do |builder|
         builder.sitehub_cookie_name sitehub_cookie_name
         builder.sitehub_cookie_path sitehub_cookie_path
       end

@@ -4,17 +4,17 @@ class SiteHub
 
     let(:config) do
       {
-        proxies: [
-          {
-            path: '/route_1',
-            routes: [
+          proxies: [
               {
-                label: :label_1,
-                url: 'http://lvl-up.uk/'
+                  path: '/route_1',
+                  routes: [
+                      {
+                          label: :label_1,
+                          url: 'http://lvl-up.uk/'
+                      }
+                  ]
               }
-            ]
-          }
-        ]
+          ]
       }
     end
 
@@ -59,7 +59,7 @@ class SiteHub
 
       context 'reverse_proxies' do
         before do
-          config[:reverse_proxies] = [{ downstream_url: :url, path: :path }]
+          config[:reverse_proxies] = [{downstream_url: :url, path: :path}]
         end
         let(:expected) do
           described_class.from_hash(config)
@@ -106,8 +106,8 @@ class SiteHub
         end
 
         it 'the defined route is defined as the default' do
-          expected_proxy = RouteBuilder.new(mapped_path: '/app1').tap do |route|
-            route.sitehub_cookie_name RECORDED_ROUTES_COOKIE
+          expected_proxy = RouteBuilder.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
+                                            mapped_path: '/app1').tap do |route|
             route.default(url: :endpoint)
           end
           expect(subject.routes['/app1']).to eq(expected_proxy)
@@ -124,7 +124,8 @@ class SiteHub
         end
 
         it 'passes the block to the route constructor' do
-          expected_route = RouteBuilder.new(mapped_path: '/app').tap do |route|
+          expected_route = RouteBuilder.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
+                                            mapped_path: '/app').tap do |route|
             route.split url: :endpoint, percentage: 100, label: :label
           end
 
