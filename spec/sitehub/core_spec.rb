@@ -1,56 +1,42 @@
 class SiteHub
   describe Core do
-    include_context :middleware_test
 
-    let(:config) do
-      {
-          proxies: [
-              {
-                  path: '/route_1',
-                  routes: [
-                      {
-                          label: :label_1,
-                          url: 'http://lvl-up.uk/'
-                      }
-                  ]
-              }
-          ]
-      }
-    end
+    include_context :middleware_test
+    include_context :sitehub_json
 
     describe '::from_hash' do
-      context 'invalid config' do
-        context 'proxies missing' do
-          it 'throws and error' do
-            expect { described_class.from_hash({}) }.to raise_error(ConfigError)
-          end
-        end
-      end
+      subject(:core){described_class.from_hash(sitehub_json)}
 
       subject(:expected) do
         described_class.new do
-          proxy '/route_1' do
-            route label: :label_1, url: 'http://lvl-up.uk/'
-          end
+          sitehub_cookie_name 'custom_name'
+          proxy('/route_1') { route label: :label_1, url: 'http://lvl-up.uk/' }
+        end
+      end
+
+      context 'proxies missing' do
+        it 'throws and error' do
+          sitehub_json.delete(:proxies)
+          expect { core }.to raise_error(ConfigError)
+        end
+      end
+
+      context 'reverse_proxies missing' do
+        it 'does not throw an error' do
+          sitehub_json.delete(:reverse_proxies)
+          expect { core }.to_not raise_error
         end
       end
 
       context 'proxies defined' do
         it 'creates them' do
-          expect(described_class.from_hash(config)).to eq(expected)
+          expect(core).to eq(expected)
         end
       end
 
       context 'sitehub_cookie_name' do
-        subject(:expected) do
-          described_class.new do
-            sitehub_cookie_name 'custom_name'
-            proxy('/route_1') { route label: :label_1, url: 'http://lvl-up.uk/' }
-          end
-        end
-
         it 'sets it' do
-          core = described_class.from_hash(config.merge(sitehub_cookie_name: 'custom_name'))
+          sitehub_json[:sitehub_cookie_name] = 'custom_name'
 
           expect(core.sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
           expect(core.routes['/route_1'].sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
@@ -58,15 +44,9 @@ class SiteHub
       end
 
       context 'reverse_proxies' do
-        before do
-          config[:reverse_proxies] = [{downstream_url: :url, path: :path}]
-        end
-        let(:expected) do
-          described_class.from_hash(config)
-        end
-
         it 'sets them' do
-          expect(expected.reverse_proxies).to eq(url: :path)
+          sitehub_json[:reverse_proxies] = [{downstream_url: :url, path: :path}]
+          expect(core.reverse_proxies).to eq(url: :path)
         end
       end
     end
@@ -89,6 +69,7 @@ class SiteHub
         end
       end
     end
+    
     describe '#reverse_proxy' do
       it 'registers a reverse proxy' do
         subject.reverse_proxy(downstream_url: :upstream_path)
