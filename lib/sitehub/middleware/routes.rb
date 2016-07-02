@@ -1,6 +1,6 @@
 require 'sitehub/getter_setter_methods'
 require 'sitehub/constants'
-require 'sitehub/nil_proxy'
+require 'sitehub/nil_route'
 require 'rack/request'
 require 'rack/response'
 require 'rack/utils'
@@ -8,8 +8,8 @@ require 'em-http'
 
 class SiteHub
   module Middleware
-    class ForwardProxies < Hash
-      NIL_PROXY = NilProxy.new
+    class Routes < Hash
+      NIL_ROUTE = NilRoute.new
 
       include Equality
 
@@ -17,7 +17,7 @@ class SiteHub
       getter_setter :sitehub_cookie_name, RECORDED_ROUTES_COOKIE
 
       def initialize
-        self.default = NIL_PROXY
+        self.default = NIL_ROUTE
       end
 
       def call(env)

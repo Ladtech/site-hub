@@ -1,10 +1,10 @@
-require 'sitehub/middleware/forward_proxies'
+require 'sitehub/middleware/routes'
 
 #TODO implement tests for add_proxy method
 
 class SiteHub
   module Middleware
-    describe ForwardProxies do
+    describe Routes do
       let(:base_url) { 'http://google.com' }
       let(:application_root) { '/application_url' }
 

@@ -1,6 +1,6 @@
 require 'sitehub/resolver'
 class SiteHub
-  class NilProxy
+  class NilRoute
     include Resolver
     NOT_FOUND = Rack::Response.new(['page not found'], 404, {})
 

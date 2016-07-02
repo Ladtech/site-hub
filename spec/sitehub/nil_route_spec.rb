@@ -1,6 +1,6 @@
-require 'sitehub/nil_proxy'
+require 'sitehub/nil_route'
 class SiteHub
-  describe NilProxy do
+  describe NilRoute do
     describe '#call' do
       let(:app) do
         described_class.new
