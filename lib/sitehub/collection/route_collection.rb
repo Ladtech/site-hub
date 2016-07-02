@@ -15,13 +15,6 @@ class SiteHub
         result = values.find { |route| route.applies?(env) }
         result && result.resolve(env: env)
       end
-
-      # TODO - delete method
-      def transform
-        each do |id, value|
-          self[id] = yield(value)
-        end
-      end
     end
   end
 end

@@ -25,19 +25,6 @@ class SiteHub
       end
     end
 
-    describe '#transform' do
-      it "replaces the stores values with what's returned from the block" do
-        subject.add :id, route_without_rule
-        value_before_transform = subject[:id]
-        subject.transform do |value|
-          expect(value).to be(value_before_transform)
-          :transformed_value
-        end
-
-        expect(subject[:id]).to eq(:transformed_value)
-      end
-    end
-
     describe '#valid?' do
       context 'route added' do
         it 'returns true' do
