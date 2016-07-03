@@ -15,7 +15,7 @@ class SiteHub
       subject do
         base_url = base_url()
         described_class.new.tap do |route_set|
-          route_set.add_proxy(mapped_path: application_root) do |builder|
+          route_set.add_route(mapped_path: application_root) do |builder|
             builder.split url: base_url, label: :current, percentage: 100
           end
         end
@@ -33,6 +33,14 @@ class SiteHub
                     sitehub_cookie_path: nil)
         end
 
+        context 'RouteBuilder as parameter' do
+          it 'sets it' do
+            route = RouteBuilder.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: :mapped_path)
+            subject.add_route route_builder: route
+            expect(subject[:mapped_path]).to be(route)
+          end
+        end
+
         context 'no version explicitly defined' do
           let(:expected_route) do
             proxy = ForwardProxy.new(mapped_path: '/app', mapped_url: :url)
@@ -40,7 +48,7 @@ class SiteHub
           end
 
           it 'adds a default proxy for the given mapping' do
-            subject.add_proxy(url: :url, mapped_path: '/app')
+            subject.add_route(url: :url, mapped_path: '/app')
             route = subject['/app']
             expect(route.default_proxy).to eq(expected_route)
           end
@@ -71,7 +79,7 @@ class SiteHub
 
           subject do
             described_class.new.tap do |route_set|
-              route_set.add_proxy url: "#{base_url}/$1/view", mapped_path: %r{#{application_root}/(.*)/view}
+              route_set.add_route url: "#{base_url}/$1/view", mapped_path: %r{#{application_root}/(.*)/view}
             end
           end
 
@@ -97,8 +105,8 @@ class SiteHub
 
           subject do
             described_class.new.tap do |route_set|
-              route_set.add_proxy(url: "#{base_url}/sub_url", mapped_path: "#{application_root}/sub_url")
-              route_set.add_proxy(mapped_path: application_root, url: base_url)
+              route_set.add_route(url: "#{base_url}/sub_url", mapped_path: "#{application_root}/sub_url")
+              route_set.add_route(mapped_path: application_root, url: base_url)
             end
           end
 

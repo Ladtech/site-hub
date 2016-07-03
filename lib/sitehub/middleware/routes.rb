@@ -33,10 +33,9 @@ class SiteHub
         self
       end
 
-      def add_proxy(url: nil, mapped_path: nil, proxy: nil, &block)
-        self[proxy.mapped_path] = proxy and return if proxy
+      def add_route(url: nil, mapped_path: nil, route_builder: nil, &block)
+        self[route_builder.mapped_path] = route_builder and return if route_builder
 
-        #TODO url constructor parameter is used here only
         self[mapped_path] = RouteBuilder.new(sitehub_cookie_name: sitehub_cookie_name,
                                              mapped_path: mapped_path,
                                              &block).tap do |builder|

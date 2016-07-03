@@ -29,7 +29,7 @@ class SiteHub
           sitehub_cookie_name config[:sitehub_cookie_name] if config[:sitehub_cookie_name]
 
           collection!(config, :proxies).each do |proxy|
-            routes.add_proxy proxy: RouteBuilder.from_hash(proxy, sitehub_cookie_name)
+            routes.add_route route_builder: RouteBuilder.from_hash(proxy, sitehub_cookie_name)
           end
 
           collection(config, :reverse_proxies).each do |proxy|
@@ -59,7 +59,7 @@ class SiteHub
     def proxy(opts = {}, &block)
       mapped_path, url = *(opts.respond_to?(:to_a) ? opts.to_a : [opts]).flatten
 
-      routes.add_proxy(url: url,
+      routes.add_route(url: url,
                        mapped_path: mapped_path,
                        &block)
     end
