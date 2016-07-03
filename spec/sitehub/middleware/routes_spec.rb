@@ -25,6 +25,28 @@ class SiteHub
         subject.init
       end
 
+      describe '#add_proxy' do
+        def route(app, id:)
+          Route.new(app,
+                    id: id,
+                    sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
+                    sitehub_cookie_path: nil)
+        end
+
+        context 'no version explicitly defined' do
+          let(:expected_route) do
+            proxy = ForwardProxy.new(mapped_path: '/app', mapped_url: :url)
+            route(proxy, id: :default)
+          end
+
+          it 'adds a default proxy for the given mapping' do
+            subject.add_proxy(url: :url, mapped_path: '/app')
+            route = subject['/app']
+            expect(route.default_proxy).to eq(expected_route)
+          end
+        end
+      end
+
       describe '#init' do
         it 'builds all of the forward_proxies' do
           expect(subject[application_root]).to receive(:build).and_call_original

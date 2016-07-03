@@ -5,7 +5,7 @@ class SiteHub
     include_context :sitehub_json
 
     describe '::from_hash' do
-      subject(:core){described_class.from_hash(sitehub_json)}
+      subject(:core) { described_class.from_hash(sitehub_json) }
 
       subject(:expected) do
         described_class.new do
@@ -69,7 +69,7 @@ class SiteHub
         end
       end
     end
-    
+
     describe '#reverse_proxy' do
       it 'registers a reverse proxy' do
         subject.reverse_proxy(downstream_url: :upstream_path)
@@ -84,17 +84,34 @@ class SiteHub
                          mapped_path: '/app')
       end
 
-      context 'no version explicitly defined' do
-        subject do
-          described_class.new do
-            sitehub_cookie_name RECORDED_ROUTES_COOKIE
-            proxy '/app' => :endpoint
-          end
+      context 'string as parameters' do
+        it 'treats it as the mapped path' do
+          expect_any_instance_of(Middleware::Routes).
+              to receive(:add_proxy).
+                  with(url: nil, mapped_path: '/app').and_call_original
+          subject.proxy('/app')
         end
+      end
 
-        it 'the defined route is defined as the default' do
-          expected_route.default(url: :endpoint)
-          expect(subject.routes['/app']).to eq(expected_route)
+      context 'hash as parameter' do
+        it 'treats the key as the mapped path and the value as downstream url' do
+          expect_any_instance_of(Middleware::Routes).
+              to receive(:add_proxy).
+                  with(url: :downstream_url, mapped_path: '/app').and_call_original
+          subject.proxy('/app' => :downstream_url)
+        end
+      end
+
+      context 'block passed in' do
+        it 'uses the block when creating the proxy' do
+
+          proc = proc{}
+
+          expect_any_instance_of(Middleware::Routes).to receive(:add_proxy) do |*args, &block|
+            expect(block).to be(proc)
+          end
+
+          subject.proxy('/app' => :downstream_url, &proc)
         end
       end
 
