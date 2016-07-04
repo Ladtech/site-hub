@@ -23,7 +23,7 @@ class SiteHub
     class << self
       # TODO: support nest splits and routes
       def from_hash(hash, sitehub_cookie_name)
-        new(sitehub_cookie_name: sitehub_cookie_name, mapped_path: hash[:path]) do
+        new(sitehub_cookie_name: sitehub_cookie_name, sitehub_cookie_path: hash[:sitehub_cookie_path], mapped_path: hash[:path]) do
           extend CollectionMethods
 
           collection(hash, :splits).each do |split|
@@ -47,10 +47,11 @@ class SiteHub
     getter_setters :default_proxy, :sitehub_cookie_path, :sitehub_cookie_name
     attr_reader :mapped_path, :id
 
-    def initialize(sitehub_cookie_name:, mapped_path:, rule: nil, &block)
+    def initialize(sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
       @id = UUID.generate(:compact)
       @mapped_path = mapped_path
       @sitehub_cookie_name = sitehub_cookie_name
+      @sitehub_cookie_path = sitehub_cookie_path
       @splits = Collection::SplitRouteCollection.new
       @routes = Collection::RouteCollection.new
       rule(rule)
@@ -110,7 +111,6 @@ class SiteHub
       routes.add(endpoint.id, endpoint)
     end
 
-
     def split(percentage:, url: nil, label: nil, &block)
       raise InvalidDefinitionException, INVALID_SPLIT_MSG unless block || url
 
@@ -137,7 +137,6 @@ class SiteHub
         proxy.use middleware_class, *args, &block
       end
     end
-
 
     def build_default_with_middleware
       add_middleware_to_proxy(default_proxy)
@@ -168,6 +167,5 @@ class SiteHub
     def routes
       endpoints(@routes)
     end
-
   end
 end

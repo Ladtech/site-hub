@@ -34,7 +34,10 @@ class SiteHub
       end
 
       def add_route(url: nil, mapped_path: nil, route_builder: nil, &block)
-        self[route_builder.mapped_path] = route_builder and return if route_builder
+        if route_builder
+          self[route_builder.mapped_path] = route_builder
+          return
+        end
 
         self[mapped_path] = RouteBuilder.new(sitehub_cookie_name: sitehub_cookie_name,
                                              mapped_path: mapped_path,

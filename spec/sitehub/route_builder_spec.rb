@@ -6,33 +6,41 @@ class SiteHub
     include_context :middleware_test
 
     describe '::from_hash' do
-      context do
-        context 'splits' do
-          context 'sitehub_cookie_name' do
-            pending 'sets it'
-          end
+      include_context :sitehub_json
 
-          context 'sitehub_cookie_path' do
-            pending 'sets it'
-          end
+      subject do
+        described_class.from_hash(proxy_1, :expected).endpoints[route_1[:label]]
+      end
 
-          pending 'returns core with splits'
+      context 'splits' do
+        context 'sitehub_cookie_name' do
+          it 'sets it' do
+            expect(subject.sitehub_cookie_name).to eq(:expected)
+          end
         end
 
-        context 'routes' do
-          context 'sitehub_cookie_name' do
-            pending 'sets it'
+        context 'sitehub_cookie_path' do
+          it 'sets it' do
+            expect(subject.sitehub_cookie_path).to eq(proxy_1[:sitehub_cookie_path])
           end
-
-          context 'sitehub_cookie_path' do
-            pending 'sets it'
-          end
-          pending 'returns core with routes'
         end
 
-        context 'default' do
-          it 'sets the default'
+        pending 'returns core with splits'
+      end
+
+      context 'routes' do
+        context 'sitehub_cookie_name' do
+          pending 'sets it'
         end
+
+        context 'sitehub_cookie_path' do
+          pending 'sets it'
+        end
+        pending 'returns core with routes'
+      end
+
+      context 'default' do
+        it 'sets the default'
       end
     end
 
@@ -101,7 +109,7 @@ class SiteHub
           subject.split percentage: 10, url: :url, label: :label
 
           expect { subject.split percentage: 10, url: :url, label: :label }
-              .to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
+            .to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
         end
       end
 
@@ -130,7 +138,6 @@ class SiteHub
           it 'stores a forward proxy builder' do
             subject.split(percentage: 50, &block)
 
-
             expected_builder = described_class.new(sitehub_cookie_name: :cookie_name,
                                                    mapped_path: subject.mapped_path, &block).build # sitehub_cookie_name: subject.sitehub_cookie_name
             expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
@@ -146,7 +153,6 @@ class SiteHub
           proxy = ForwardProxy.new(mapped_url: :url,
                                    mapped_path: subject.mapped_path)
 
-
           expected_route = Route.new(proxy,
                                      id: :label,
                                      sitehub_cookie_name: :cookie_name,
@@ -160,7 +166,7 @@ class SiteHub
         context 'url not supplied' do
           it 'raises an error' do
             expect { subject.split(label: :label, percentage: 50) }
-                .to raise_error(RouteBuilder::InvalidDefinitionException)
+              .to raise_error(RouteBuilder::InvalidDefinitionException)
           end
         end
       end
@@ -170,7 +176,7 @@ class SiteHub
           subject.route url: :url, label: :label
 
           expect { subject.split(url: :url, label: :label, percentage: 50) }
-              .to raise_error(RouteBuilder::InvalidDefinitionException)
+            .to raise_error(RouteBuilder::InvalidDefinitionException)
         end
       end
     end
@@ -178,7 +184,6 @@ class SiteHub
     describe '#route' do
       it 'accepts a rule' do
         subject.route url: :url, label: :current, rule: :rule
-
 
         proxy = ForwardProxy.new(mapped_url: :url,
                                  mapped_path: subject.mapped_path)
@@ -204,7 +209,7 @@ class SiteHub
             it 'raise an error' do
               expected_message = described_class::INVALID_ROUTE_DEF_MSG
               expect { subject.route {} }
-                  .to raise_exception described_class::InvalidDefinitionException, expected_message
+                .to raise_exception described_class::InvalidDefinitionException, expected_message
             end
           end
 
@@ -280,8 +285,10 @@ class SiteHub
     end
 
     describe '#resolve' do
-      subject { described_class.new(sitehub_cookie_name: :cookie_name,
-                                    mapped_path: '/') }
+      subject do
+        described_class.new(sitehub_cookie_name: :cookie_name,
+                            mapped_path: '/')
+      end
 
       context 'routes defined' do
         it 'returns that route' do

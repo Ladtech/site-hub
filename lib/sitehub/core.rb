@@ -1,5 +1,4 @@
 require 'sitehub/route_builder'
-require 'json-schema'
 require 'forwardable'
 
 class SiteHub
@@ -41,7 +40,6 @@ class SiteHub
 
     include Equality
     extend Forwardable
-
 
     attr_reader :routes, :reverse_proxies
     def_delegator :routes, :sitehub_cookie_name

@@ -4,8 +4,8 @@ class SiteHub
   module Middleware
     describe Routes do
       let(:base_url) { 'http://google.com' }
-      let(:mapped_path){'/app'}
-      let(:application_root) { '/application_url' }
+      let(:mapped_path) { '/app' }
+      let(:mapped_path) { '/application_url' }
 
       let(:forward_proxy_builder) do
         subject.values.first
@@ -14,10 +14,14 @@ class SiteHub
       subject do
         base_url = base_url()
         described_class.new.tap do |route_set|
-          route_set.add_route(mapped_path: application_root) do |builder|
+          route_set.add_route(mapped_path: mapped_path) do |builder|
             builder.split url: base_url, label: :current, percentage: 100
           end
         end.init
+      end
+
+      before do
+        subject.init
       end
 
       describe '#add_proxy' do
@@ -30,14 +34,14 @@ class SiteHub
 
         context 'RouteBuilder as parameter' do
           it 'sets it' do
-            route = RouteBuilder.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: mapped_path)
+            another_mapping = '/mapping'
+            route = RouteBuilder.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: another_mapping)
             subject.add_route route_builder: route
-            expect(subject[mapped_path]).to be(route)
+            expect(subject[another_mapping]).to be(route)
           end
         end
 
         context 'no version explicitly defined' do
-
           let(:expected_route) do
             proxy = ForwardProxy.new(mapped_path: mapped_path, mapped_url: :url)
             route(proxy, id: :default)
@@ -48,7 +52,6 @@ class SiteHub
             route = subject[mapped_path]
             expect(route.default_proxy).to eq(expected_route)
           end
-
         end
       end
 
@@ -69,14 +72,14 @@ class SiteHub
             expect(forward_proxy_builder.endpoints[:current]).to receive(:call) do
               [200, {}, []]
             end
-            expect(get(application_root).status).to eq(200)
+            expect(get(mapped_path).status).to eq(200)
           end
         end
       end
 
       describe '#init' do
         it 'builds all of the forward_proxies' do
-          expect(subject[application_root]).to receive(:build).and_call_original
+          expect(subject[mapped_path]).to receive(:build).and_call_original
           subject.init
         end
       end
@@ -88,7 +91,7 @@ class SiteHub
           subject.sitehub_cookie_name :cookie_name
           request.cookies[:cookie_name] = :preset_id
           expect(forward_proxy_builder).to receive(:resolve).with(id: :preset_id, env: request.env).and_call_original
-          subject.mapped_proxy(path: application_root, request: request)
+          subject.mapped_proxy(path: mapped_path, request: request)
         end
 
         context 'regex match on path' do
@@ -98,12 +101,12 @@ class SiteHub
 
           subject do
             described_class.new.tap do |route_set|
-              route_set.add_route url: "#{base_url}/$1/view", mapped_path: %r{#{application_root}/(.*)/view}
+              route_set.add_route url: "#{base_url}/$1/view", mapped_path: %r{#{mapped_path}/(.*)/view}
             end
           end
 
           it 'matches and subsitutes the captured group' do
-            mapped_endpoint = subject.mapped_proxy(path: "#{application_root}/123/view", request: request)
+            mapped_endpoint = subject.mapped_proxy(path: "#{mapped_path}/123/view", request: request)
             expected_endpoint = fuzzy_matcher.resolve(env: {})
             expect(mapped_endpoint).to eq(expected_endpoint)
           end
@@ -111,31 +114,29 @@ class SiteHub
 
         context 'exact match on path' do
           it 'proxies to the requested path' do
-            mapped_endpoint = subject.mapped_proxy(path: application_root, request: request)
+            mapped_endpoint = subject.mapped_proxy(path: mapped_path, request: request)
             expected_endpoint = forward_proxy_builder.resolve(env: {})
             expect(mapped_endpoint).to eq(expected_endpoint)
           end
         end
 
         context 'when more specific route is configured first' do
-
-          subject do
-            described_class.new.tap do |route_set|
-              route_set.add_route(url: "#{base_url}/sub_url", mapped_path: "#{application_root}/sub_url")
-              route_set.add_route(mapped_path: application_root, url: base_url)
-            end
-          end
-
           let(:more_specific_proxy_builder) do
             subject.values.first
           end
 
-          it 'matches the first endpoint' do
-            expected_endpoint = more_specific_proxy_builder.resolve(env: {})
-            mapped_endpoint = subject.mapped_proxy(path: "#{application_root}/sub_url", request: request)
-            expect(mapped_endpoint).to eq(expected_endpoint)
+          subject do
+            described_class.new.tap do |route_set|
+              route_set.add_route(url: "#{base_url}/sub_url", mapped_path: "#{mapped_path}/sub_url")
+              route_set.add_route(mapped_path: mapped_path, url: base_url)
+            end
           end
 
+          it 'matches the first endpoint' do
+            expected_endpoint = more_specific_proxy_builder.resolve(env: {})
+            mapped_endpoint = subject.mapped_proxy(path: "#{mapped_path}/sub_url", request: request)
+            expect(mapped_endpoint).to eq(expected_endpoint)
+          end
         end
       end
     end

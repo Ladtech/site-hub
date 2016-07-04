@@ -1,6 +1,5 @@
 class SiteHub
   describe Core do
-
     include_context :middleware_test
     include_context :sitehub_json
 
@@ -45,7 +44,7 @@ class SiteHub
 
       context 'reverse_proxies' do
         it 'sets them' do
-          sitehub_json[:reverse_proxies] = [{downstream_url: :url, path: :path}]
+          sitehub_json[:reverse_proxies] = [{ downstream_url: :url, path: :path }]
           expect(core.reverse_proxies).to eq(url: :path)
         end
       end
@@ -78,7 +77,6 @@ class SiteHub
     end
 
     describe '#proxy' do
-
       let(:expected_route) do
         RouteBuilder.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
                          mapped_path: '/app')
@@ -86,28 +84,27 @@ class SiteHub
 
       context 'string as parameters' do
         it 'treats it as the mapped path' do
-          expect_any_instance_of(Middleware::Routes).
-              to receive(:add_route).
-                  with(url: nil, mapped_path: '/app').and_call_original
+          expect_any_instance_of(Middleware::Routes)
+            .to receive(:add_route)
+            .with(url: nil, mapped_path: '/app').and_call_original
           subject.proxy('/app')
         end
       end
 
       context 'hash as parameter' do
         it 'treats the key as the mapped path and the value as downstream url' do
-          expect_any_instance_of(Middleware::Routes).
-              to receive(:add_route).
-                  with(url: :downstream_url, mapped_path: '/app').and_call_original
+          expect_any_instance_of(Middleware::Routes)
+            .to receive(:add_route)
+            .with(url: :downstream_url, mapped_path: '/app').and_call_original
           subject.proxy('/app' => :downstream_url)
         end
       end
 
       context 'block passed in' do
         it 'uses the block when creating the proxy' do
+          proc = proc {}
 
-          proc = proc{}
-
-          expect_any_instance_of(Middleware::Routes).to receive(:add_route) do |*args, &block|
+          expect_any_instance_of(Middleware::Routes).to receive(:add_route) do |*_args, &block|
             expect(block).to be(proc)
           end
 
