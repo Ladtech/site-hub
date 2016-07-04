@@ -1,3 +1,3 @@
 class SiteHub
-  VERSION = '0.4.9'.freeze
+  VERSION = '0.5.0.alpha'.freeze
 end
