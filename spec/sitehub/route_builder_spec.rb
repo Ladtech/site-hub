@@ -297,8 +297,13 @@ class SiteHub
         end
 
         it 'passes the env to the when resolving the correct route' do
-          expect_any_instance_of(subject.endpoints.class).to receive(:resolve).with(env: :env).and_call_original
+          expect_any_instance_of(subject.endpoints.class).to receive(:resolve).with(id: :'', env: :env).and_call_original
           subject.resolve(env: :env)
+        end
+
+        it 'passes the requested route id when resolving the correct route' do
+          expect_any_instance_of(subject.endpoints.class).to receive(:resolve).with(id: :required_route_id, env: :env).and_call_original
+          subject.resolve(id: :required_route_id, env: :env)
         end
       end
 

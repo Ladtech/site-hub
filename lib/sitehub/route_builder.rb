@@ -96,7 +96,7 @@ class SiteHub
 
     def resolve(id: nil, env:)
       id = id.to_s.to_sym
-      endpoints[id] || endpoints.resolve(env: env) || default_proxy
+      endpoints[id] || endpoints.resolve(id: id, env: env) || default_proxy
     end
 
     def route(url: nil, label: nil, rule: nil, &block)

@@ -1,3 +1,4 @@
+require 'active_support'
 class SiteHub
   class ConfigServer
     attr_reader :server_url, :http_client

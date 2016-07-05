@@ -10,7 +10,7 @@ class SiteHub
         !empty?
       end
 
-      def resolve(env: nil)
+      def resolve(id: nil, env: nil)
         return values.first unless values.find(&:rule)
         result = values.find { |route| route.applies?(env) }
         result && result.resolve(env: env)
