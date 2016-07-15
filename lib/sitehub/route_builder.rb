@@ -47,8 +47,8 @@ class SiteHub
     getter_setters :default_proxy, :sitehub_cookie_path, :sitehub_cookie_name
     attr_reader :mapped_path, :id
 
-    def initialize(sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
-      @id = UUID.generate(:compact)
+    def initialize(id: UUID.generate(:compact), sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
+      @id = id.to_s.to_sym
       @mapped_path = mapped_path
       @sitehub_cookie_name = sitehub_cookie_name
       @sitehub_cookie_path = sitehub_cookie_path
@@ -99,16 +99,16 @@ class SiteHub
       endpoints[id] || endpoints.resolve(id: id, env: env) || default_proxy
     end
 
-    def route(url: nil, label: nil, rule: nil, &block)
+    def route(url: nil, label:, rule: nil, &block)
       endpoint = if block
                    raise InvalidDefinitionException, INVALID_ROUTE_DEF_MSG unless rule
                    warn(IGNORING_URL_LABEL_MSG) if url || label
-                   new(rule: rule, &block).build
+                   new(rule: rule, id: "#{self.id}|#{label}", &block).build
                  else
-                   forward_proxy(url: url, label: label, rule: rule)
+                   forward_proxy(url: url, label: "#{self.id}|#{label}", rule: rule)
                  end
 
-      routes.add(endpoint.id, endpoint)
+      routes.add(label, endpoint)
     end
 
     def split(percentage:, url: nil, label: nil, &block)
@@ -150,8 +150,9 @@ class SiteHub
       end
     end
 
-    def new(rule: nil, &block)
-      self.class.new(sitehub_cookie_name: sitehub_cookie_name,
+    def new(id:, rule: nil, &block)
+      self.class.new(id: id,
+                     sitehub_cookie_name: sitehub_cookie_name,
                      mapped_path: mapped_path,
                      rule: rule,
                      &block).tap do |builder|

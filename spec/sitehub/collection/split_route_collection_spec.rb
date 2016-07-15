@@ -117,5 +117,50 @@ class SiteHub
         end
       end
     end
+
+
+
+
+
+    it 'does what we want' do
+
+      subject = described_class.new
+      nested_splits = described_class.new
+      route = Route.new :app, id: 'key1|key2', sitehub_cookie_name: :name
+      nested_splits.add(:key2, route, 50)
+      subject.add :key1, nested_splits, 50
+      puts subject
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    end
   end
 end

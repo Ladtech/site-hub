@@ -54,17 +54,41 @@ class SiteHub
     end
 
     describe '#initialize' do
+
+      let(:named_parameters) do
+        {sitehub_cookie_name: :name,
+         mapped_path: '/path'}
+      end
+
       context 'with a block' do
         it 'evaluates the block in the context of the instance' do
           self_inside_block = nil
-          instance = described_class.new(sitehub_cookie_name: :name,
-                                         mapped_path: '/path') do
+          instance = described_class.new(named_parameters) do
             self_inside_block = self
             default(url: :url)
           end
           expect(self_inside_block).to eq(instance)
         end
       end
+
+      context 'id' do
+        context 'id supplied' do
+          it 'sets the id using it' do
+            subject = described_class.new(named_parameters.merge(id: :custom_id))
+            expect(subject.id).to eq(:custom_id)
+
+          end
+        end
+
+        context 'id not supplied' do
+          it 'is defaulted' do
+            allow(UUID).to receive(:generate).with(:compact).and_return(:auto_id)
+            subject = described_class.new(named_parameters)
+            expect(subject.id).to eq(:auto_id)
+          end
+        end
+      end
+
     end
 
     describe 'valid?' do
@@ -139,8 +163,9 @@ class SiteHub
             subject.split(percentage: 50, &block)
 
             expected_builder = described_class.new(sitehub_cookie_name: :cookie_name,
-                                                   mapped_path: subject.mapped_path, &block).build # sitehub_cookie_name: subject.sitehub_cookie_name
+                                                   mapped_path: subject.mapped_path, &block).build
             expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
+
             expect(subject.endpoints.values).to eq([expected_split])
           end
         end
@@ -182,33 +207,67 @@ class SiteHub
     end
 
     describe '#route' do
-      it 'accepts a rule' do
-        subject.route url: :url, label: :current, rule: :rule
+
+      context 'assigned route_id' do
+        it 'is compound of the route builders id and the given label' do
+          subject.route url: :url, label: :current
+
+          expect(subject.endpoints[:current].id).to eq(:"#{subject.id}|#{:current}")
+        end
+      end
+
+      it 'stores the route against the given label' do
+        subject.route url: :url, label: :current
 
         proxy = ForwardProxy.new(mapped_url: :url,
                                  mapped_path: subject.mapped_path)
 
         expected_route = Route.new(proxy,
-                                   id: :current,
+                                   id: :"#{subject.id}|#{:current}",
                                    sitehub_cookie_name: :cookie_name,
-                                   sitehub_cookie_path: nil).tap do |route|
-          route.rule(:rule)
-        end
-        expect(subject.endpoints).to eq(current: expected_route)
+                                   sitehub_cookie_path: nil)
+
+        expect(subject.endpoints[:current]).to eq(expected_route)
+      end
+
+
+      it 'accepts a rule' do
+        subject.route url: :url, label: :current, rule: :rule
+        expect(subject.endpoints[:current].rule).to eq(:rule)
       end
 
       context 'block supplied' do
         let(:block) do
           proc do
-            route url: :url, label: :label1
+            route url: :url, label: :label2, rule: :rule do
+              route url: :url, label: :label3
+            end
           end
+        end
+
+        it 'stores the nested route_builder against the label' do
+          rule = proc { true }
+          subject.route(rule: rule, label: :label1, &block)
+
+          expected_route_builder = RouteBuilder.new(rule: rule,
+                                                    id: :"#{subject.id}|#{:label1}",
+                                                    sitehub_cookie_name: :cookie_name,
+                                                    mapped_path: '/path',
+                                                    &block).build
+
+          expect(subject.endpoints[:label1]).to eq(expected_route_builder)
+        end
+
+        it 'sets a compound id on the nested route_builder' do
+          subject.route(rule: :rule, label: :label1, &block)
+          expect(subject.endpoints[:label1].endpoints[:label2].id).to eq(:"#{subject.id}|label1|label2")
         end
 
         describe '#errors and warnings' do
           context 'rule not supplied' do
             it 'raise an error' do
               expected_message = described_class::INVALID_ROUTE_DEF_MSG
-              expect { subject.route {} }
+              expect { subject.route(label: :label) {} }
                 .to raise_exception described_class::InvalidDefinitionException, expected_message
             end
           end
@@ -216,7 +275,7 @@ class SiteHub
           context 'url' do
             it 'gives a warning to say that the url will not be used' do
               expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
-              subject.route(rule: :rule, url: :url, &block)
+              subject.route(rule: :rule, url: :url, label: :label, &block)
             end
           end
 
@@ -230,9 +289,9 @@ class SiteHub
 
         it 'stores a proxy builder' do
           rule = proc { true }
-          subject.route(rule: rule, &block)
+          subject.route(rule: rule, label: :label, &block)
 
-          expected_builder = described_class.new(sitehub_cookie_name: :cookie_name,
+          expected_builder = described_class.new(id: :"#{subject.id}|#{:label}", sitehub_cookie_name: :cookie_name,
                                                  rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
             builder.sitehub_cookie_name subject.sitehub_cookie_name
           end.build
@@ -244,7 +303,7 @@ class SiteHub
           it 'raises an error' do
             rule = proc { true }
             expect do
-              subject.route rule: rule do
+              subject.route rule: rule, label: :label do
                 split percentage: 20, url: :url, label: :label1
               end
             end.to raise_exception described_class::InvalidDefinitionException
