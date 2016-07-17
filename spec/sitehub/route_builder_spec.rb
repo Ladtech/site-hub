@@ -49,6 +49,28 @@ class SiteHub
                           mapped_path: '/path')
     end
 
+    describe 'endpoints' do
+      it 'returns RouteCollection by default' do
+        expect(subject.endpoints).to be_a(Collection::RouteCollection)
+      end
+
+      it 'returns the same intance everytime' do
+        collection = Collection::SplitRouteCollection.new
+        subject.endpoints(collection)
+        expect(subject.endpoints).to be(collection)
+      end
+
+      context 'endpoints already set' do
+        context 'different object supplied' do
+          it 'raises an error' do
+            subject.endpoints(Collection::SplitRouteCollection.new)
+            expect { subject.endpoints(Collection::RouteCollection.new) }
+                .to raise_error(RouteBuilder::InvalidDefinitionException)
+          end
+        end
+      end
+    end
+
     it 'supports middleware' do
       expect(described_class).to include(Middleware)
     end
@@ -76,15 +98,6 @@ class SiteHub
           it 'sets the id using it' do
             subject = described_class.new(named_parameters.merge(id: :custom_id))
             expect(subject.id).to eq(:custom_id)
-
-          end
-        end
-
-        context 'id not supplied' do
-          it 'is defaulted' do
-            allow(UUID).to receive(:generate).with(:compact).and_return(:auto_id)
-            subject = described_class.new(named_parameters)
-            expect(subject.id).to eq(:auto_id)
           end
         end
       end
@@ -128,96 +141,31 @@ class SiteHub
     end
 
     describe '#split' do
-      context 'duplicate label used' do
-        it 'raises an error' do
-          subject.split percentage: 10, url: :url, label: :label
-
-          expect { subject.split percentage: 10, url: :url, label: :label }
-            .to raise_exception(Collection::DuplicateVersionException, 'supply unique labels')
-        end
-      end
-
-      context 'split supplied' do
-        let(:block) do
-          proc do
-            default url: :url
-          end
-        end
-
-        context 'url' do
-          it 'gives a warning to say that the url will not be used' do
-            expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
-            subject.split(percentage: 50, url: :url, &block)
-          end
-        end
-
-        context 'label' do
-          it 'gives a warning to say that the url will not be used' do
-            expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
-            subject.split(percentage: 50, label: :label, &block)
-          end
-        end
-
-        context 'block supplied' do
-          it 'stores a forward proxy builder' do
-            subject.split(percentage: 50, &block)
-
-            expected_builder = described_class.new(sitehub_cookie_name: :cookie_name,
-                                                   mapped_path: subject.mapped_path, &block).build
-            expected_split = SiteHub::Collection::SplitRouteCollection::Split.new(0, 50, expected_builder)
-
-            expect(subject.endpoints.values).to eq([expected_split])
-          end
-        end
-      end
-
-      context 'block not supplied' do
-        it 'stores a split for the version' do
-          subject.split url: :url, label: :label, percentage: 50
-
-          proxy = ForwardProxy.new(mapped_url: :url,
-                                   mapped_path: subject.mapped_path)
-
-          expected_route = Route.new(proxy,
-                                     id: :label,
-                                     sitehub_cookie_name: :cookie_name,
-                                     sitehub_cookie_path: nil)
-
-          expected = Collection::SplitRouteCollection.new(expected_route => 50)
-
-          expect(subject.endpoints).to eq(expected)
-        end
-
-        context 'url not supplied' do
-          it 'raises an error' do
-            expect { subject.split(label: :label, percentage: 50) }
-              .to raise_error(RouteBuilder::InvalidDefinitionException)
-          end
-        end
-      end
-
-      context 'routes defined' do
-        it 'throws and error' do
-          subject.route url: :url, label: :label
-
-          expect { subject.split(url: :url, label: :label, percentage: 50) }
-            .to raise_error(RouteBuilder::InvalidDefinitionException)
-        end
+      it 'setups up a splits collection' do
+        subject.split percentage: 10, url: :url, label: :label
+        expect(subject.endpoints).to be_a(Collection::SplitRouteCollection)
       end
     end
 
     describe '#route' do
+      it 'sets up the routes collection' do
+        subject.route url: :url, label: :current
+        expect(subject.endpoints).to be_a(Collection::RouteCollection)
+      end
+    end
+
+
+    describe '#add_endpoint' do
 
       context 'assigned route_id' do
         it 'is compound of the route builders id and the given label' do
-          subject.route url: :url, label: :current
-
-          expect(subject.endpoints[:current].id).to eq(:"#{subject.id}|#{:current}")
+          endpoint = subject.add_endpoint url: :url, label: :current
+          expect(endpoint.id).to eq(:"#{subject.id}|#{:current}")
         end
       end
 
       it 'stores the route against the given label' do
-        subject.route url: :url, label: :current
+        subject.add_endpoint url: :url, label: :current
 
         proxy = ForwardProxy.new(mapped_url: :url,
                                  mapped_path: subject.mapped_path)
@@ -230,10 +178,15 @@ class SiteHub
         expect(subject.endpoints[:current]).to eq(expected_route)
       end
 
-
       it 'accepts a rule' do
-        subject.route url: :url, label: :current, rule: :rule
-        expect(subject.endpoints[:current].rule).to eq(:rule)
+        endpoint = subject.add_endpoint url: :url, label: :current, rule: :rule
+        expect(endpoint.rule).to eq(:rule)
+      end
+
+      it 'accepts a percentage' do
+        subject.endpoints(Collection::SplitRouteCollection.new)
+        endpoint = subject.add_endpoint url: :url, label: :current, percentage: 50
+        expect(endpoint.upper).to eq(50)
       end
 
       context 'block supplied' do
@@ -247,63 +200,51 @@ class SiteHub
 
         it 'stores the nested route_builder against the label' do
           rule = proc { true }
-          subject.route(rule: rule, label: :label1, &block)
+          subject.add_endpoint(rule: rule, label: :label1, &block)
 
-          expected_route_builder = RouteBuilder.new(rule: rule,
+          expected_endpoints = RouteBuilder.new(rule: rule,
                                                     id: :"#{subject.id}|#{:label1}",
                                                     sitehub_cookie_name: :cookie_name,
                                                     mapped_path: '/path',
-                                                    &block).build
+                                                    &block).build.endpoints
 
-          expect(subject.endpoints[:label1]).to eq(expected_route_builder)
-        end
-
-        it 'sets a compound id on the nested route_builder' do
-          subject.route(rule: :rule, label: :label1, &block)
-          expect(subject.endpoints[:label1].endpoints[:label2].id).to eq(:"#{subject.id}|label1|label2")
+          expect(subject.endpoints[:label1]).to eq(expected_endpoints)
         end
 
         describe '#errors and warnings' do
-          context 'rule not supplied' do
+          context 'precentage and rule not supplied' do
             it 'raise an error' do
-              expected_message = described_class::INVALID_ROUTE_DEF_MSG
-              expect { subject.route(label: :label) {} }
-                .to raise_exception described_class::InvalidDefinitionException, expected_message
+              expected_message = described_class::RULE_NOT_SPECIFIED_MSG
+              expect { subject.add_endpoint(label: :label) {} }
+                  .to raise_exception described_class::InvalidDefinitionException, expected_message
             end
           end
 
           context 'url' do
             it 'gives a warning to say that the url will not be used' do
-              expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
-              subject.route(rule: :rule, url: :url, label: :label, &block)
-            end
-          end
-
-          context 'label' do
-            it 'gives a warning to say that the url will not be used' do
-              expect(subject).to receive(:warn).with(described_class::IGNORING_URL_LABEL_MSG)
-              subject.route(rule: :rule, label: :label, &block)
+              expect(subject).to receive(:warn).with(described_class::IGNORING_URL_MSG)
+              subject.add_endpoint(rule: :rule, url: :url, label: :label, &block)
             end
           end
         end
 
         it 'stores a proxy builder' do
           rule = proc { true }
-          subject.route(rule: rule, label: :label, &block)
+          subject.add_endpoint(rule: rule, label: :label, &block)
 
-          expected_builder = described_class.new(id: :"#{subject.id}|#{:label}", sitehub_cookie_name: :cookie_name,
+          expected_endpoints = described_class.new(id: :"#{subject.id}|#{:label}", sitehub_cookie_name: :cookie_name,
                                                  rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
             builder.sitehub_cookie_name subject.sitehub_cookie_name
-          end.build
+          end.build.endpoints
 
-          expect(subject.endpoints.values).to eq([expected_builder])
+          expect(subject.endpoints.values).to eq([expected_endpoints])
         end
 
         context 'invalid definitions inside block' do
           it 'raises an error' do
             rule = proc { true }
             expect do
-              subject.route rule: rule, label: :label do
+              subject.add_endpoint rule: rule, label: :label do
                 split percentage: 20, url: :url, label: :label1
               end
             end.to raise_exception described_class::InvalidDefinitionException
@@ -344,33 +285,17 @@ class SiteHub
     end
 
     describe '#resolve' do
-      subject do
-        described_class.new(sitehub_cookie_name: :cookie_name,
-                            mapped_path: '/')
-      end
+      context 'id not supplied' do
+        context 'routes defined' do
+          it 'returns that route' do
+            subject.route url: :url, label: :current
+            expect(subject.resolve(env: {})).to eq(subject.endpoints.values.first)
+          end
 
-      context 'routes defined' do
-        it 'returns that route' do
-          subject.route url: :url, label: :current
-          expect(subject.resolve(env: {})).to eq(subject.endpoints.values.first)
-        end
-
-        it 'passes the env to the when resolving the correct route' do
-          expect_any_instance_of(subject.endpoints.class).to receive(:resolve).with(id: :'', env: :env).and_call_original
-          subject.resolve(env: :env)
-        end
-
-        it 'passes the requested route id when resolving the correct route' do
-          expect_any_instance_of(subject.endpoints.class).to receive(:resolve).with(id: :required_route_id, env: :env).and_call_original
-          subject.resolve(id: :required_route_id, env: :env)
-        end
-      end
-
-      context 'splits defined' do
-        it 'serves an entry from the routes' do
-          subject.split(percentage: 100, url: :url, label: :label)
-          expect(subject.endpoints).to receive(:resolve).and_return(:pick)
-          expect(subject.resolve(env: {})).to eq(:pick)
+          it 'passes the env to the when resolving the correct route' do
+            expect_any_instance_of(subject.endpoints.class).to receive(:resolve).with(env: :env).and_call_original
+            subject.resolve(env: :env)
+          end
         end
 
         context 'splits not defined' do
@@ -381,30 +306,30 @@ class SiteHub
         end
       end
 
-      context 'version selected' do
-        context 'version applies to a route' do
-          before do
-            subject.split percentage: 50, url: :url1, label: :new
-            subject.split percentage: 50, url: :url2, label: :old
-          end
+      context 'id supplied' do
 
-          let(:application_version1) do
-            subject.endpoints.values.find do |pick|
-              pick.value.id == :new
-            end.value
-          end
-
-          context 'string supplied' do
-            it 'redirects to that version' do
-              expect(subject.resolve(id: :new.to_s, env: {})).to eq(application_version1)
+        context 'nested routes' do
+          let!(:expected) do
+            result = nil
+            subject.split percentage: 0, label: :experiment1 do
+              result = split percentage: 100, url: :url1, label: :new
             end
+            subject.split percentage: 100, label: :experiment2, url: :url
+            result.value
           end
 
-          context 'symbol supplied' do
-            it 'redirects to that version' do
-              expect(subject).to_not receive(:auto_resolve)
-              expect(subject.resolve(id: :new, env: {})).to eq(application_version1)
-            end
+          it 'returns that route' do
+            expect(subject.resolve(id: expected.id, env:{})).to eq(expected)
+          end
+        end
+
+        context 'non nested route' do
+          let!(:expected) do
+            subject.split(percentage: 100, label: :experiment1, url: :url).value
+          end
+
+          it 'returns that route' do
+            expect(subject.resolve(id: expected.id, env:{})).to eq(expected)
           end
         end
       end

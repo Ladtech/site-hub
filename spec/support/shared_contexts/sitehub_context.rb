@@ -12,7 +12,7 @@ shared_context :site_hub do
       builder.error_logger StringIO.new
       downstream_url = downstream_url()
       builder.proxy '/endpoint' do
-        split(percentage: 100) do
+        split(label: :label, percentage: 100) do
           split percentage: 50, label: 'experiment1', url: downstream_url
           split percentage: 50, label: 'experiment2', url: downstream_url
         end

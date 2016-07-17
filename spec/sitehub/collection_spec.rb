@@ -26,6 +26,7 @@ class SiteHub
 
             inheritor.new
           end
+
           it 'raises an error' do
             duplicate = Struct.new(:id).new(1)
             subject.add(duplicate.id, duplicate)

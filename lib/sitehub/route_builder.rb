@@ -14,10 +14,10 @@ class SiteHub
     class InvalidDefinitionException < Exception
     end
 
-    INVALID_SPLIT_MSG = 'url must be defined if not supplying a block'.freeze
     ROUTES_WITH_SPLITS_MSG = 'you cant register routes and splits at the same level'.freeze
-    INVALID_ROUTE_DEF_MSG = 'rule must be specified when supplying a block'.freeze
-    IGNORING_URL_LABEL_MSG = 'Block supplied, ignoring URL and Label parameters'.freeze
+    INVALID_SPLIT_MSG = 'url must be defined if not supplying a block'.freeze
+    RULE_NOT_SPECIFIED_MSG = 'rule must be specified when supplying a block'.freeze
+    IGNORING_URL_MSG = 'Block supplied, ignoring URL parameter'.freeze
     URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
     class << self
@@ -47,7 +47,7 @@ class SiteHub
     getter_setters :default_proxy, :sitehub_cookie_path, :sitehub_cookie_name
     attr_reader :mapped_path, :id
 
-    def initialize(id: UUID.generate(:compact), sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
+    def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
       @id = id.to_s.to_sym
       @mapped_path = mapped_path
       @sitehub_cookie_name = sitehub_cookie_name
@@ -76,9 +76,9 @@ class SiteHub
     end
 
     def endpoints(collection = nil)
-      return @endpoints || Collection::RouteCollection.new unless collection
+      return @endpoints ||= Collection::RouteCollection.new unless collection
 
-      raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && @endpoints != collection
+      raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
       @endpoints = collection
     end
 
@@ -95,33 +95,44 @@ class SiteHub
     end
 
     def resolve(id: nil, env:)
-      id = id.to_s.to_sym
-      endpoints[id] || endpoints.resolve(id: id, env: env) || default_proxy
+      parts = id.to_s.split('|').delete_if { |part| part == self.id.to_s }.collect(&:to_sym)
+      first = parts.delete_at(0)
+      resolved = endpoints[first]
+      result = resolved ? resolved.resolve(id: parts.join('|'), env: env) : endpoints.resolve(env: env)
+      result || default_proxy
     end
+
 
     def route(url: nil, label:, rule: nil, &block)
-      endpoint = if block
-                   raise InvalidDefinitionException, INVALID_ROUTE_DEF_MSG unless rule
-                   warn(IGNORING_URL_LABEL_MSG) if url || label
-                   new(rule: rule, id: "#{self.id}|#{label}", &block).build
-                 else
-                   forward_proxy(url: url, label: "#{self.id}|#{label}", rule: rule)
-                 end
-
-      routes.add(label, endpoint)
+      endpoints(@routes)
+      add_endpoint(label: label, rule: rule, url: url, &block)
     end
 
-    def split(percentage:, url: nil, label: nil, &block)
-      raise InvalidDefinitionException, INVALID_SPLIT_MSG unless block || url
+    def split(percentage:, url: nil, label:, &block)
+      endpoints(@splits)
+      add_endpoint(label: label, percentage: percentage, url: url, &block)
+    end
 
-      proxy = if block
-                warn(IGNORING_URL_LABEL_MSG) if url || label
-                new(&block).build
-              else
-                forward_proxy(label: label, url: url)
-              end
+    def add_endpoint(label:, rule: nil, percentage: nil, url: nil, &block)
+      raise if rule && percentage
 
-      splits.add proxy.id, proxy, percentage
+      endpoint = if block
+                   unless percentage
+                     raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless rule
+                   end
+
+                   warn(IGNORING_URL_MSG) if url
+                   new(rule: rule, id: label, &block).build.endpoints
+                 else
+                   raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless url
+                   forward_proxy(url: url, label: generate_label(label), rule: rule)
+                 end
+
+      endpoints.add(label, endpoint, percentage)
+    end
+
+    def generate_label(label)
+      self.id ? "#{self.id}|#{label}" : label
     end
 
     def valid?
@@ -153,20 +164,10 @@ class SiteHub
     def new(id:, rule: nil, &block)
       self.class.new(id: id,
                      sitehub_cookie_name: sitehub_cookie_name,
+                     sitehub_cookie_path: sitehub_cookie_path,
                      mapped_path: mapped_path,
                      rule: rule,
-                     &block).tap do |builder|
-        builder.sitehub_cookie_name sitehub_cookie_name
-        builder.sitehub_cookie_path sitehub_cookie_path
-      end
-    end
-
-    def splits
-      endpoints(@splits)
-    end
-
-    def routes
-      endpoints(@routes)
+                     &block)
     end
   end
 end
