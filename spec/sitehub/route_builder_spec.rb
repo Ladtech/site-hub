@@ -176,13 +176,6 @@ class SiteHub
 
     describe '#add_endpoint' do
 
-      context 'assigned route_id' do
-        it 'is compound of the route builders id and the given label' do
-          endpoint = subject.add_route url: :url, label: :current
-          expect(endpoint.id).to eq(:"#{subject.id}|#{:current}")
-        end
-      end
-
       it 'stores the route against the given label' do
         subject.add_route url: :url, label: :current
 
@@ -190,7 +183,7 @@ class SiteHub
                                  mapped_path: subject.mapped_path)
 
         expected_route = Route.new(proxy,
-                                   id: :"#{subject.id}|#{:current}",
+                                   id: :current,
                                    sitehub_cookie_name: :cookie_name,
                                    sitehub_cookie_path: nil)
 

@@ -116,16 +116,14 @@ class SiteHub
       raise if rule && percentage
 
       route = if block
-                   unless percentage
-                     raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless rule
-                   end
+                raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless percentage || rule
 
-                   warn(IGNORING_URL_MSG) if url
-                   new(rule: rule, id: label, &block).build.routes
-                 else
-                   raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless url
-                   forward_proxy(url: url, label: generate_label(label), rule: rule)
-                 end
+                warn(IGNORING_URL_MSG) if url
+                new(rule: rule, id: label, &block).build.routes
+              else
+                raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless url
+                forward_proxy(url: url, label: generate_label(label), rule: rule)
+              end
 
       routes.add(label, route, percentage)
     end
