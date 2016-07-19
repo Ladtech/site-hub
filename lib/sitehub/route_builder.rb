@@ -131,7 +131,7 @@ class SiteHub
     end
 
     def generate_label(label)
-      self.id ? "#{self.id}|#{label}" : label
+      self.id.empty? ? label : "#{self.id}|#{label}"
     end
 
     def valid?
