@@ -75,7 +75,7 @@ class SiteHub
       default_proxy(forward_proxy(label: :default, url: url))
     end
 
-    def endpoints(collection = nil)
+    def routes(collection = nil)
       return @endpoints ||= Collection::RouteCollection.new unless collection
 
       raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
@@ -97,38 +97,37 @@ class SiteHub
     def resolve(id: nil, env:)
       parts = id.to_s.split('|').delete_if { |part| part == self.id.to_s }.collect(&:to_sym)
       first = parts.delete_at(0)
-      resolved = endpoints[first]
-      result = resolved ? resolved.resolve(id: parts.join('|'), env: env) : endpoints.resolve(env: env)
+      resolved = routes[first]
+      result = resolved ? resolved.resolve(id: parts.join('|'), env: env) : routes.resolve(env: env)
       result || default_proxy
     end
 
-
     def route(url: nil, label:, rule: nil, &block)
-      endpoints(@routes)
-      add_endpoint(label: label, rule: rule, url: url, &block)
+      routes(@routes)
+      add_route(label: label, rule: rule, url: url, &block)
     end
 
     def split(percentage:, url: nil, label:, &block)
-      endpoints(@splits)
-      add_endpoint(label: label, percentage: percentage, url: url, &block)
+      routes(@splits)
+      add_route(label: label, percentage: percentage, url: url, &block)
     end
 
-    def add_endpoint(label:, rule: nil, percentage: nil, url: nil, &block)
+    def add_route(label:, rule: nil, percentage: nil, url: nil, &block)
       raise if rule && percentage
 
-      endpoint = if block
+      route = if block
                    unless percentage
                      raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless rule
                    end
 
                    warn(IGNORING_URL_MSG) if url
-                   new(rule: rule, id: label, &block).build.endpoints
+                   new(rule: rule, id: label, &block).build.routes
                  else
                    raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless url
                    forward_proxy(url: url, label: generate_label(label), rule: rule)
                  end
 
-      endpoints.add(label, endpoint, percentage)
+      routes.add(label, route, percentage)
     end
 
     def generate_label(label)
@@ -137,7 +136,7 @@ class SiteHub
 
     def valid?
       return true if default_proxy
-      endpoints.valid?
+      routes.valid?
     end
 
     private
@@ -155,7 +154,7 @@ class SiteHub
     end
 
     def build_with_middleware
-      endpoints.values.each do |proxy|
+      routes.values.each do |proxy|
         add_middleware_to_proxy(proxy)
         proxy.init
       end

@@ -69,7 +69,7 @@ class SiteHub
         context 'mapped_route found' do
           it 'uses the forward proxy' do
             subject
-            expect(forward_proxy_builder.endpoints[:current]).to receive(:call) do
+            expect(forward_proxy_builder.routes[:current]).to receive(:call) do
               [200, {}, []]
             end
             expect(get(mapped_path).status).to eq(200)
