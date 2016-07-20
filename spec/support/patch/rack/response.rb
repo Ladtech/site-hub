@@ -14,7 +14,7 @@ module Rack
 
     def cookie_key_value_array
       value = header['Set-Cookie'] || ''
-      value.lines.collect { |line| line.scan(%r{([\.\w]+)=([\.\w/]+)}) }
+      value.lines.collect { |line| Rack::Utils.unescape(line).scan(%r{([\.\w]+)=([\|\.\w/]+)}) }
     end
   end
 end
