@@ -1,5 +1,6 @@
 require 'uuid'
 require 'sitehub/equality'
+require 'sitehub/identifier'
 require 'sitehub/getter_setter_methods'
 require_relative 'collection/split_route_collection'
 require_relative 'rules'
@@ -48,7 +49,7 @@ class SiteHub
     attr_reader :mapped_path, :id
 
     def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
-      @id = id.to_s.to_sym
+      @id = Identifier.new(id)
       @mapped_path = mapped_path
       @sitehub_cookie_name = sitehub_cookie_name
       @sitehub_cookie_path = sitehub_cookie_path
@@ -60,6 +61,22 @@ class SiteHub
 
       instance_eval(&block)
       raise InvalidDefinitionException unless valid?
+    end
+
+
+    # TODO - make private then no need to check rule and percentage
+    def add_route(label:, rule: nil, percentage: nil, url: nil, &block)
+      route = if block
+                raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless percentage || rule
+
+                warn(IGNORING_URL_MSG) if url
+                new(rule: rule, id: label, &block).build.routes
+              else
+                raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless url
+                forward_proxy(url: url, label: id.child_label(label), rule: rule)
+              end
+
+      routes.add(label, route, percentage)
     end
 
     def build
@@ -75,19 +92,12 @@ class SiteHub
       default_proxy(forward_proxy(label: :default, url: url))
     end
 
-    def routes(collection = nil)
-      return @endpoints ||= Collection::RouteCollection.new unless collection
-
-      raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
-      @endpoints = collection
-    end
 
     def forward_proxy(label:, url:, rule: nil)
       proxy = ForwardProxy.new(mapped_url: url, mapped_path: mapped_path)
 
-      id = (label || UUID.generate(:compact)).to_sym
       Route.new(proxy,
-                id: id,
+                id: label,
                 sitehub_cookie_path: sitehub_cookie_path,
                 sitehub_cookie_name: sitehub_cookie_name).tap do |wrapper|
         wrapper.rule(rule)
@@ -95,10 +105,14 @@ class SiteHub
     end
 
     def resolve(id: nil, env:)
-      parts = id.to_s.split('|').delete_if { |part| part == self.id.to_s }.collect(&:to_sym)
-      first = parts.delete_at(0)
-      resolved = routes[first]
-      result = resolved ? resolved.resolve(id: parts.join('|'), env: env) : routes.resolve(env: env)
+      id = Identifier.new(id)
+
+      result = if(resolved = routes[id.root])
+        resolved.resolve(id: id.sub_id, env: env)
+      else
+        routes.resolve(env: env)
+      end
+
       result || default_proxy
     end
 
@@ -107,29 +121,16 @@ class SiteHub
       add_route(label: label, rule: rule, url: url, &block)
     end
 
+    def routes(collection = nil)
+      return @endpoints ||= Collection::RouteCollection.new unless collection
+
+      raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
+      @endpoints = collection
+    end
+
     def split(percentage:, url: nil, label:, &block)
       routes(@splits)
       add_route(label: label, percentage: percentage, url: url, &block)
-    end
-
-    def add_route(label:, rule: nil, percentage: nil, url: nil, &block)
-      raise if rule && percentage
-
-      route = if block
-                raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless percentage || rule
-
-                warn(IGNORING_URL_MSG) if url
-                new(rule: rule, id: label, &block).build.routes
-              else
-                raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless url
-                forward_proxy(url: url, label: generate_label(label), rule: rule)
-              end
-
-      routes.add(label, route, percentage)
-    end
-
-    def generate_label(label)
-      self.id.empty? ? label : "#{self.id}|#{label}"
     end
 
     def valid?

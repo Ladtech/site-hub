@@ -9,7 +9,7 @@ class SiteHub
 
     def initialize(app, id:, sitehub_cookie_name:, sitehub_cookie_path: nil)
       @app = app
-      @id = id
+      @id = Identifier.new(id)
       @sitehub_cookie_name = sitehub_cookie_name
       @sitehub_cookie_path = sitehub_cookie_path
     end

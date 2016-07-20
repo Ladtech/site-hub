@@ -23,9 +23,9 @@ class SiteHub
       def call(env)
         source_request = Rack::Request.new(env)
 
-        forward_proxy = mapped_proxy(path: source_request.path, request: source_request)
+        route = mapped_route(path: source_request.path, request: source_request)
 
-        forward_proxy.call(env)
+        route.call(env)
       end
 
       def init
@@ -46,7 +46,7 @@ class SiteHub
         end
       end
 
-      def mapped_proxy(path:, request:)
+      def mapped_route(path:, request:)
         self[mapping(path)].resolve(id: request.cookies[sitehub_cookie_name], env: request.env)
       end
 

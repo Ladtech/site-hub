@@ -91,7 +91,7 @@ class SiteHub
           subject.sitehub_cookie_name :cookie_name
           request.cookies[:cookie_name] = :preset_id
           expect(forward_proxy_builder).to receive(:resolve).with(id: :preset_id, env: request.env).and_call_original
-          subject.mapped_proxy(path: mapped_path, request: request)
+          subject.mapped_route(path: mapped_path, request: request)
         end
 
         context 'regex match on path' do
@@ -106,7 +106,7 @@ class SiteHub
           end
 
           it 'matches and subsitutes the captured group' do
-            mapped_endpoint = subject.mapped_proxy(path: "#{mapped_path}/123/view", request: request)
+            mapped_endpoint = subject.mapped_route(path: "#{mapped_path}/123/view", request: request)
             expected_endpoint = fuzzy_matcher.resolve(env: {})
             expect(mapped_endpoint).to eq(expected_endpoint)
           end
@@ -114,7 +114,7 @@ class SiteHub
 
         context 'exact match on path' do
           it 'proxies to the requested path' do
-            mapped_endpoint = subject.mapped_proxy(path: mapped_path, request: request)
+            mapped_endpoint = subject.mapped_route(path: mapped_path, request: request)
             expected_endpoint = forward_proxy_builder.resolve(env: {})
             expect(mapped_endpoint).to eq(expected_endpoint)
           end
@@ -134,7 +134,7 @@ class SiteHub
 
           it 'matches the first endpoint' do
             expected_endpoint = more_specific_proxy_builder.resolve(env: {})
-            mapped_endpoint = subject.mapped_proxy(path: "#{mapped_path}/sub_url", request: request)
+            mapped_endpoint = subject.mapped_route(path: "#{mapped_path}/sub_url", request: request)
             expect(mapped_endpoint).to eq(expected_endpoint)
           end
         end
