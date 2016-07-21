@@ -22,6 +22,14 @@ class SiteHub
       expect(subject).to be_a(Collection)
     end
 
+    describe '#[]' do
+      context 'key exists' do
+      end
+
+      context 'key does not exist' do
+      end
+    end
+
     describe '#add' do
       before do
         subject.add route_1.id, route_1, 50
@@ -32,8 +40,8 @@ class SiteHub
 
       it 'sets the selection boundary which is used to choose routes' do
         subject.add route_2.id, route_2, 50
-        first = subject.values.first
-        second = subject.values.last
+        first = subject._values.first
+        second = subject._values.last
 
         expect(first.lower).to eq(0)
         expect(first.upper).to eq(50)
@@ -118,49 +126,12 @@ class SiteHub
       end
     end
 
-
-
-
-
-    it 'does what we want' do
-
-      subject = described_class.new
-      nested_splits = described_class.new
-      route = Route.new :app, id: 'key1|key2', sitehub_cookie_name: :name
-      nested_splits.add(:key2, route, 50)
-      subject.add :key1, nested_splits, 50
-      puts subject
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    describe '#values' do
+      it 'returns values contained inside splits' do
+        subject.add route_1.id, route_1, 50
+        subject.add route_2.id, route_2, 50
+        expect(subject.values).to eq([route_1, route_2])
+      end
     end
   end
 end

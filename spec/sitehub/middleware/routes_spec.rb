@@ -41,7 +41,7 @@ class SiteHub
           end
         end
 
-        context 'no version explicitly defined' do
+        context 'url specified' do
           let(:expected_route) do
             proxy = ForwardProxy.new(mapped_path: mapped_path, mapped_url: :url)
             route(proxy, id: :default)
@@ -50,7 +50,7 @@ class SiteHub
           it 'adds a default proxy for the given mapping' do
             subject.add_route(url: :url, mapped_path: mapped_path)
             route = subject[mapped_path]
-            expect(route.default_proxy).to eq(expected_route)
+            expect(route.default_route).to eq(expected_route)
           end
         end
       end
@@ -87,8 +87,14 @@ class SiteHub
       describe '#mapped_route' do
         let(:request) { Rack::Request.new({}) }
 
-        it 'uses the id in the sitehub_cookie to resolve the correct route' do
+        before do
           subject.sitehub_cookie_name :cookie_name
+          subject.add_route mapped_path: mapped_path do
+            route label: :preset_id, url: :url
+          end
+        end
+
+        it 'uses the id in the sitehub_cookie to resolve the correct route' do
           request.cookies[:cookie_name] = :preset_id
           expect(forward_proxy_builder).to receive(:resolve).with(id: :preset_id, env: request.env).and_call_original
           subject.mapped_route(path: mapped_path, request: request)

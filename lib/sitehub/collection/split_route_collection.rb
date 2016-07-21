@@ -12,12 +12,6 @@ class SiteHub
       MAX = 100
       MIN = 0
 
-      def initialize(hash = {})
-        hash.each do |value, percentage|
-          add(value.id, value, percentage)
-        end
-      end
-
       def add(id, value, percentage)
         raise InvalidSplitException, FIXNUM_ERR_MSG unless percentage.is_a?(Fixnum)
         upper_bound = lower_bound + percentage
@@ -28,20 +22,26 @@ class SiteHub
 
       def resolve(*args)
         random = rand(MAX)
-        result = values.find { |split| random >= split.lower && random < split.upper }
+        result = _values.find { |split| random >= split.lower && random < split.upper }
         result ? result.value.resolve(*args) : nil
       end
 
       def transform(&block)
-        values.each { |split| split.update_value(&block) }
+        _values.each { |split| split.update_value(&block) }
       end
 
       def [](key)
-        key?(key) ? super(key).value : nil
+        key?(key) ? super(key).value : super(key)
+      end
+
+      alias _values values
+
+      def values
+        super().collect(&:value)
       end
 
       def valid?
-        last = values.last
+        last = _values.last
         return true if last && last.upper == MAX
 
         warn(INVALID_SPILTS_MSG)
@@ -51,7 +51,7 @@ class SiteHub
       private
 
       def lower_bound
-        values.empty? ? MIN : values.last.upper
+        _values.empty? ? MIN : _values.last.upper
       end
     end
   end

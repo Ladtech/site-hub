@@ -1,14 +1,13 @@
 class SiteHub
   class Identifier
-
     attr_reader :id, :components
 
-    def initialize id
+    def initialize(id)
       @components = id.to_s.split('|').collect(&:to_sym)
     end
 
     def child_label(label)
-      self.components.empty? ? label : "#{self}|#{label}"
+      components.empty? ? label : "#{self}|#{label}"
     end
 
     def root
@@ -19,6 +18,10 @@ class SiteHub
       Identifier.new(components[1..-1].join('|'))
     end
 
+    def valid?
+      !@components.empty?
+    end
+
     def to_s
       components.join('|')
     end
@@ -27,9 +30,8 @@ class SiteHub
       to_s.to_sym
     end
 
-    def == other
-      other.respond_to?(:to_sym) && self.to_sym == other.to_sym
+    def ==(other)
+      other.respond_to?(:to_sym) && to_sym == other.to_sym
     end
-
   end
 end

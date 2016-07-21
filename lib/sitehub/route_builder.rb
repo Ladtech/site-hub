@@ -1,5 +1,6 @@
 require 'uuid'
 require 'sitehub/equality'
+require 'sitehub/nil_route'
 require 'sitehub/identifier'
 require 'sitehub/getter_setter_methods'
 require_relative 'collection/split_route_collection'
@@ -24,7 +25,9 @@ class SiteHub
     class << self
       # TODO: support nest splits and routes
       def from_hash(hash, sitehub_cookie_name)
-        new(sitehub_cookie_name: sitehub_cookie_name, sitehub_cookie_path: hash[:sitehub_cookie_path], mapped_path: hash[:path]) do
+        new(sitehub_cookie_name: sitehub_cookie_name,
+            sitehub_cookie_path: hash[:sitehub_cookie_path],
+            mapped_path: hash[:path]) do
           extend CollectionMethods
 
           collection(hash, :splits).each do |split|
@@ -45,7 +48,7 @@ class SiteHub
 
     transient :id
 
-    getter_setters :default_proxy, :sitehub_cookie_path, :sitehub_cookie_name
+    getter_setters :sitehub_cookie_path, :sitehub_cookie_name
     attr_reader :mapped_path, :id
 
     def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
@@ -63,35 +66,36 @@ class SiteHub
       raise InvalidDefinitionException unless valid?
     end
 
-
-    # TODO - make private then no need to check rule and percentage
     def add_route(label:, rule: nil, percentage: nil, url: nil, &block)
+      label = id.child_label(label)
       route = if block
                 raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless percentage || rule
-
                 warn(IGNORING_URL_MSG) if url
-                new(rule: rule, id: label, &block).build.routes
+                new(rule: rule, id: label, &block).build
               else
                 raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless url
-                forward_proxy(url: url, label: id.child_label(label), rule: rule)
+                forward_proxy(url: url, label: label, rule: rule)
               end
 
       routes.add(label, route, percentage)
     end
 
-    def build
-      if middleware?
-        build_with_middleware
-        build_default_with_middleware if default_proxy
-      end
+    def default_route
+      routes.default
+    end
 
+    def default_route?
+      !default_route.nil?
+    end
+
+    def build
+      build_with_middleware if middleware?
       self
     end
 
     def default(url:)
-      default_proxy(forward_proxy(label: :default, url: url))
+      routes.default = forward_proxy(label: :default, url: url)
     end
-
 
     def forward_proxy(label:, url:, rule: nil)
       proxy = ForwardProxy.new(mapped_url: url, mapped_path: mapped_path)
@@ -106,14 +110,11 @@ class SiteHub
 
     def resolve(id: nil, env:)
       id = Identifier.new(id)
-
-      result = if(resolved = routes[id.root])
-        resolved.resolve(id: id.sub_id, env: env)
+      if id.valid? && (route = routes[id.root])
+        route.resolve(id: id.sub_id, env: env)
       else
-        routes.resolve(env: env)
+        routes.resolve(env: env) || default_route
       end
-
-      result || default_proxy
     end
 
     def route(url: nil, label:, rule: nil, &block)
@@ -134,7 +135,7 @@ class SiteHub
     end
 
     def valid?
-      return true if default_proxy
+      return true if default_route?
       routes.valid?
     end
 
@@ -147,15 +148,14 @@ class SiteHub
       end
     end
 
-    def build_default_with_middleware
-      add_middleware_to_proxy(default_proxy)
-      default_proxy.init
-    end
-
     def build_with_middleware
-      routes.values.each do |proxy|
-        add_middleware_to_proxy(proxy)
-        proxy.init
+      routes = routes().values.find_all { |route| route.is_a?(Route) }
+
+      routes << default_route if default_route?
+
+      routes.each do |route|
+        add_middleware_to_proxy(route)
+        route.init
       end
     end
 

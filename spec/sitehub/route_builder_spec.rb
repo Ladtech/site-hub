@@ -49,8 +49,6 @@ class SiteHub
                           mapped_path: '/path')
     end
 
-
-
     describe '#routes' do
       it 'returns RouteCollection by default' do
         expect(subject.routes).to be_a(Collection::RouteCollection)
@@ -67,7 +65,7 @@ class SiteHub
           it 'raises an error' do
             subject.routes(Collection::SplitRouteCollection.new)
             expect { subject.routes(Collection::RouteCollection.new) }
-                .to raise_error(RouteBuilder::InvalidDefinitionException)
+              .to raise_error(RouteBuilder::InvalidDefinitionException)
           end
         end
       end
@@ -78,10 +76,9 @@ class SiteHub
     end
 
     describe '#initialize' do
-
       let(:named_parameters) do
-        {sitehub_cookie_name: :name,
-         mapped_path: '/path'}
+        { sitehub_cookie_name: :name,
+          mapped_path: '/path' }
       end
 
       context 'with a block' do
@@ -103,7 +100,6 @@ class SiteHub
           end
         end
       end
-
     end
 
     describe 'valid?' do
@@ -156,9 +152,7 @@ class SiteHub
       end
     end
 
-
     describe '#add_endpoint' do
-
       it 'stores the route against the given label' do
         subject.add_route url: :url, label: :current
 
@@ -196,14 +190,16 @@ class SiteHub
         it 'stores the nested route_builder against the label' do
           rule = proc { true }
           subject.add_route(rule: rule, label: :label1, &block)
+          subject.use middleware
 
           expected_endpoints = RouteBuilder.new(rule: rule,
-                                                    id: :"#{subject.id}|#{:label1}",
-                                                    sitehub_cookie_name: :cookie_name,
-                                                    mapped_path: '/path',
-                                                    &block).build.routes
+                                                id: :label1,
+                                                sitehub_cookie_name: :cookie_name,
+                                                mapped_path: '/path',
+                                                &block).build
 
           expect(subject.routes[:label1]).to eq(expected_endpoints)
+          subject.build
         end
 
         describe '#errors and warnings' do
@@ -211,7 +207,7 @@ class SiteHub
             it 'raise an error' do
               expected_message = described_class::RULE_NOT_SPECIFIED_MSG
               expect { subject.add_route(label: :label) {} }
-                  .to raise_exception described_class::InvalidDefinitionException, expected_message
+                .to raise_exception described_class::InvalidDefinitionException, expected_message
             end
           end
 
@@ -227,10 +223,10 @@ class SiteHub
           rule = proc { true }
           subject.add_route(rule: rule, label: :label, &block)
 
-          expected_endpoints = described_class.new(id: :"#{subject.id}|#{:label}", sitehub_cookie_name: :cookie_name,
-                                                 rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
+          expected_endpoints = described_class.new(id: :label, sitehub_cookie_name: :cookie_name,
+                                                   rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
             builder.sitehub_cookie_name subject.sitehub_cookie_name
-          end.build.routes
+          end.build
 
           expect(subject.routes.values).to eq([expected_endpoints])
         end
@@ -274,7 +270,11 @@ class SiteHub
         it 'wraps the default in the middleware' do
           subject.default url: :url
           subject.build
-          expect(subject.default_proxy).to be_using_rack_stack(middleware, ForwardProxy)
+          expect(subject.default_route).to be_using_rack_stack(middleware, ForwardProxy)
+        end
+
+        context 'nested routes' do
+          pending 'what should it do?'
         end
       end
     end
@@ -296,13 +296,12 @@ class SiteHub
         context 'splits not defined' do
           it 'returns the default' do
             subject.default url: :url
-            expect(subject.resolve(env: {})).to eq(subject.default_proxy)
+            expect(subject.resolve(env: {})).to eq(subject.default_route)
           end
         end
       end
 
       context 'id supplied' do
-
         context 'nested routes' do
           let!(:expected) do
             result = nil
@@ -314,7 +313,18 @@ class SiteHub
           end
 
           it 'returns that route' do
-            expect(subject.resolve(id: expected.id, env:{})).to eq(expected)
+            expect(subject.resolve(id: expected.id, env: {})).to eq(expected)
+          end
+        end
+
+        context 'id does not exist' do
+          let!(:expected) do
+            subject.default url: :url
+            subject.default_route
+          end
+
+          it 'returns the default route' do
+            expect(subject.resolve(id: :missing, env: {})).to eq(expected)
           end
         end
 
@@ -324,7 +334,7 @@ class SiteHub
           end
 
           it 'returns that route' do
-            expect(subject.resolve(id: expected.id, env:{})).to eq(expected)
+            expect(subject.resolve(id: expected.id, env: {})).to eq(expected)
           end
         end
       end

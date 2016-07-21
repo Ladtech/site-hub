@@ -7,7 +7,7 @@ class SiteHub
       end
 
       def valid?
-        !empty?
+        !keys.empty?
       end
 
       def resolve(id: nil, env: nil)
