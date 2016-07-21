@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sitehub (0.5.0.alpha3)
+    sitehub (0.5.0.alpha4)
       activesupport
       em-http-request
       em-synchrony
