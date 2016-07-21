@@ -11,7 +11,7 @@ class SiteHub
     end
 
     def root
-      components.first
+      Identifier.new(components.first)
     end
 
     def sub_id
@@ -30,8 +30,18 @@ class SiteHub
       to_s.to_sym
     end
 
+    def length
+      to_s.length
+    end
+
     def ==(other)
       other.respond_to?(:to_sym) && to_sym == other.to_sym
+    end
+
+    alias eql? ==
+
+    def hash
+      components.hash
     end
   end
 end

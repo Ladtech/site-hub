@@ -8,6 +8,18 @@ class SiteHub
       described_class.new(nil)
     end
 
+    describe '#hash' do
+      it 'returns the hash off the components' do
+        expect(subject.hash).to be(subject.components.hash)
+      end
+    end
+
+    describe '#eql?' do
+      it 'is an alias of the #== method' do
+        expect(subject.method(:eql?)).to eq(subject.method(:==))
+      end
+    end
+
     describe '#initialize' do
       context 'id supplied' do
         it 'it returns a concatenated id' do

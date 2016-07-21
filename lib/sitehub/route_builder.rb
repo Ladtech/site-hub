@@ -16,9 +16,11 @@ class SiteHub
     class InvalidDefinitionException < Exception
     end
 
+    #TODO - correct messaging
     ROUTES_WITH_SPLITS_MSG = 'you cant register routes and splits at the same level'.freeze
     INVALID_SPLIT_MSG = 'url must be defined if not supplying a block'.freeze
-    RULE_NOT_SPECIFIED_MSG = 'rule must be specified when supplying a block'.freeze
+    RULE_NOT_SPECIFIED_MSG = 'rule must be supplied'.freeze
+    PERCENTAGE_NOT_SPECIFIED_MSG = 'percentage must be supplied'.freeze
     IGNORING_URL_MSG = 'Block supplied, ignoring URL parameter'.freeze
     URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
@@ -67,17 +69,24 @@ class SiteHub
     end
 
     def add_route(label:, rule: nil, percentage: nil, url: nil, &block)
-      label = id.child_label(label)
+      child_label = id.child_label(label)
+
       route = if block
-                raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless percentage || rule
+                #TODO test for messages
+                message = splits? ? PERCENTAGE_NOT_SPECIFIED_MSG : RULE_NOT_SPECIFIED_MSG
+                raise InvalidDefinitionException, message unless percentage || rule
                 warn(IGNORING_URL_MSG) if url
-                new(rule: rule, id: label, &block).build
+                new(rule: rule, id: child_label, &block).build
               else
-                raise InvalidDefinitionException, RULE_NOT_SPECIFIED_MSG unless url
-                forward_proxy(url: url, label: label, rule: rule)
+                raise InvalidDefinitionException, URL_REQUIRED_MSG unless url
+                forward_proxy(url: url, label: child_label, rule: rule)
               end
 
-      routes.add(label, route, percentage)
+      routes.add(Identifier.new(label), route, percentage)
+    end
+
+    def [] key
+      routes[Identifier.new(key)]
     end
 
     def default_route
@@ -134,6 +143,10 @@ class SiteHub
       add_route(label: label, percentage: percentage, url: url, &block)
     end
 
+    def splits?
+      routes.is_a?(Collection::SplitRouteCollection)
+    end
+
     def valid?
       return true if default_route?
       routes.valid?
@@ -160,12 +173,16 @@ class SiteHub
     end
 
     def new(id:, rule: nil, &block)
+      inherited_middleware = middlewares()
+
       self.class.new(id: id,
                      sitehub_cookie_name: sitehub_cookie_name,
                      sitehub_cookie_path: sitehub_cookie_path,
                      mapped_path: mapped_path,
-                     rule: rule,
-                     &block)
+                     rule: rule) do
+        middlewares.concat(inherited_middleware)
+        instance_eval(&block)
+      end
     end
   end
 end

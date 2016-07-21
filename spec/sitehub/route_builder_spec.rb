@@ -9,7 +9,7 @@ class SiteHub
       include_context :sitehub_json
 
       subject do
-        described_class.from_hash(proxy_1, :expected).routes[route_1[:label]]
+        described_class.from_hash(proxy_1, :expected)[route_1[:label]]
       end
 
       context 'splits' do
@@ -67,6 +67,15 @@ class SiteHub
             expect { subject.routes(Collection::RouteCollection.new) }
               .to raise_error(RouteBuilder::InvalidDefinitionException)
           end
+        end
+      end
+    end
+
+    describe '#[]' do
+      context 'id of existing route passed in' do
+        it 'returns it' do
+          subject.split(label: :current, percentage: 100, url: :url)
+          expect(subject[:current]).to eq(subject[:current])
         end
       end
     end
@@ -164,7 +173,7 @@ class SiteHub
                                    sitehub_cookie_name: :cookie_name,
                                    sitehub_cookie_path: nil)
 
-        expect(subject.routes[:current]).to eq(expected_route)
+        expect(subject[:current]).to eq(expected_route)
       end
 
       it 'accepts a rule' do
@@ -198,7 +207,7 @@ class SiteHub
                                                 mapped_path: '/path',
                                                 &block).build
 
-          expect(subject.routes[:label1]).to eq(expected_endpoints)
+          expect(subject[:label1]).to eq(expected_endpoints)
           subject.build
         end
 
@@ -250,9 +259,9 @@ class SiteHub
       context 'middleware not specified' do
         it 'leaves it the proxies alone' do
           subject.route url: :url, label: :current
-          expect(subject.routes[:current]).to be_using_rack_stack(ForwardProxy)
+          expect(subject[:current]).to be_using_rack_stack(ForwardProxy)
           subject.build
-          expect(subject.routes[:current]).to be_using_rack_stack(ForwardProxy)
+          expect(subject[:current]).to be_using_rack_stack(ForwardProxy)
         end
       end
 
@@ -264,7 +273,7 @@ class SiteHub
         it 'wraps the forward proxies in the middleware' do
           subject.route url: :url, label: :current
           subject.build
-          expect(subject.routes[:current]).to be_using_rack_stack(middleware, ForwardProxy)
+          expect(subject[:current]).to be_using_rack_stack(middleware, ForwardProxy)
         end
 
         it 'wraps the default in the middleware' do
@@ -277,6 +286,20 @@ class SiteHub
           pending 'what should it do?'
         end
       end
+
+      context 'middleware present on the parent route' do
+        it 'adds it to the list middleware to be added' do
+          middleware = middleware()
+          subject.split(percentage: 100, label: :parent) do
+            use middleware
+            split(percentage: 100, label: :child) do
+              default url: :url
+            end
+          end
+          expect(subject[:parent][:child].default_route).to be_using(middleware)
+        end
+      end
+
     end
 
     describe '#resolve' do
