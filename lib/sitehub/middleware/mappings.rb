@@ -8,7 +8,7 @@ require 'em-http'
 
 class SiteHub
   module Middleware
-    class CandidateRoutes < Hash
+    class Mappings < Hash
       NIL_ROUTE = NilRoute.new
 
       include Equality

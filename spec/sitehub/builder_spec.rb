@@ -123,11 +123,11 @@ class SiteHub
           end
 
           it 'adds a forward proxies' do
-            expect(subject.build).to be_using(Middleware::CandidateRoutes)
+            expect(subject.build).to be_using(Middleware::Mappings)
           end
 
           it 'configures it with the sitehub_cookie_name' do
-            forward_proxies = find_middleware(subject.build, Middleware::CandidateRoutes)
+            forward_proxies = find_middleware(subject.build, Middleware::Mappings)
             expect(forward_proxies.sitehub_cookie_name).to eq(:custom_cookie_name)
           end
         end
@@ -173,7 +173,7 @@ class SiteHub
                                  Middleware::ErrorHandling,
                                  Middleware::TransactionId,
                                  Middleware::ReverseProxy,
-                                 Middleware::CandidateRoutes]
+                                 Middleware::Mappings]
 
           expect(middleware_stack).to eq(expected_middleware)
         end
