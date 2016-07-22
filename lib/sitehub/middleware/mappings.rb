@@ -39,9 +39,9 @@ class SiteHub
           return
         end
 
-        self[mapped_path] = RouteBuilder.new(sitehub_cookie_name: sitehub_cookie_name,
-                                             mapped_path: mapped_path,
-                                             &block).tap do |builder|
+        self[mapped_path] = RouteCandidates.new(sitehub_cookie_name: sitehub_cookie_name,
+                                                mapped_path: mapped_path,
+                                                &block).tap do |builder|
           builder.default(url: url) if url
         end
       end

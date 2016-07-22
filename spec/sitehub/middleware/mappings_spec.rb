@@ -35,7 +35,7 @@ class SiteHub
         context 'RouteBuilder as parameter' do
           it 'sets it' do
             another_mapping = '/mapping'
-            route = RouteBuilder.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: another_mapping)
+            route = RouteCandidates.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: another_mapping)
             subject.add_route route_builder: route
             expect(subject[another_mapping]).to be(route)
           end

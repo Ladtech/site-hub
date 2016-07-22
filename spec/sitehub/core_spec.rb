@@ -78,8 +78,8 @@ class SiteHub
 
     describe '#proxy' do
       let(:expected_route) do
-        RouteBuilder.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
-                         mapped_path: '/app')
+        RouteCandidates.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
+                            mapped_path: '/app')
       end
 
       context 'string as parameters' do

@@ -1,8 +1,8 @@
 # rubocop:disable Metrics/ClassLength
-require 'sitehub/route_builder'
+require 'sitehub/route_candidates'
 
 class SiteHub
-  describe RouteBuilder do
+  describe RouteCandidates do
     include_context :middleware_test
 
     describe '::from_hash' do
@@ -65,7 +65,7 @@ class SiteHub
           it 'raises an error' do
             subject.routes(Collection::SplitRouteCollection.new)
             expect { subject.routes(Collection::RouteCollection.new) }
-              .to raise_error(RouteBuilder::InvalidDefinitionException)
+              .to raise_error(RouteCandidates::InvalidDefinitionException)
           end
         end
       end
@@ -201,11 +201,11 @@ class SiteHub
           subject.add_route(rule: rule, label: :label1, &block)
           subject.use middleware
 
-          expected_endpoints = RouteBuilder.new(rule: rule,
-                                                id: :label1,
-                                                sitehub_cookie_name: :cookie_name,
-                                                mapped_path: '/path',
-                                                &block).build
+          expected_endpoints = RouteCandidates.new(rule: rule,
+                                                   id: :label1,
+                                                   sitehub_cookie_name: :cookie_name,
+                                                   mapped_path: '/path',
+                                                   &block).build
 
           expect(subject[:label1]).to eq(expected_endpoints)
           subject.build
