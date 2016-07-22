@@ -46,7 +46,7 @@ class SiteHub
 
     def initialize(&block)
       @reverse_proxies = {}
-      @mappings = Middleware::Mappings.new
+      @mappings = Middleware::CandidateRouteMappings.new
       instance_eval(&block) if block
     end
 
