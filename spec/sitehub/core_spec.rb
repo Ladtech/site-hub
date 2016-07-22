@@ -38,7 +38,7 @@ class SiteHub
           sitehub_json[:sitehub_cookie_name] = 'custom_name'
 
           expect(core.sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
-          expect(core.routes['/route_1'].sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
+          expect(core.mappings['/route_1'].sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
         end
       end
 
@@ -123,7 +123,7 @@ class SiteHub
 
         it 'passes the block to the route constructor' do
           expected_route.split url: :endpoint, percentage: 100, label: :label
-          expect(subject.routes['/app'].routes).to eq(expected_route.routes)
+          expect(subject.mappings['/app'].routes).to eq(expected_route.routes)
         end
       end
     end

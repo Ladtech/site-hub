@@ -28,7 +28,7 @@ class SiteHub
           sitehub_cookie_name config[:sitehub_cookie_name] if config[:sitehub_cookie_name]
 
           collection!(config, :proxies).each do |proxy|
-            routes.add_route route_builder: RouteBuilder.from_hash(proxy, sitehub_cookie_name)
+            mappings.add_route route_builder: RouteBuilder.from_hash(proxy, sitehub_cookie_name)
           end
 
           collection(config, :reverse_proxies).each do |proxy|
@@ -41,23 +41,23 @@ class SiteHub
     include Equality
     extend Forwardable
 
-    attr_reader :routes, :reverse_proxies
-    def_delegator :routes, :sitehub_cookie_name
+    attr_reader :mappings, :reverse_proxies
+    def_delegator :mappings, :sitehub_cookie_name
 
     def initialize(&block)
       @reverse_proxies = {}
-      @routes = Middleware::Mappings.new
+      @mappings = Middleware::Mappings.new
       instance_eval(&block) if block
     end
 
     def build
-      Middleware::ReverseProxy.new(routes.init, reverse_proxies)
+      Middleware::ReverseProxy.new(mappings.init, reverse_proxies)
     end
 
     def proxy(opts = {}, &block)
       mapped_path, url = *(opts.respond_to?(:to_a) ? opts.to_a : [opts]).flatten
 
-      routes.add_route(url: url,
+      mappings.add_route(url: url,
                        mapped_path: mapped_path,
                        &block)
     end
