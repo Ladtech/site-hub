@@ -72,7 +72,6 @@ class SiteHub
       child_label = id.child_label(label)
 
       route = if block
-                #TODO test for messages
                 message = splits? ? PERCENTAGE_NOT_SPECIFIED_MSG : RULE_NOT_SPECIFIED_MSG
                 raise InvalidDefinitionException, message unless percentage || rule
                 warn(IGNORING_URL_MSG) if url

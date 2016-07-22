@@ -213,11 +213,24 @@ class SiteHub
 
         describe '#errors and warnings' do
           context 'precentage and rule not supplied' do
-            it 'raise an error' do
-              expected_message = described_class::RULE_NOT_SPECIFIED_MSG
-              expect { subject.add(label: :label) {} }
-                .to raise_exception described_class::InvalidDefinitionException, expected_message
+            context 'split required' do
+              it 'raise an error' do
+                subject.candidates(Collection::SplitRouteCollection.new)
+                expected_message = described_class::PERCENTAGE_NOT_SPECIFIED_MSG
+                expect { subject.add(label: :label) {} }
+                    .to raise_exception described_class::InvalidDefinitionException, expected_message
+              end
             end
+
+            context 'route required' do
+              it 'raise an error' do
+                subject.candidates(Collection::RouteCollection.new)
+                expected_message = described_class::RULE_NOT_SPECIFIED_MSG
+                expect { subject.add(label: :label) {} }
+                    .to raise_exception described_class::InvalidDefinitionException, expected_message
+              end
+            end
+
           end
 
           context 'url' do
