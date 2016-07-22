@@ -3,6 +3,7 @@ require 'rack/test'
 require 'webmock/rspec'
 require 'timecop'
 $LOAD_PATH.unshift("#{__dir__}/..", "#{__dir__}/support")
+require 'async/middleware'
 
 require 'support/shared_contexts'
 require 'support/shared_examples'
