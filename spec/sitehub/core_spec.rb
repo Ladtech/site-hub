@@ -84,7 +84,7 @@ class SiteHub
 
       context 'string as parameters' do
         it 'treats it as the mapped path' do
-          expect_any_instance_of(Middleware::Routes)
+          expect_any_instance_of(Middleware::CandidateRoutes)
             .to receive(:add_route)
             .with(url: nil, mapped_path: '/app').and_call_original
           subject.proxy('/app')
@@ -93,7 +93,7 @@ class SiteHub
 
       context 'hash as parameter' do
         it 'treats the key as the mapped path and the value as downstream url' do
-          expect_any_instance_of(Middleware::Routes)
+          expect_any_instance_of(Middleware::CandidateRoutes)
             .to receive(:add_route)
             .with(url: :downstream_url, mapped_path: '/app').and_call_original
           subject.proxy('/app' => :downstream_url)
@@ -104,7 +104,7 @@ class SiteHub
         it 'uses the block when creating the proxy' do
           proc = proc {}
 
-          expect_any_instance_of(Middleware::Routes).to receive(:add_route) do |*_args, &block|
+          expect_any_instance_of(Middleware::CandidateRoutes).to receive(:add_route) do |*_args, &block|
             expect(block).to be(proc)
           end
 

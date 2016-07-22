@@ -1,8 +1,8 @@
-require 'sitehub/middleware/routes'
+require 'sitehub/middleware/candidate_routes'
 
 class SiteHub
   module Middleware
-    describe Routes do
+    describe CandidateRoutes do
       let(:base_url) { 'http://google.com' }
       let(:mapped_path) { '/app' }
       let(:mapped_path) { '/application_url' }

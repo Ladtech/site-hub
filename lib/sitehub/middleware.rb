@@ -2,7 +2,7 @@ $LOAD_PATH.unshift(__dir__)
 require 'middleware/logging'
 require 'middleware/transaction_id'
 require 'middleware/error_handling'
-require 'middleware/routes'
+require 'middleware/candidate_routes'
 require 'middleware/reverse_proxy'
 require 'middleware/config_loader'
 require 'rack/ssl-enforcer'
