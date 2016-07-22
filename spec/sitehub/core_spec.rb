@@ -123,7 +123,7 @@ class SiteHub
 
         it 'passes the block to the route constructor' do
           expected_route.split url: :endpoint, percentage: 100, label: :label
-          expect(subject.mappings['/app'].routes).to eq(expected_route.routes)
+          expect(subject.mappings['/app'].candidates).to eq(expected_route.candidates)
         end
       end
     end

@@ -51,20 +51,20 @@ class SiteHub
 
     describe '#routes' do
       it 'returns RouteCollection by default' do
-        expect(subject.routes).to be_a(Collection::RouteCollection)
+        expect(subject.candidates).to be_a(Collection::RouteCollection)
       end
 
       it 'returns the same intance everytime' do
         collection = Collection::SplitRouteCollection.new
-        subject.routes(collection)
-        expect(subject.routes).to be(collection)
+        subject.candidates(collection)
+        expect(subject.candidates).to be(collection)
       end
 
       context 'endpoints already set' do
         context 'different object supplied' do
           it 'raises an error' do
-            subject.routes(Collection::SplitRouteCollection.new)
-            expect { subject.routes(Collection::RouteCollection.new) }
+            subject.candidates(Collection::SplitRouteCollection.new)
+            expect { subject.candidates(Collection::RouteCollection.new) }
               .to raise_error(CandidateRoutes::InvalidDefinitionException)
           end
         end
@@ -150,20 +150,20 @@ class SiteHub
     describe '#split' do
       it 'setups up a splits collection' do
         subject.split percentage: 10, url: :url, label: :label
-        expect(subject.routes).to be_a(Collection::SplitRouteCollection)
+        expect(subject.candidates).to be_a(Collection::SplitRouteCollection)
       end
     end
 
     describe '#route' do
       it 'sets up the routes collection' do
         subject.route url: :url, label: :current
-        expect(subject.routes).to be_a(Collection::RouteCollection)
+        expect(subject.candidates).to be_a(Collection::RouteCollection)
       end
     end
 
-    describe '#add_endpoint' do
+    describe '#add' do
       it 'stores the route against the given label' do
-        subject.add_route url: :url, label: :current
+        subject.add url: :url, label: :current
 
         proxy = ForwardProxy.new(mapped_url: :url,
                                  mapped_path: subject.mapped_path)
@@ -177,13 +177,13 @@ class SiteHub
       end
 
       it 'accepts a rule' do
-        endpoint = subject.add_route url: :url, label: :current, rule: :rule
+        endpoint = subject.add url: :url, label: :current, rule: :rule
         expect(endpoint.rule).to eq(:rule)
       end
 
       it 'accepts a percentage' do
-        subject.routes(Collection::SplitRouteCollection.new)
-        endpoint = subject.add_route url: :url, label: :current, percentage: 50
+        subject.candidates(Collection::SplitRouteCollection.new)
+        endpoint = subject.add url: :url, label: :current, percentage: 50
         expect(endpoint.upper).to eq(50)
       end
 
@@ -198,7 +198,7 @@ class SiteHub
 
         it 'stores the nested route_builder against the label' do
           rule = proc { true }
-          subject.add_route(rule: rule, label: :label1, &block)
+          subject.add(rule: rule, label: :label1, &block)
           subject.use middleware
 
           expected_endpoints = CandidateRoutes.new(rule: rule,
@@ -215,7 +215,7 @@ class SiteHub
           context 'precentage and rule not supplied' do
             it 'raise an error' do
               expected_message = described_class::RULE_NOT_SPECIFIED_MSG
-              expect { subject.add_route(label: :label) {} }
+              expect { subject.add(label: :label) {} }
                 .to raise_exception described_class::InvalidDefinitionException, expected_message
             end
           end
@@ -223,28 +223,28 @@ class SiteHub
           context 'url' do
             it 'gives a warning to say that the url will not be used' do
               expect(subject).to receive(:warn).with(described_class::IGNORING_URL_MSG)
-              subject.add_route(rule: :rule, url: :url, label: :label, &block)
+              subject.add(rule: :rule, url: :url, label: :label, &block)
             end
           end
         end
 
         it 'stores a proxy builder' do
           rule = proc { true }
-          subject.add_route(rule: rule, label: :label, &block)
+          subject.add(rule: rule, label: :label, &block)
 
           expected_endpoints = described_class.new(id: :label, sitehub_cookie_name: :cookie_name,
                                                    rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
             builder.sitehub_cookie_name subject.sitehub_cookie_name
           end.build
 
-          expect(subject.routes.values).to eq([expected_endpoints])
+          expect(subject.candidates.values).to eq([expected_endpoints])
         end
 
         context 'invalid definitions inside block' do
           it 'raises an error' do
             rule = proc { true }
             expect do
-              subject.add_route rule: rule, label: :label do
+              subject.add rule: rule, label: :label do
                 split percentage: 20, url: :url, label: :label1
               end
             end.to raise_exception described_class::InvalidDefinitionException
@@ -307,11 +307,11 @@ class SiteHub
         context 'routes defined' do
           it 'returns that route' do
             subject.route url: :url, label: :current
-            expect(subject.resolve(env: {})).to eq(subject.routes.values.first)
+            expect(subject.resolve(env: {})).to eq(subject.candidates.values.first)
           end
 
           it 'passes the env to the when resolving the correct route' do
-            expect_any_instance_of(subject.routes.class).to receive(:resolve).with(env: :env).and_call_original
+            expect_any_instance_of(subject.candidates.class).to receive(:resolve).with(env: :env).and_call_original
             subject.resolve(env: :env)
           end
         end
@@ -366,15 +366,15 @@ class SiteHub
     context '#endpoints' do
       context 'called with a collection' do
         it 'sets endpoints to be that collection' do
-          subject.routes(:collection)
-          expect(subject.routes).to eq(:collection)
+          subject.candidates(:collection)
+          expect(subject.candidates).to eq(:collection)
         end
       end
 
       context 'already set with a different collection' do
         it 'raise an error' do
-          subject.routes(:collection1)
-          expect { subject.routes(:collection2) }.to raise_exception described_class::InvalidDefinitionException
+          subject.candidates(:collection1)
+          expect { subject.candidates(:collection2) }.to raise_exception described_class::InvalidDefinitionException
         end
       end
     end

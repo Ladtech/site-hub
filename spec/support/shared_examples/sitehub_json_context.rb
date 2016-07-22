@@ -7,9 +7,9 @@ shared_context :sitehub_json do
 
   let(:proxy_1) do
     {
-      path: '/route_1',
-      sitehub_cookie_path: 'route_1_cookie_path',
-      routes: [route_1]
+        path: '/route_1',
+        sitehub_cookie_path: 'route_1_cookie_path',
+        candidates: [route_1]
     }
   end
 

@@ -36,7 +36,7 @@ class SiteHub
             split(percentage: split[:percentage], url: split[:url], label: split[:label])
           end
 
-          collection(hash, :routes).each do |route|
+          collection(hash, :candidates).each do |route|
             route(url: route[:url], label: route[:label])
           end
 
@@ -68,7 +68,7 @@ class SiteHub
       raise InvalidDefinitionException unless valid?
     end
 
-    def add_route(label:, rule: nil, percentage: nil, url: nil, &block)
+    def add(label:, rule: nil, percentage: nil, url: nil, &block)
       child_label = id.child_label(label)
 
       route = if block
@@ -82,15 +82,15 @@ class SiteHub
                 forward_proxy(url: url, label: child_label, rule: rule)
               end
 
-      routes.add(Identifier.new(label), route, percentage)
+      candidates.add(Identifier.new(label), route, percentage)
     end
 
     def [] key
-      routes[Identifier.new(key)]
+      candidates[Identifier.new(key)]
     end
 
     def default_route
-      routes.default
+      candidates.default
     end
 
     def default_route?
@@ -103,7 +103,7 @@ class SiteHub
     end
 
     def default(url:)
-      routes.default = forward_proxy(label: :default, url: url)
+      candidates.default = forward_proxy(label: :default, url: url)
     end
 
     def forward_proxy(label:, url:, rule: nil)
@@ -119,19 +119,19 @@ class SiteHub
 
     def resolve(id: nil, env:)
       id = Identifier.new(id)
-      if id.valid? && (route = routes[id.root])
+      if id.valid? && (route = candidates[id.root])
         route.resolve(id: id.sub_id, env: env)
       else
-        routes.resolve(env: env) || default_route
+        candidates.resolve(env: env) || default_route
       end
     end
 
     def route(url: nil, label:, rule: nil, &block)
-      routes(@routes)
-      add_route(label: label, rule: rule, url: url, &block)
+      candidates(@routes)
+      add(label: label, rule: rule, url: url, &block)
     end
 
-    def routes(collection = nil)
+    def candidates(collection = nil)
       return @endpoints ||= Collection::RouteCollection.new unless collection
 
       raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
@@ -139,17 +139,17 @@ class SiteHub
     end
 
     def split(percentage:, url: nil, label:, &block)
-      routes(@splits)
-      add_route(label: label, percentage: percentage, url: url, &block)
+      candidates(@splits)
+      add(label: label, percentage: percentage, url: url, &block)
     end
 
     def splits?
-      routes.is_a?(Collection::SplitRouteCollection)
+      candidates.is_a?(Collection::SplitRouteCollection)
     end
 
     def valid?
       return true if default_route?
-      routes.valid?
+      candidates.valid?
     end
 
     private
@@ -162,7 +162,7 @@ class SiteHub
     end
 
     def build_with_middleware
-      routes = routes().values.find_all { |route| route.is_a?(Route) }
+      routes = candidates().values.find_all { |route| route.is_a?(Route) }
 
       routes << default_route if default_route?
 
