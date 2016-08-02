@@ -1,13 +1,12 @@
 require 'stringio'
 
 describe 'route affinity' do
-
   let(:downstream_url) { 'http://localhost:12345' }
   let(:experiment1_url) { "#{downstream_url}/experiment1" }
   let(:experiment2_url) { "#{downstream_url}/experiment2" }
 
-  let(:experiment_body_1){'experiment1_body'}
-  let(:experiment_body_2){'experiment2_body'}
+  let(:experiment_body_1) { 'experiment1_body' }
+  let(:experiment_body_2) { 'experiment2_body' }
 
   before do
     WebMock.enable!
@@ -33,7 +32,6 @@ describe 'route affinity' do
       end
     end
     Async::Middleware.new(sitehub)
-
   end
 
   context 'requested route cookie not present' do
@@ -55,4 +53,3 @@ describe 'route affinity' do
     end
   end
 end
-

@@ -7,11 +7,11 @@ class SiteHub
         {
           proxies: [
             {
-                path: '/route_1',
-                sitehub_cookie_name: 'sitehub.recorded_route',
+              path: '/route_1',
+              sitehub_cookie_name: 'sitehub.recorded_route',
 
-                splits: {},
-                candidates: [
+              splits: {},
+              routes: [
                 {
                   label: :label_1,
                   url: 'http://lvl-up.uk/'

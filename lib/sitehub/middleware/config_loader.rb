@@ -28,6 +28,7 @@ class SiteHub
         @app.call env
       end
 
+      # TODO: handle errors connecting to the config server
       def load_config
         config = cache.fetch(:sitehub_config, expires_in: 30) do
           config_server.get

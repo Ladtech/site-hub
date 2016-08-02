@@ -16,7 +16,6 @@ class SiteHub
     class InvalidDefinitionException < Exception
     end
 
-    #TODO - correct messaging
     ROUTES_WITH_SPLITS_MSG = 'you cant register routes and splits at the same level'.freeze
     INVALID_SPLIT_MSG = 'url must be defined if not supplying a block'.freeze
     RULE_NOT_SPECIFIED_MSG = 'rule must be supplied'.freeze
@@ -36,7 +35,7 @@ class SiteHub
             split(percentage: split[:percentage], url: split[:url], label: split[:label])
           end
 
-          collection(hash, :candidates).each do |route|
+          collection(hash, :routes).each do |route|
             route(url: route[:url], label: route[:label])
           end
 
@@ -48,25 +47,8 @@ class SiteHub
     extend GetterSetterMethods
     include Rules, Equality, Middleware
 
-    transient :id
-
     getter_setters :sitehub_cookie_path, :sitehub_cookie_name
     attr_reader :mapped_path, :id
-
-    def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
-      @id = Identifier.new(id)
-      @mapped_path = mapped_path
-      @sitehub_cookie_name = sitehub_cookie_name
-      @sitehub_cookie_path = sitehub_cookie_path
-      @splits = Collection::SplitRouteCollection.new
-      @routes = Collection::RouteCollection.new
-      rule(rule)
-
-      return unless block_given?
-
-      instance_eval(&block)
-      raise InvalidDefinitionException unless valid?
-    end
 
     def add(label:, rule: nil, percentage: nil, url: nil, &block)
       child_label = id.child_label(label)
@@ -84,8 +66,20 @@ class SiteHub
       candidates.add(Identifier.new(label), route, percentage)
     end
 
-    def [] key
-      candidates[Identifier.new(key)]
+    def build
+      build_with_middleware if middleware?
+      self
+    end
+
+    def candidates(collection = nil)
+      return @endpoints ||= Collection::RouteCollection.new unless collection
+
+      raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
+      @endpoints = collection
+    end
+
+    def default(url:)
+      candidates.default = forward_proxy(label: :default, url: url)
     end
 
     def default_route
@@ -94,15 +88,6 @@ class SiteHub
 
     def default_route?
       !default_route.nil?
-    end
-
-    def build
-      build_with_middleware if middleware?
-      self
-    end
-
-    def default(url:)
-      candidates.default = forward_proxy(label: :default, url: url)
     end
 
     def forward_proxy(label:, url:, rule: nil)
@@ -114,6 +99,21 @@ class SiteHub
                 sitehub_cookie_name: sitehub_cookie_name).tap do |wrapper|
         wrapper.rule(rule)
       end
+    end
+
+    def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
+      @id = Identifier.new(id)
+      @mapped_path = mapped_path
+      @sitehub_cookie_name = sitehub_cookie_name
+      @sitehub_cookie_path = sitehub_cookie_path
+      @splits = Collection::SplitRouteCollection.new
+      @routes = Collection::RouteCollection.new
+      rule(rule)
+
+      return unless block_given?
+
+      instance_eval(&block)
+      raise InvalidDefinitionException unless valid?
     end
 
     def resolve(id: nil, env:)
@@ -130,13 +130,6 @@ class SiteHub
       add(label: label, rule: rule, url: url, &block)
     end
 
-    def candidates(collection = nil)
-      return @endpoints ||= Collection::RouteCollection.new unless collection
-
-      raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
-      @endpoints = collection
-    end
-
     def split(percentage:, url: nil, label:, &block)
       candidates(@splits)
       add(label: label, percentage: percentage, url: url, &block)
@@ -151,6 +144,10 @@ class SiteHub
       candidates.valid?
     end
 
+    def [](key)
+      candidates[Identifier.new(key)]
+    end
+
     private
 
     def add_middleware_to_proxy(proxy)
@@ -161,7 +158,7 @@ class SiteHub
     end
 
     def build_with_middleware
-      routes = candidates().values.find_all { |route| route.is_a?(Route) }
+      routes = candidates.values.find_all { |route| route.is_a?(Route) }
 
       routes << default_route if default_route?
 
@@ -172,7 +169,7 @@ class SiteHub
     end
 
     def new(id:, rule: nil, &block)
-      inherited_middleware = middlewares()
+      inherited_middleware = middlewares
 
       self.class.new(id: id,
                      sitehub_cookie_name: sitehub_cookie_name,

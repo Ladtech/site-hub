@@ -58,8 +58,8 @@ class SiteHub
       mapped_path, url = *(opts.respond_to?(:to_a) ? opts.to_a : [opts]).flatten
 
       mappings.add_route(url: url,
-                       mapped_path: mapped_path,
-                       &block)
+                         mapped_path: mapped_path,
+                         &block)
     end
 
     def reverse_proxy(hash)

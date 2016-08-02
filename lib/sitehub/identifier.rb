@@ -30,10 +30,6 @@ class SiteHub
       to_s.to_sym
     end
 
-    def length
-      to_s.length
-    end
-
     def ==(other)
       other.respond_to?(:to_sym) && to_sym == other.to_sym
     end

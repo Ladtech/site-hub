@@ -1,16 +1,14 @@
 describe 'middleware' do
-
   include_context :middleware_test
 
   let(:downstream_url) { 'http://localhost:12345' }
   let(:experiment1_url) { "#{downstream_url}/experiment1" }
   let(:experiment2_url) { "#{downstream_url}/experiment2" }
 
-  def middleware name
+  def middleware(name)
     create_middleware.tap do |clazz|
       clazz.class_eval do
         define_method :call do |env|
-
           callback = env['async.callback'] || env['async.orig_callback']
           env['async.orig_callback'] = env['async.callback'] = proc do |status, headers, body|
             body = body.body.join if body.is_a?(Rack::BodyProxy)

@@ -8,11 +8,10 @@ class SiteHub
     describe '::from_hash' do
       include_context :sitehub_json
 
-      subject do
-        described_class.from_hash(proxy_1, :expected)[route_1[:label]]
-      end
-
       context 'splits' do
+        subject do
+          described_class.from_hash(split_proxy, :expected)
+        end
         context 'sitehub_cookie_name' do
           it 'sets it' do
             expect(subject.sitehub_cookie_name).to eq(:expected)
@@ -21,26 +20,66 @@ class SiteHub
 
         context 'sitehub_cookie_path' do
           it 'sets it' do
-            expect(subject.sitehub_cookie_path).to eq(proxy_1[:sitehub_cookie_path])
+            expect(subject.sitehub_cookie_path).to eq(split_proxy[:sitehub_cookie_path])
           end
         end
 
-        pending 'returns core with splits'
+        it 'returns core with splits' do
+          split_1 = split_1()
+          split_2 = split_2()
+          expected = described_class.new(sitehub_cookie_name: :expected,
+                                         sitehub_cookie_path: subject.sitehub_cookie_path,
+                                         mapped_path: subject.mapped_path) do
+            split percentage: split_1[:percentage], label: split_1[:label], url: split_1[:url]
+            split percentage: split_2[:percentage], label: split_2[:label], url: split_2[:url]
+          end
+          expect(subject.candidates).to eq(expected.candidates)
+        end
+
+        context 'default' do
+          it 'sets it' do
+            expect(subject.default_route.app.mapped_url).to eq(split_proxy[:default])
+          end
+        end
       end
 
       context 'routes' do
+        subject do
+          described_class.from_hash(routes_proxy, :expected)
+        end
+
         context 'sitehub_cookie_name' do
-          pending 'sets it'
+          it 'sets it' do
+            expect(subject.sitehub_cookie_name).to eq(:expected)
+          end
         end
 
         context 'sitehub_cookie_path' do
-          pending 'sets it'
+          it 'sets it' do
+            expect(subject.sitehub_cookie_path).to eq(routes_proxy[:sitehub_cookie_path])
+          end
         end
-        pending 'returns core with routes'
+
+        it 'returns core with routes' do
+          route_1 = route_1()
+          expected = described_class.new(sitehub_cookie_name: :expected,
+                                         sitehub_cookie_path: subject.sitehub_cookie_path,
+                                         mapped_path: subject.mapped_path) do
+            route label: route_1[:label], url: route_1[:url]
+          end
+          expect(subject.candidates).to eq(expected.candidates)
+        end
+
+        context 'default' do
+          it 'sets it' do
+            expect(subject.default_route.app.mapped_url).to eq(routes_proxy[:default])
+          end
+        end
       end
 
       context 'default' do
-        it 'sets the default'
+        it 'sets the default' do
+        end
       end
     end
 
@@ -218,7 +257,7 @@ class SiteHub
                 subject.candidates(Collection::SplitRouteCollection.new)
                 expected_message = described_class::PERCENTAGE_NOT_SPECIFIED_MSG
                 expect { subject.add(label: :label) {} }
-                    .to raise_exception described_class::InvalidDefinitionException, expected_message
+                  .to raise_exception described_class::InvalidDefinitionException, expected_message
               end
             end
 
@@ -227,10 +266,9 @@ class SiteHub
                 subject.candidates(Collection::RouteCollection.new)
                 expected_message = described_class::RULE_NOT_SPECIFIED_MSG
                 expect { subject.add(label: :label) {} }
-                    .to raise_exception described_class::InvalidDefinitionException, expected_message
+                  .to raise_exception described_class::InvalidDefinitionException, expected_message
               end
             end
-
           end
 
           context 'url' do
@@ -294,10 +332,6 @@ class SiteHub
           subject.build
           expect(subject.default_route).to be_using_rack_stack(middleware, ForwardProxy)
         end
-
-        context 'nested routes' do
-          pending 'what should it do?'
-        end
       end
 
       context 'middleware present on the parent route' do
@@ -312,7 +346,6 @@ class SiteHub
           expect(subject[:parent][:child].default_route).to be_using(middleware)
         end
       end
-
     end
 
     describe '#resolve' do

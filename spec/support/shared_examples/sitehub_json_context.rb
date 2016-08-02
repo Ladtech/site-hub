@@ -1,23 +1,25 @@
 shared_context :sitehub_json do
   let(:sitehub_json) do
     {
-      proxies: [proxy_1, proxy_2]
+      proxies: [routes_proxy, split_proxy]
     }
   end
 
-  let(:proxy_1) do
-    {
-        path: '/route_1',
-        sitehub_cookie_path: 'route_1_cookie_path',
-        candidates: [route_1]
-    }
-  end
-
-  let(:proxy_2) do
+  let(:routes_proxy) do
     {
       path: '/route_1',
       sitehub_cookie_path: 'route_1_cookie_path',
-      splits: [split_1, split_2]
+      routes: [route_1],
+      default: 'route_proxy_default_url'
+    }
+  end
+
+  let(:split_proxy) do
+    {
+      path: '/route_2',
+      sitehub_cookie_path: 'route_2_cookie_path',
+      splits: [split_1, split_2],
+      default: 'split_proxy_default_url'
     }
   end
 
