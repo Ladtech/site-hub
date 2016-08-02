@@ -77,6 +77,50 @@ class SiteHub
         end
       end
 
+      context 'nested routes' do
+        context 'routes inside a split' do
+          subject do
+            described_class.from_hash(nested_route_proxy, :expected)
+          end
+
+          it 'creates them' do
+            route_1 = route_1()
+            nested_route = nested_route()
+
+            expected = described_class.new(sitehub_cookie_name: :expected,
+                                           sitehub_cookie_path: subject.sitehub_cookie_path,
+                                           mapped_path: subject.mapped_path) do
+              split(percentage: nested_route[:percentage], label: nested_route[:label]) do
+                route label: route_1[:label], url: route_1[:url]
+              end
+            end
+            expect(subject).to eq(expected)
+          end
+        end
+
+        context 'splits in a split' do
+          subject do
+            described_class.from_hash(nested_split_proxy, :expected)
+          end
+
+          it 'creates them' do
+            split_1 = split_1()
+            split_2 = split_2()
+            nested_split = nested_split()
+
+            expected = described_class.new(sitehub_cookie_name: :expected,
+                                           sitehub_cookie_path: subject.sitehub_cookie_path,
+                                           mapped_path: subject.mapped_path) do
+              split(percentage: nested_split[:percentage], label: nested_split[:label]) do
+                split percentage: split_1[:percentage], label: split_1[:label], url: split_1[:url]
+                split percentage: split_2[:percentage], label: split_2[:label], url: split_2[:url]
+              end
+            end
+            expect(subject).to eq(expected)
+          end
+        end
+      end
+
       context 'default' do
         it 'sets the default' do
         end
@@ -441,6 +485,34 @@ class SiteHub
         subject.sitehub_cookie_name :expected_cookie_name
         proxy = subject.forward_proxy(label: :label, url: :url)
         expect(proxy.sitehub_cookie_name).to eq(:expected_cookie_name)
+      end
+    end
+
+    describe '#method_missing' do
+      context 'calling scope set' do
+        subject do
+          calling_scope = double(:calling_scope, parent_method: :called)
+          described_class.new(sitehub_cookie_name: :cookie_name,
+                              mapped_path: '/path',
+                              calling_scope: calling_scope)
+        end
+        context 'method on calling_context' do
+          it 'delegates to it' do
+            expect(subject.parent_method).to eq(:called)
+          end
+        end
+
+        context 'method on calling_context' do
+          it 'delegates to it' do
+            expect(subject.parent_method).to eq(:called)
+          end
+        end
+      end
+
+      context 'calling scope not set' do
+        it 'raises an error' do
+          expect { subject.parent_method }.to raise_error(NoMethodError)
+        end
       end
     end
   end

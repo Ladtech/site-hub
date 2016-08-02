@@ -23,23 +23,39 @@ class SiteHub
     IGNORING_URL_MSG = 'Block supplied, ignoring URL parameter'.freeze
     URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
+    extend CollectionMethods
+
     class << self
-      # TODO: support nest splits and routes
+      # TODO: support nested routes, i.e. support rule name being passed in
+
       def from_hash(hash, sitehub_cookie_name)
         new(sitehub_cookie_name: sitehub_cookie_name,
             sitehub_cookie_path: hash[:sitehub_cookie_path],
-            mapped_path: hash[:path]) do
-          extend CollectionMethods
-
-          collection(hash, :splits).each do |split|
-            split(percentage: split[:percentage], url: split[:url], label: split[:label])
-          end
-
-          collection(hash, :routes).each do |route|
-            route(url: route[:url], label: route[:label])
-          end
-
+            mapped_path: hash[:path], calling_scope: self) do
+          handle_routes(hash, self)
           default url: hash[:default] if hash[:default]
+        end
+      end
+
+      def handle_routes(hash, routes)
+        collection(hash, :splits).each do |split|
+          if split[:splits] || split[:routes]
+            routes.split(percentage: split[:percentage], label: split[:label]) do
+              handle_routes(split, self)
+            end
+          else
+            routes.split(percentage: split[:percentage], label: split[:label], url: split[:url])
+          end
+        end
+
+        collection(hash, :routes).each do |route|
+          # if routes[:splits]
+          #   routes.split(percentage: split[:percentage], label: split[:label]) do
+          #     handle_routes(route, self)
+          #   end
+          # else
+          routes.route(url: route[:url], label: route[:label])
+          # end
         end
       end
     end
@@ -48,7 +64,9 @@ class SiteHub
     include Rules, Equality, Middleware
 
     getter_setters :sitehub_cookie_path, :sitehub_cookie_name
-    attr_reader :mapped_path, :id
+    attr_reader :mapped_path, :id, :calling_scope
+
+    transient :calling_scope
 
     def add(label:, rule: nil, percentage: nil, url: nil, &block)
       child_label = id.child_label(label)
@@ -101,8 +119,9 @@ class SiteHub
       end
     end
 
-    def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
+    def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, calling_scope: nil, &block)
       @id = Identifier.new(id)
+      @calling_scope = calling_scope
       @mapped_path = mapped_path
       @sitehub_cookie_name = sitehub_cookie_name
       @sitehub_cookie_path = sitehub_cookie_path
@@ -114,6 +133,13 @@ class SiteHub
 
       instance_eval(&block)
       raise InvalidDefinitionException unless valid?
+    end
+
+    def method_missing(method, *args, &block)
+      super unless calling_scope
+      calling_scope.send(method, *args, &block)
+    rescue NoMethodError
+      super
     end
 
     def resolve(id: nil, env:)
@@ -175,7 +201,8 @@ class SiteHub
                      sitehub_cookie_name: sitehub_cookie_name,
                      sitehub_cookie_path: sitehub_cookie_path,
                      mapped_path: mapped_path,
-                     rule: rule) do
+                     rule: rule,
+                     calling_scope: calling_scope) do
         middlewares.concat(inherited_middleware)
         instance_eval(&block)
       end

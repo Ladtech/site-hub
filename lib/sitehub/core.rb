@@ -1,3 +1,4 @@
+require 'sitehub/collection_methods'
 require 'sitehub/candidate_routes'
 require 'forwardable'
 
@@ -6,17 +7,6 @@ class SiteHub
   end
 
   class ConfigError < Exception
-  end
-
-  module CollectionMethods
-    def collection(hash, item)
-      hash[item] || []
-    end
-
-    def collection!(hash, item)
-      return hash[item] if hash[item]
-      raise ConfigError, "missing: #{item}"
-    end
   end
 
   class Core

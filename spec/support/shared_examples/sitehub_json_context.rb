@@ -23,6 +23,40 @@ shared_context :sitehub_json do
     }
   end
 
+  let(:nested_split_proxy) do
+    {
+      path: '/route_3',
+      sitehub_cookie_path: 'route_3_cookie_path',
+      splits: [nested_split],
+      default: 'route_proxy_default_url'
+    }
+  end
+
+  let(:nested_route_proxy) do
+    {
+      path: '/route_3',
+      sitehub_cookie_path: 'route_3_cookie_path',
+      splits: [nested_route],
+      default: 'route_proxy_default_url'
+    }
+  end
+
+  let(:nested_split) do
+    {
+      label: :nested_split_label,
+      percentage: 100,
+      splits: [split_1, split_2]
+    }
+  end
+
+  let(:nested_route) do
+    {
+      label: :nested_route_label,
+      percentage: 100,
+      routes: [route_1]
+    }
+  end
+
   let(:route_1) do
     {
       label: :route_label_1,
