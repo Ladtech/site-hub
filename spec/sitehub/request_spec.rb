@@ -131,14 +131,12 @@ class SiteHub
       context 'request has been mapped' do
         it 'returns true' do
           subject.map('mapped_path', 'mapped_url')
-
           expect(subject.mapped?).to eq(true)
         end
       end
 
       context 'request has not been mapped' do
         it 'returns false' do
-          subject.map(nil, nil)
           expect(subject.mapped?).to eq(false)
         end
       end

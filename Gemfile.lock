@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sitehub (0.5.0.alpha5)
+    sitehub (0.5.0.alpha7)
       activesupport
       em-http-request
       em-synchrony
@@ -37,7 +37,7 @@ GEM
     cookiejar (0.3.3)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    daemons (1.2.3)
+    daemons (1.2.4)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)

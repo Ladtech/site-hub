@@ -26,6 +26,7 @@ class SiteHub
     def map(path, url)
       @mapped_path = path
       @mapped_url = url
+      @mapped = true
     end
 
     def request_method
@@ -54,7 +55,7 @@ class SiteHub
     end
 
     def mapped?
-      mapped_path.is_a?(String)
+      @mapped == true
     end
 
     def remote_user

@@ -45,6 +45,15 @@ class SiteHub
           end
         end
 
+        context 'query string' do
+          let(:params) { { 'key' => 'value' } }
+          let(:env) { env_for(path: mapped_path, params_or_body: params) }
+          it 'preserves the query string when forwarding the request' do
+            stub_request(http_method, current_version_url).with(query: params)
+            subject.call(request)
+          end
+        end
+
         it 'preserves the headers when forwarding request' do
           http_headers['HTTP_HEADER'] = 'value'
           subject.call(request)
