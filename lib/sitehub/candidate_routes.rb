@@ -3,6 +3,8 @@ require 'sitehub/equality'
 require 'sitehub/nil_route'
 require 'sitehub/identifier'
 require 'sitehub/getter_setter_methods'
+require 'sitehub/candidate_routes/class_methods'
+
 require_relative 'collection/split_route_collection'
 require_relative 'rules'
 require_relative 'resolver'
@@ -23,44 +25,7 @@ class SiteHub
     IGNORING_URL_MSG = 'Block supplied, ignoring URL parameter'.freeze
     URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
-    extend CollectionMethods
-
-    class << self
-      # TODO: support nested routes, i.e. support rule name being passed in
-
-      def from_hash(hash, sitehub_cookie_name)
-        new(sitehub_cookie_name: sitehub_cookie_name,
-            sitehub_cookie_path: hash[:sitehub_cookie_path],
-            mapped_path: hash[:path], calling_scope: self) do
-          handle_routes(hash, self)
-          default url: hash[:default] if hash[:default]
-        end
-      end
-
-      def handle_routes(hash, routes)
-        collection(hash, :splits).each do |split|
-          if split[:splits] || split[:routes]
-            routes.split(percentage: split[:percentage], label: split[:label]) do
-              handle_routes(split, self)
-            end
-          else
-            routes.split(percentage: split[:percentage], label: split[:label], url: split[:url])
-          end
-        end
-
-        collection(hash, :routes).each do |route|
-          # if routes[:splits]
-          #   routes.split(percentage: split[:percentage], label: split[:label]) do
-          #     handle_routes(route, self)
-          #   end
-          # else
-          routes.route(url: route[:url], label: route[:label])
-          # end
-        end
-      end
-    end
-
-    extend GetterSetterMethods
+    extend CollectionMethods, ClassMethods, GetterSetterMethods
     include Rules, Equality, Middleware
 
     getter_setters :sitehub_cookie_path, :sitehub_cookie_name
@@ -72,8 +37,7 @@ class SiteHub
       child_label = id.child_label(label)
 
       route = if block
-                message = splits? ? PERCENTAGE_NOT_SPECIFIED_MSG : RULE_NOT_SPECIFIED_MSG
-                raise InvalidDefinitionException, message unless percentage || rule
+                raise InvalidDefinitionException, candidate_definition_msg unless percentage || rule
                 warn(IGNORING_URL_MSG) if url
                 new(rule: rule, id: child_label, &block).build
               else
@@ -192,6 +156,10 @@ class SiteHub
         add_middleware_to_proxy(route)
         route.init
       end
+    end
+
+    def candidate_definition_msg
+      splits? ? PERCENTAGE_NOT_SPECIFIED_MSG : RULE_NOT_SPECIFIED_MSG
     end
 
     def new(id:, rule: nil, &block)

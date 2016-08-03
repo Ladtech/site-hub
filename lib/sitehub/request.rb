@@ -77,7 +77,7 @@ class SiteHub
       mapping.computed_uri
     end
 
-    memoize :url, :path, :uri, :mapped?, :mapping, :headers, :body, :request_method
+    memoize :url, :path, :uri, :mapping, :headers, :body, :request_method
 
     private
 
