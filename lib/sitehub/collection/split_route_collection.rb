@@ -3,7 +3,7 @@ require_relative 'split_route_collection/split'
 class SiteHub
   class Collection < Hash
     class SplitRouteCollection < Collection
-      class InvalidSplitException < Exception
+      class InvalidSplitException < StandardError
       end
 
       FIXNUM_ERR_MSG = 'splits must be a Fixnum'.freeze

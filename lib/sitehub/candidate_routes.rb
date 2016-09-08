@@ -15,7 +15,11 @@ require_relative 'downstream_client'
 
 class SiteHub
   class CandidateRoutes
-    class InvalidDefinitionException < Exception
+    class InvalidDefinitionError < StandardError
+    end
+
+    INVALID_PATH_MATCHER = 'Matcher for path (%s) was not a valid regexp: %s'.freeze
+    class InvalidPathMatcherError < StandardError
     end
 
     ROUTES_WITH_SPLITS_MSG = 'you cant register routes and splits at the same level'.freeze
@@ -29,7 +33,8 @@ class SiteHub
     include Rules, Equality, Middleware
 
     getter_setters :sitehub_cookie_path, :sitehub_cookie_name
-    attr_reader :mapped_path, :id, :calling_scope
+    attr_reader :id, :calling_scope
+    attr_accessor :mapped_path
 
     transient :calling_scope
 
@@ -37,11 +42,11 @@ class SiteHub
       child_label = id.child_label(label)
 
       route = if block
-                raise InvalidDefinitionException, candidate_definition_msg unless percentage || rule
+                raise InvalidDefinitionError, candidate_definition_msg unless percentage || rule
                 warn(IGNORING_URL_MSG) if url
                 new(rule: rule, id: child_label, &block).build
               else
-                raise InvalidDefinitionException, URL_REQUIRED_MSG unless url
+                raise InvalidDefinitionError, URL_REQUIRED_MSG unless url
                 forward_proxy(url: url, label: child_label, rule: rule)
               end
 
@@ -56,7 +61,7 @@ class SiteHub
     def candidates(collection = nil)
       return @endpoints ||= Collection::RouteCollection.new unless collection
 
-      raise InvalidDefinitionException, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
+      raise InvalidDefinitionError, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
       @endpoints = collection
     end
 
@@ -86,6 +91,8 @@ class SiteHub
     def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, calling_scope: nil, &block)
       @id = Identifier.new(id)
       @calling_scope = calling_scope
+
+      mapped_path = string_to_regexp(mapped_path) if string_containing_regexp?(mapped_path)
       @mapped_path = mapped_path
       @sitehub_cookie_name = sitehub_cookie_name
       @sitehub_cookie_path = sitehub_cookie_path
@@ -96,7 +103,7 @@ class SiteHub
       return unless block_given?
 
       instance_eval(&block)
-      raise InvalidDefinitionException unless valid?
+      raise InvalidDefinitionError unless valid?
     end
 
     def method_missing(method, *args, &block)
@@ -136,6 +143,18 @@ class SiteHub
 
     def [](key)
       candidates[Identifier.new(key)]
+    end
+
+    def string_containing_regexp?(obj)
+      return false unless obj.is_a?(String)
+      obj.start_with?('%r{') && obj.end_with?('}')
+    end
+
+    def string_to_regexp(mapped_path)
+      regexp_string = mapped_path.to_s.sub(/^%r{/, '').sub(/}$/, '')
+      Regexp.compile(regexp_string)
+    rescue RegexpError => e
+      raise InvalidPathMatcherError, format(INVALID_PATH_MATCHER, regexp_string, e.message)
     end
 
     private

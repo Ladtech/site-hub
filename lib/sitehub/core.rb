@@ -3,10 +3,10 @@ require 'sitehub/candidate_routes'
 require 'forwardable'
 
 class SiteHub
-  class InvalidProxyDefinitionException < Exception
+  class InvalidProxyDefinitionException < StandardError
   end
 
-  class ConfigError < Exception
+  class ConfigError < StandardError
   end
 
   class Core

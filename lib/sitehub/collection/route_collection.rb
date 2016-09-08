@@ -1,4 +1,7 @@
 require_relative '../collection'
+# rubocop:disable Lint/UnusedMethodArgument -
+# this is because #resolve is supporting a duck typed interface and needs the env parameter
+
 class SiteHub
   class Collection < Hash
     class RouteCollection < Collection

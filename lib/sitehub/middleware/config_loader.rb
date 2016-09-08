@@ -1,40 +1,36 @@
 require 'active_support'
+require 'sitehub/config_server'
 class SiteHub
-  class ConfigServer
-    attr_reader :server_url, :http_client
-    def initialize(url)
-      @server_url = url
-      @http_client = Faraday.new(ssl: { verify: false }) do |con|
-        con.adapter :em_synchrony
-      end
-    end
-
-    def get
-      JSON(http_client.get(server_url).body, symbolize_names: true)
-    end
-  end
-
   module Middleware
     class ConfigLoader
-      attr_reader :config_server, :app, :cache
+      attr_reader :config_server, :app, :cache, :caching_options
 
-      def initialize(_app, config_server_url)
+      def initialize(_app, config_server_url, caching_options:)
         @config_server = ConfigServer.new(config_server_url)
         @cache = ActiveSupport::Cache::MemoryStore.new(size: 1.megabytes)
+        @caching_options = caching_options
       end
 
       def call(env)
-        load_config
+        begin
+          load_config
+        rescue ConfigServer::Error => e
+          if @app
+            env[ERRORS] << e.message
+          else
+            raise e unless @app
+          end
+        end
+
         @app.call env
       end
 
       # TODO: handle errors connecting to the config server
       def load_config
-        config = cache.fetch(:sitehub_config, expires_in: 30) do
-          config_server.get
+        unless cache.exist?(:sitehub_config)
+          cache.write(:sitehub_config, :retrieved, caching_options)
+          @app = Core.from_hash(config_server.get).build
         end
-
-        @app = Core.from_hash(config).build
       end
     end
   end

@@ -7,8 +7,15 @@ class SiteHub
     include Middleware
     extend GetterSetterMethods
 
-    attr_reader :core
-    getter_setters :access_logger, :error_logger, :config_server
+    DEFAULT_CACHING_OPTIONS = { expires_in: 30 }.freeze
+
+    attr_reader :core, :config_server_url, :config_server_caching_options
+    getter_setters :access_logger, :error_logger
+
+    def config_server(url, caching_options: DEFAULT_CACHING_OPTIONS)
+      @config_server_url = url
+      @config_server_caching_options = caching_options
+    end
 
     def force_ssl(except: [])
       @force_ssl = true
@@ -22,7 +29,7 @@ class SiteHub
 
     def build
       add_default_middleware
-      use ConfigLoader, config_server if config_server
+      use ConfigLoader, config_server_url, caching_options: config_server_caching_options if config_server_url
       apply_middleware(core.build)
     end
 

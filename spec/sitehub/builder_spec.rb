@@ -163,6 +163,27 @@ class SiteHub
 
             expect(middleware_stack).to eq(expected_middleware)
           end
+
+          it 'defaults caching policy' do
+            subject.config_server(:server_url)
+
+            sitehub = subject.build
+
+            config_loader = find_middleware(sitehub, Middleware::ConfigLoader)
+            expect(config_loader.caching_options).to eq(described_class::DEFAULT_CACHING_OPTIONS)
+          end
+
+          context 'caching options specified' do
+            it 'uses them' do
+              caching_options = { force: true }
+              subject.config_server(:server_url, caching_options: caching_options)
+
+              sitehub = subject.build
+
+              config_loader = find_middleware(sitehub, Middleware::ConfigLoader)
+              expect(config_loader.caching_options).to eq(caching_options)
+            end
+          end
         end
 
         it 'adds them in the right order' do

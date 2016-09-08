@@ -81,7 +81,6 @@ describe 'access_logs' do
     processing_time_matcher = '\d{1}\.\d{4}'
     transaction_id_matcher = '[a-z\d]+'
     expected_response_status = 200
-    puts subject
     expect(subject).to match(/transaction_id:#{transaction_id_matcher}:\s"GET\s#{request_url}\s=>\s#{downstream_url}\s"\s#{expected_response_status}\s-\s#{processing_time_matcher}/)
   end
 end

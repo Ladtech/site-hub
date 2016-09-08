@@ -32,7 +32,7 @@ class SiteHub
             subject.add(duplicate.id, duplicate)
             expected_message = described_class::ClassMethods::UNIQUE_LABELS_MSG
             expect { subject.add(duplicate.id, duplicate) }
-              .to raise_exception described_class::DuplicateVersionException, expected_message
+              .to raise_exception described_class::DuplicateVersionError, expected_message
           end
         end
       end

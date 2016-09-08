@@ -21,10 +21,10 @@ class SiteHub
       end
 
       before do
-        subject.init
+        # subject.init
       end
 
-      describe '#add_proxy' do
+      describe '#add_route' do
         def route(app, id:)
           Route.new(app,
                     id: id,
@@ -38,6 +38,37 @@ class SiteHub
             route = CandidateRoutes.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: another_mapping)
             subject.add_route route_builder: route
             expect(subject[another_mapping]).to be(route)
+          end
+        end
+
+        context 'mapped_path' do
+          let(:expected_route) do
+            proxy = ForwardProxy.new(mapped_path: expected_mapping, mapped_url: base_url)
+            route(proxy, id: :current)
+          end
+
+          context 'mapped_path is a string' do
+            let(:mapped_path) { 'string' }
+            let(:expected_mapping) { mapped_path }
+            it 'stores the route against that strubg' do
+              expect(subject[mapped_path][:current]).to eq(expected_route)
+            end
+          end
+
+          context 'mapped_path is a valid regex' do
+            let(:mapped_path) { /regular_expression/ }
+            let(:expected_mapping) { mapped_path }
+            it 'stores the route against that regexp' do
+              expect(subject[mapped_path][:current]).to eq(expected_route)
+            end
+          end
+
+          context 'is a string containing a valid regexp' do
+            let(:expected_mapping) { /regexp/ }
+            let(:mapped_path) { '%r{regexp}' }
+            it 'stores the route against the string coverted to a regexp' do
+              expect(subject[expected_mapping][:current]).to eq(expected_route)
+            end
           end
         end
 

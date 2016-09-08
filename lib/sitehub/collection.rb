@@ -1,6 +1,6 @@
 class SiteHub
   class Collection < Hash
-    class DuplicateVersionException < Exception
+    class DuplicateVersionError < StandardError
     end
 
     module ClassMethods
@@ -16,7 +16,7 @@ class SiteHub
           alias_method :add_backup, :add
 
           send(:define_method, :add) do |id, value, *args|
-            raise DuplicateVersionException, UNIQUE_LABELS_MSG if key?(id)
+            raise DuplicateVersionError, UNIQUE_LABELS_MSG if key?(id)
             add_backup id, value, *args
           end
         end

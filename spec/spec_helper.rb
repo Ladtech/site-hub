@@ -22,9 +22,14 @@ require 'lib/sitehub'
 
 RSpec.configure do |config|
   include Rack::Test::Methods
+
   config.before do
     Timecop.freeze
     WebMock.enable!
+  end
+
+  config.after do
+    Timecop.return
   end
 
   config.after(:suite) do

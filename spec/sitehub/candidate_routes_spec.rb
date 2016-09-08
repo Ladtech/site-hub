@@ -47,7 +47,6 @@ class SiteHub
         subject do
           described_class.from_hash(routes_proxy, :expected)
         end
-
         context 'sitehub_cookie_name' do
           it 'sets it' do
             expect(subject.sitehub_cookie_name).to eq(:expected)
@@ -148,7 +147,7 @@ class SiteHub
           it 'raises an error' do
             subject.candidates(Collection::SplitRouteCollection.new)
             expect { subject.candidates(Collection::RouteCollection.new) }
-              .to raise_error(CandidateRoutes::InvalidDefinitionException)
+              .to raise_error(CandidateRoutes::InvalidDefinitionError)
           end
         end
       end
@@ -189,6 +188,23 @@ class SiteHub
           it 'sets the id using it' do
             subject = described_class.new(named_parameters.merge(id: :custom_id))
             expect(subject.id).to eq(:custom_id)
+          end
+        end
+      end
+
+      context 'mapped_path' do
+        context 'is a string containing malformed regexp' do
+          let(:mapped_path) { '%r{*}' }
+
+          it 'raises an error' do
+            expected_message = begin
+              Regexp.compile('*')
+            rescue RegexpError => e
+              format(described_class::INVALID_PATH_MATCHER, '*', e.message)
+            end
+
+            expect { described_class.new(sitehub_cookie_name: '', mapped_path: '%r{*}') }
+              .to raise_error(described_class::InvalidPathMatcherError, expected_message)
           end
         end
       end
@@ -301,7 +317,7 @@ class SiteHub
                 subject.candidates(Collection::SplitRouteCollection.new)
                 expected_message = described_class::PERCENTAGE_NOT_SPECIFIED_MSG
                 expect { subject.add(label: :label) {} }
-                  .to raise_exception described_class::InvalidDefinitionException, expected_message
+                  .to raise_exception described_class::InvalidDefinitionError, expected_message
               end
             end
 
@@ -310,7 +326,7 @@ class SiteHub
                 subject.candidates(Collection::RouteCollection.new)
                 expected_message = described_class::RULE_NOT_SPECIFIED_MSG
                 expect { subject.add(label: :label) {} }
-                  .to raise_exception described_class::InvalidDefinitionException, expected_message
+                  .to raise_exception described_class::InvalidDefinitionError, expected_message
               end
             end
           end
@@ -327,8 +343,11 @@ class SiteHub
           rule = proc { true }
           subject.add(rule: rule, label: :label, &block)
 
-          expected_endpoints = described_class.new(id: :label, sitehub_cookie_name: :cookie_name,
-                                                   rule: rule, mapped_path: subject.mapped_path, &block).tap do |builder|
+          expected_endpoints = described_class.new(id: :label,
+                                                   sitehub_cookie_name: :cookie_name,
+                                                   rule: rule,
+                                                   mapped_path: subject.mapped_path,
+                                                   &block).tap do |builder|
             builder.sitehub_cookie_name subject.sitehub_cookie_name
           end.build
 
@@ -342,7 +361,7 @@ class SiteHub
               subject.add rule: rule, label: :label do
                 split percentage: 20, url: :url, label: :label1
               end
-            end.to raise_exception described_class::InvalidDefinitionException
+            end.to raise_exception described_class::InvalidDefinitionError
           end
         end
       end
@@ -464,7 +483,7 @@ class SiteHub
       context 'already set with a different collection' do
         it 'raise an error' do
           subject.candidates(:collection1)
-          expect { subject.candidates(:collection2) }.to raise_exception described_class::InvalidDefinitionException
+          expect { subject.candidates(:collection2) }.to raise_exception described_class::InvalidDefinitionError
         end
       end
     end
@@ -485,6 +504,28 @@ class SiteHub
         subject.sitehub_cookie_name :expected_cookie_name
         proxy = subject.forward_proxy(label: :label, url: :url)
         expect(proxy.sitehub_cookie_name).to eq(:expected_cookie_name)
+      end
+    end
+
+    describe '#string_containing_regexp?' do
+      context 'parameter is not a string' do
+        it 'it returns false' do
+          expect(subject.string_containing_regexp?(//)).to eq(false)
+        end
+      end
+
+      context 'parameter is a string' do
+        context 'contains a regexp' do
+          it 'it returns true' do
+            expect(subject.string_containing_regexp?('%r{}')).to be(true)
+          end
+        end
+
+        context 'does not contain a regexp' do
+          it 'returns false' do
+            expect(subject.string_containing_regexp?('')).to eq(false)
+          end
+        end
       end
     end
 
