@@ -19,6 +19,30 @@ class SiteHub
         end.init
       end
 
+      shared_examples 'getter setter' do |default: nil|
+
+        let(:method_name) {self.class.parent_groups[1].description.delete('#')}
+        if default
+          it 'defaults' do
+            expect(subject.public_send(method_name)).to eq(default)
+          end
+        end
+
+        it 'can be set' do
+          custom_value = 'value'
+          subject.public_send(method_name, custom_value)
+          expect(subject.public_send(method_name)).to eq(custom_value)
+        end
+      end
+
+      describe '#sitehub_cookie_path' do
+        it_behaves_like 'getter setter', default: RECORDED_ROUTES_COOKIE_PATH
+      end
+
+      describe '#sitehub_cookie_name' do
+        it_behaves_like 'getter setter', default: RECORDED_ROUTES_COOKIE
+      end
+
       describe '#add_route' do
         def route(app, id:)
           Route.new(app,

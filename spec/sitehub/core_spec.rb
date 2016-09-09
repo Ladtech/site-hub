@@ -33,13 +33,19 @@ class SiteHub
         end
       end
 
-      context 'sitehub_cookie_name' do
-        it 'sets it' do
-          sitehub_json[:sitehub_cookie_name] = 'custom_name'
+      context 'cookie configuration' do
+        context 'defined at top level' do
+          it 'sets it' do
+            sitehub_json[:sitehub_cookie_name] = 'custom_name'
+            sitehub_json[:sitehub_cookie_path] = 'custom_path'
+            sitehub_json[:proxies].first.delete(:sitehub_cookie_path)
 
-          expect(core.sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
-          expect(core.mappings['/route_1'].sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
+            expect(core.sitehub_cookie_name).to eq(expected.sitehub_cookie_name)
+            expect(core.mappings['/route_1'].sitehub_cookie_name).to eq(sitehub_json[:sitehub_cookie_name])
+            expect(core.mappings['/route_1'].sitehub_cookie_path).to eq(sitehub_json[:sitehub_cookie_path])
+          end
         end
+
       end
 
       context 'reverse_proxies' do

@@ -14,6 +14,7 @@ class SiteHub
       include Equality
 
       extend GetterSetterMethods
+      getter_setter :sitehub_cookie_path, RECORDED_ROUTES_COOKIE_PATH
       getter_setter :sitehub_cookie_name, RECORDED_ROUTES_COOKIE
 
       def initialize

@@ -7,6 +7,7 @@ class SiteHub
   RESPONSE = 'sitehub.response'.freeze
   ASYNC_CALLBACK = 'async.callback'.freeze
   RECORDED_ROUTES_COOKIE = 'sitehub.recorded_route'.freeze
+  RECORDED_ROUTES_COOKIE_PATH = '/'.freeze
   ERRORS = 'sitehub.errors'.freeze
   TIME_STAMP_FORMAT = '%d/%b/%Y:%H:%M:%S %z'.freeze
   EMPTY_STRING = ''.freeze

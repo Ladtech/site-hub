@@ -11,9 +11,11 @@ class SiteHub
       end
 
       # TODO: support nested routes, i.e. support rule name being passed in
-      def from_hash(hash, sitehub_cookie_name)
-        new(sitehub_cookie_name: sitehub_cookie_name,
-            sitehub_cookie_path: hash[:sitehub_cookie_path],
+      def from_hash(hash, sitehub_cookie_name, sitehub_cookie_path)
+        cookie_path = hash[:sitehub_cookie_path] || sitehub_cookie_path
+        cookie_name = hash[:sitehub_cookie_name] || sitehub_cookie_name
+        new(sitehub_cookie_name: cookie_name,
+            sitehub_cookie_path: cookie_path,
             mapped_path: hash[:path]) do
           handle_routes(hash, self)
           default url: hash[:default] if hash[:default]
@@ -37,9 +39,10 @@ class SiteHub
           collection(hash, :splits).each do |split|
             label = split[:label]
             percentage = split[:percentage]
+            cookie_name = split[:sitehub_cookie_name] || sitehub_cookie_name
 
             if split[:splits] || split[:routes]
-              routes.split(percentage: percentage, label: label) { handle_routes(split, self) }
+              routes.split(percentage: percentage, label: label)  { handle_routes(split, self) }
             else
               routes.split(percentage: percentage, label: label, url: split[:url])
             end

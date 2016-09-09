@@ -16,9 +16,10 @@ class SiteHub
         new do
           extend CollectionMethods
           sitehub_cookie_name config[:sitehub_cookie_name] if config[:sitehub_cookie_name]
+          sitehub_cookie_path config[:sitehub_cookie_path] if config[:sitehub_cookie_path]
 
           collection!(config, :proxies).each do |proxy|
-            mappings.add_route candidate_routes: CandidateRoutes.from_hash(proxy, sitehub_cookie_name)
+            mappings.add_route candidate_routes: CandidateRoutes.from_hash(proxy, sitehub_cookie_name, sitehub_cookie_path )
           end
 
           collection(config, :reverse_proxies).each do |proxy|
@@ -33,6 +34,7 @@ class SiteHub
 
     attr_reader :mappings, :reverse_proxies
     def_delegator :mappings, :sitehub_cookie_name
+    def_delegator :mappings, :sitehub_cookie_path
 
     def initialize(&block)
       @reverse_proxies = {}
