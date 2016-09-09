@@ -89,18 +89,16 @@ class SiteHub
     def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
       @id = Identifier.new(id)
 
-      @mapped_path = string_containing_regexp?(mapped_path) ? string_to_regexp(mapped_path) : mapped_path
+      @mapped_path = sanitise_mapped_path(mapped_path)
       @sitehub_cookie_name = sitehub_cookie_name
       @sitehub_cookie_path = sitehub_cookie_path
-      @splits = Collection::SplitRouteCollection.new
-      @routes = Collection::RouteCollection.new
+
       rule(rule)
 
-      return unless block_given?
-
-      instance_eval(&block)
-      raise InvalidDefinitionError unless valid?
+      init(&block) if block_given?
     end
+
+
 
     def resolve(id: nil, env:)
       id = Identifier.new(id)
@@ -112,17 +110,15 @@ class SiteHub
     end
 
     def route(url: nil, label:, rule: nil, &block)
+      @routes ||= Collection::RouteCollection.new
       candidates(@routes)
       add(label: label, rule: rule, url: url, &block)
     end
 
     def split(percentage:, url: nil, label:, &block)
+      @splits ||= Collection::SplitRouteCollection.new
       candidates(@splits)
       add(label: label, percentage: percentage, url: url, &block)
-    end
-
-    def splits?
-      candidates.is_a?(Collection::SplitRouteCollection)
     end
 
     def valid?
@@ -170,6 +166,11 @@ class SiteHub
       splits? ? PERCENTAGE_NOT_SPECIFIED_MSG : RULE_NOT_SPECIFIED_MSG
     end
 
+    def init(&block)
+      instance_eval(&block)
+      raise InvalidDefinitionError unless valid?
+    end
+
     def new(id:, rule: nil, &block)
       inherited_middleware = middlewares
 
@@ -181,6 +182,14 @@ class SiteHub
         middlewares.concat(inherited_middleware)
         instance_eval(&block)
       end
+    end
+
+    def sanitise_mapped_path(mapped_path)
+      string_containing_regexp?(mapped_path) ? string_to_regexp(mapped_path) : mapped_path
+    end
+
+    def splits?
+      candidates.is_a?(Collection::SplitRouteCollection)
     end
   end
 end
