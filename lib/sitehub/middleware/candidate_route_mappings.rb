@@ -33,16 +33,16 @@ class SiteHub
         self
       end
 
-      def add_route(url: nil, mapped_path: nil, route_builder: nil, &block)
-        unless route_builder
-          route_builder = CandidateRoutes.new(sitehub_cookie_name: sitehub_cookie_name,
-                                              mapped_path: mapped_path,
-                                              &block).tap do |builder|
+      def add_route(url: nil, mapped_path: nil, candidate_routes: nil, &block)
+        unless candidate_routes
+          candidate_routes = CandidateRoutes.new(sitehub_cookie_name: sitehub_cookie_name,
+                                                 mapped_path: mapped_path,
+                                                 &block).tap do |builder|
             builder.default(url: url) if url
           end
         end
 
-        self[route_builder.mapped_path] = route_builder
+        self[candidate_routes.mapped_path] = candidate_routes
       end
 
       def mapped_route(path:, request:)

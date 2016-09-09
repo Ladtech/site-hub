@@ -4,7 +4,6 @@ class SiteHub
   module Middleware
     describe CandidateRouteMappings do
       let(:base_url) { 'http://google.com' }
-      let(:mapped_path) { '/app' }
       let(:mapped_path) { '/application_url' }
 
       let(:forward_proxy_builder) do
@@ -20,10 +19,6 @@ class SiteHub
         end.init
       end
 
-      before do
-        # subject.init
-      end
-
       describe '#add_route' do
         def route(app, id:)
           Route.new(app,
@@ -32,12 +27,12 @@ class SiteHub
                     sitehub_cookie_path: nil)
         end
 
-        context 'RouteBuilder as parameter' do
+        context 'candidate_routes as parameter' do
           it 'sets it' do
             another_mapping = '/mapping'
-            route = CandidateRoutes.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: another_mapping)
-            subject.add_route route_builder: route
-            expect(subject[another_mapping]).to be(route)
+            candidate_routes = CandidateRoutes.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: another_mapping)
+            subject.add_route candidate_routes: candidate_routes
+            expect(subject[another_mapping]).to be(candidate_routes)
           end
         end
 

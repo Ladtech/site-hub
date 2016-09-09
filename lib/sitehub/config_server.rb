@@ -1,3 +1,4 @@
+require 'json'
 class SiteHub
   class ConfigServer
     BAD_JSON_MSG = 'Illegal JSON returned from config server: %s'.freeze

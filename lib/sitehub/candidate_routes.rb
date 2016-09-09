@@ -3,7 +3,7 @@ require 'sitehub/equality'
 require 'sitehub/nil_route'
 require 'sitehub/identifier'
 require 'sitehub/getter_setter_methods'
-require 'sitehub/candidate_routes/class_methods'
+require 'sitehub/candidate_routes/from_json'
 
 require_relative 'collection/split_route_collection'
 require_relative 'rules'
@@ -29,14 +29,11 @@ class SiteHub
     IGNORING_URL_MSG = 'Block supplied, ignoring URL parameter'.freeze
     URL_REQUIRED_MSG = 'URL must be supplied for splits and routes'.freeze
 
-    extend CollectionMethods, ClassMethods, GetterSetterMethods
-    include Rules, Equality, Middleware
+    extend CollectionMethods, FromJson, GetterSetterMethods
+    include Rules, Equality, Middleware, CollectionMethods
 
     getter_setters :sitehub_cookie_path, :sitehub_cookie_name
-    attr_reader :id, :calling_scope
-    attr_accessor :mapped_path
-
-    transient :calling_scope
+    attr_reader :id, :mapped_path
 
     def add(label:, rule: nil, percentage: nil, url: nil, &block)
       child_label = id.child_label(label)
@@ -88,12 +85,11 @@ class SiteHub
       end
     end
 
-    def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, calling_scope: nil, &block)
+    # TODO: combine cookie name and path in to an : nobject
+    def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
       @id = Identifier.new(id)
-      @calling_scope = calling_scope
 
-      mapped_path = string_to_regexp(mapped_path) if string_containing_regexp?(mapped_path)
-      @mapped_path = mapped_path
+      @mapped_path = string_containing_regexp?(mapped_path) ? string_to_regexp(mapped_path) : mapped_path
       @sitehub_cookie_name = sitehub_cookie_name
       @sitehub_cookie_path = sitehub_cookie_path
       @splits = Collection::SplitRouteCollection.new
@@ -104,13 +100,6 @@ class SiteHub
 
       instance_eval(&block)
       raise InvalidDefinitionError unless valid?
-    end
-
-    def method_missing(method, *args, &block)
-      super unless calling_scope
-      calling_scope.send(method, *args, &block)
-    rescue NoMethodError
-      super
     end
 
     def resolve(id: nil, env:)
@@ -188,8 +177,7 @@ class SiteHub
                      sitehub_cookie_name: sitehub_cookie_name,
                      sitehub_cookie_path: sitehub_cookie_path,
                      mapped_path: mapped_path,
-                     rule: rule,
-                     calling_scope: calling_scope) do
+                     rule: rule) do
         middlewares.concat(inherited_middleware)
         instance_eval(&block)
       end
