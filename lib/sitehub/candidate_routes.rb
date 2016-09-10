@@ -14,6 +14,13 @@ require_relative 'forward_proxy'
 require_relative 'downstream_client'
 
 class SiteHub
+  class TrackingCookieDefinition
+    attr_reader :name, :path
+    def initialize(name, path = nil)
+      @name = name
+      @path = path
+    end
+  end
   class CandidateRoutes
     class InvalidDefinitionError < StandardError
     end
@@ -55,11 +62,12 @@ class SiteHub
       self
     end
 
-    def candidates(collection = nil)
-      return @endpoints ||= Collection::RouteCollection.new unless collection
+    def candidates(clazz = nil)
+      return @endpoints ||= Collection::RouteCollection.new unless clazz
+      @endpoints ||= clazz.new
 
-      raise InvalidDefinitionError, ROUTES_WITH_SPLITS_MSG if @endpoints && !@endpoints.equal?(collection)
-      @endpoints = collection
+      raise InvalidDefinitionError, ROUTES_WITH_SPLITS_MSG unless @endpoints.is_a?(clazz)
+      @endpoints
     end
 
     def default(url:)
@@ -86,19 +94,17 @@ class SiteHub
     end
 
     # TODO: combine cookie name and path in to an : nobject
-    def initialize(id: nil, sitehub_cookie_name:, sitehub_cookie_path: nil, mapped_path:, rule: nil, &block)
+    def initialize(id: nil, version_cookie:, mapped_path:, rule: nil, &block)
       @id = Identifier.new(id)
 
       @mapped_path = sanitise_mapped_path(mapped_path)
-      @sitehub_cookie_name = sitehub_cookie_name
-      @sitehub_cookie_path = sitehub_cookie_path
+      sitehub_cookie_name(version_cookie.name)
+      sitehub_cookie_path(version_cookie.path)
 
       rule(rule)
 
       init(&block) if block_given?
     end
-
-
 
     def resolve(id: nil, env:)
       id = Identifier.new(id)
@@ -110,14 +116,12 @@ class SiteHub
     end
 
     def route(url: nil, label:, rule: nil, &block)
-      @routes ||= Collection::RouteCollection.new
-      candidates(@routes)
+      candidates(Collection::RouteCollection)
       add(label: label, rule: rule, url: url, &block)
     end
 
     def split(percentage:, url: nil, label:, &block)
-      @splits ||= Collection::SplitRouteCollection.new
-      candidates(@splits)
+      candidates(Collection::SplitRouteCollection)
       add(label: label, percentage: percentage, url: url, &block)
     end
 
@@ -175,8 +179,7 @@ class SiteHub
       inherited_middleware = middlewares
 
       self.class.new(id: id,
-                     sitehub_cookie_name: sitehub_cookie_name,
-                     sitehub_cookie_path: sitehub_cookie_path,
+                     version_cookie: TrackingCookieDefinition.new(sitehub_cookie_name, sitehub_cookie_path),
                      mapped_path: mapped_path,
                      rule: rule) do
         middlewares.concat(inherited_middleware)

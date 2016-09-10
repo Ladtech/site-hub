@@ -19,7 +19,7 @@ class SiteHub
           sitehub_cookie_path config[:sitehub_cookie_path] if config[:sitehub_cookie_path]
 
           collection!(config, :proxies).each do |proxy|
-            mappings.add_route candidate_routes: CandidateRoutes.from_hash(proxy, sitehub_cookie_name, sitehub_cookie_path )
+            mappings.add_route candidate_routes: CandidateRoutes.from_hash(proxy, sitehub_cookie_name, sitehub_cookie_path)
           end
 
           collection(config, :reverse_proxies).each do |proxy|

@@ -1,10 +1,9 @@
 class SiteHub
   class CandidateRoutes
-
     module FromJson
       extend CollectionMethods
 
-      def self.extended clazz
+      def self.extended(clazz)
         clazz.class_eval do
           include InstanceMethods
         end
@@ -14,8 +13,7 @@ class SiteHub
       def from_hash(hash, sitehub_cookie_name, sitehub_cookie_path)
         cookie_path = hash[:sitehub_cookie_path] || sitehub_cookie_path
         cookie_name = hash[:sitehub_cookie_name] || sitehub_cookie_name
-        new(sitehub_cookie_name: cookie_name,
-            sitehub_cookie_path: cookie_path,
+        new(version_cookie: TrackingCookieDefinition.new(cookie_name, cookie_path),
             mapped_path: hash[:path]) do
           handle_routes(hash, self)
           default url: hash[:default] if hash[:default]
@@ -24,6 +22,7 @@ class SiteHub
 
       module InstanceMethods
         private
+
         def handle_routes(hash, routes)
           extract_splits(hash, routes)
           extract_routes(hash, routes)
@@ -42,13 +41,12 @@ class SiteHub
             cookie_name = split[:sitehub_cookie_name] || sitehub_cookie_name
 
             if split[:splits] || split[:routes]
-              routes.split(percentage: percentage, label: label)  { handle_routes(split, self) }
+              routes.split(percentage: percentage, label: label) { handle_routes(split, self) }
             else
               routes.split(percentage: percentage, label: label, url: split[:url])
             end
           end
         end
-
       end
     end
   end

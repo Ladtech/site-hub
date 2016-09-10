@@ -20,8 +20,7 @@ class SiteHub
       end
 
       shared_examples 'getter setter' do |default: nil|
-
-        let(:method_name) {self.class.parent_groups[1].description.delete('#')}
+        let(:method_name) { self.class.parent_groups[1].description.delete('#') }
         if default
           it 'defaults' do
             expect(subject.public_send(method_name)).to eq(default)
@@ -54,7 +53,7 @@ class SiteHub
         context 'candidate_routes as parameter' do
           it 'sets it' do
             another_mapping = '/mapping'
-            candidate_routes = CandidateRoutes.new(sitehub_cookie_name: :sitehub_cookie_name, mapped_path: another_mapping)
+            candidate_routes = CandidateRoutes.new(version_cookie: TrackingCookieDefinition.new(:sitehub_cookie_name), mapped_path: another_mapping)
             subject.add_route candidate_routes: candidate_routes
             expect(subject[another_mapping]).to be(candidate_routes)
           end

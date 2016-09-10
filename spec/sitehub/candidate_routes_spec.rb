@@ -5,9 +5,8 @@ class SiteHub
   describe CandidateRoutes do
     include_context :middleware_test
 
-
     subject do
-      described_class.new(sitehub_cookie_name: :cookie_name,
+      described_class.new(version_cookie: TrackingCookieDefinition.new(:cookie_name),
                           mapped_path: '/path')
     end
 
@@ -17,16 +16,15 @@ class SiteHub
       end
 
       it 'returns the same intance everytime' do
-        collection = Collection::SplitRouteCollection.new
-        subject.candidates(collection)
+        collection = subject.candidates(Collection::SplitRouteCollection)
         expect(subject.candidates).to be(collection)
       end
 
       context 'endpoints already set' do
         context 'different object supplied' do
           it 'raises an error' do
-            subject.candidates(Collection::SplitRouteCollection.new)
-            expect { subject.candidates(Collection::RouteCollection.new) }
+            subject.candidates(Collection::SplitRouteCollection)
+            expect { subject.candidates(Collection::RouteCollection) }
               .to raise_error(CandidateRoutes::InvalidDefinitionError)
           end
         end
@@ -48,7 +46,7 @@ class SiteHub
 
     describe '#initialize' do
       let(:named_parameters) do
-        { sitehub_cookie_name: :name,
+        { version_cookie: TrackingCookieDefinition.new(:name),
           mapped_path: '/path' }
       end
 
@@ -83,7 +81,7 @@ class SiteHub
               format(described_class::INVALID_PATH_MATCHER, '*', e.message)
             end
 
-            expect { described_class.new(sitehub_cookie_name: '', mapped_path: '%r{*}') }
+            expect { described_class.new(version_cookie: TrackingCookieDefinition.new(:cookie_name), mapped_path: '%r{*}') }
               .to raise_error(described_class::InvalidPathMatcherError, expected_message)
           end
         end
@@ -161,7 +159,7 @@ class SiteHub
       end
 
       it 'accepts a percentage' do
-        subject.candidates(Collection::SplitRouteCollection.new)
+        subject.candidates(Collection::SplitRouteCollection)
         endpoint = subject.add url: :url, label: :current, percentage: 50
         expect(endpoint.upper).to eq(50)
       end
@@ -182,7 +180,7 @@ class SiteHub
 
           expected_endpoints = CandidateRoutes.new(rule: rule,
                                                    id: :label1,
-                                                   sitehub_cookie_name: :cookie_name,
+                                                   version_cookie: TrackingCookieDefinition.new(:cookie_name),
                                                    mapped_path: '/path',
                                                    &block).build
 
@@ -194,7 +192,7 @@ class SiteHub
           context 'precentage and rule not supplied' do
             context 'split required' do
               it 'raise an error' do
-                subject.candidates(Collection::SplitRouteCollection.new)
+                subject.candidates(Collection::SplitRouteCollection)
                 expected_message = described_class::PERCENTAGE_NOT_SPECIFIED_MSG
                 expect { subject.add(label: :label) {} }
                   .to raise_exception described_class::InvalidDefinitionError, expected_message
@@ -203,7 +201,7 @@ class SiteHub
 
             context 'route required' do
               it 'raise an error' do
-                subject.candidates(Collection::RouteCollection.new)
+                subject.candidates(Collection::RouteCollection)
                 expected_message = described_class::RULE_NOT_SPECIFIED_MSG
                 expect { subject.add(label: :label) {} }
                   .to raise_exception described_class::InvalidDefinitionError, expected_message
@@ -224,7 +222,7 @@ class SiteHub
           subject.add(rule: rule, label: :label, &block)
 
           expected_endpoints = described_class.new(id: :label,
-                                                   sitehub_cookie_name: :cookie_name,
+                                                   version_cookie: TrackingCookieDefinition.new(:cookie_name),
                                                    rule: rule,
                                                    mapped_path: subject.mapped_path,
                                                    &block).tap do |builder|
@@ -354,23 +352,23 @@ class SiteHub
 
     context '#endpoints' do
       context 'called with a collection' do
-        it 'sets endpoints to be that collection' do
-          subject.candidates(:collection)
-          expect(subject.candidates).to eq(:collection)
+        it 'sets endpoints to a collection of that type' do
+          subject.candidates(Hash)
+          expect(subject.candidates).to be_a(Hash)
         end
       end
 
       context 'already set with a different collection' do
         it 'raise an error' do
-          subject.candidates(:collection1)
-          expect { subject.candidates(:collection2) }.to raise_exception described_class::InvalidDefinitionError
+          subject.candidates(Hash)
+          expect { subject.candidates(Array) }.to raise_exception described_class::InvalidDefinitionError
         end
       end
     end
 
     describe '#forward_proxy' do
       subject do
-        described_class.new(sitehub_cookie_name: :cookie_name,
+        described_class.new(version_cookie: TrackingCookieDefinition.new(:cookie_name),
                             mapped_path: '/path')
       end
 

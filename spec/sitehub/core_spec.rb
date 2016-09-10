@@ -45,7 +45,6 @@ class SiteHub
             expect(core.mappings['/route_1'].sitehub_cookie_path).to eq(sitehub_json[:sitehub_cookie_path])
           end
         end
-
       end
 
       context 'reverse_proxies' do
@@ -84,7 +83,7 @@ class SiteHub
 
     describe '#proxy' do
       let(:expected_route) do
-        CandidateRoutes.new(sitehub_cookie_name: RECORDED_ROUTES_COOKIE,
+        CandidateRoutes.new(version_cookie: TrackingCookieDefinition.new(RECORDED_ROUTES_COOKIE),
                             mapped_path: '/app')
       end
 

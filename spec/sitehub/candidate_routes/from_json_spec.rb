@@ -12,28 +12,26 @@ class SiteHub
           let(:cookie_path) { 'custom_path' }
 
           context 'no config defined on proxy' do
-
             let(:proxy_config) do
               {
-                  path: '/',
-                  default: 'url'
+                path: '/',
+                default: 'url'
               }
             end
 
             it 'uses the config passed in to the method' do
-                expect(subject.default_route.sitehub_cookie_name).to eq(:top_level_cookie_name)
-                expect(subject.default_route.sitehub_cookie_path).to eq(:top_level_cookie_path)
+              expect(subject.default_route.sitehub_cookie_name).to eq(:top_level_cookie_name)
+              expect(subject.default_route.sitehub_cookie_path).to eq(:top_level_cookie_path)
             end
           end
 
           context 'defined on proxy' do
-
             let(:proxy_config) do
               {
-                  path: '/',
-                  sitehub_cookie_name: cookie_name,
-                  sitehub_cookie_path: cookie_path,
-                  default: 'url'
+                path: '/',
+                sitehub_cookie_name: cookie_name,
+                sitehub_cookie_path: cookie_path,
+                default: 'url'
               }
             end
 
@@ -42,7 +40,7 @@ class SiteHub
               expect(subject.default_route.sitehub_cookie_path).to eq(cookie_path)
             end
 
-            #TODO - support cookie config within split
+            # TODO: - support cookie config within split
             # context 'config defined on split' do
             #   let(:proxy_config_hash) do
             #     {
@@ -63,14 +61,12 @@ class SiteHub
             # end
           end
 
-          #TODO - support cookie config within split
+          # TODO: - support cookie config within split
           context 'defined on route' do
             it 'uses the configuration' do
-
             end
           end
         end
-
 
         context 'splits' do
           let(:proxy_config) { split_proxy }
@@ -90,8 +86,7 @@ class SiteHub
           it 'returns core with splits' do
             split_1 = split_1()
             split_2 = split_2()
-            expected = described_class.new(sitehub_cookie_name: :top_level_cookie_name,
-                                           sitehub_cookie_path: subject.sitehub_cookie_path,
+            expected = described_class.new(version_cookie: TrackingCookieDefinition.new(:top_level_cookie_name, subject.sitehub_cookie_path),
                                            mapped_path: subject.mapped_path) do
               split percentage: split_1[:percentage], label: split_1[:label], url: split_1[:url]
               split percentage: split_2[:percentage], label: split_2[:label], url: split_2[:url]
@@ -123,8 +118,7 @@ class SiteHub
 
           it 'returns core with routes' do
             route_1 = route_1()
-            expected = described_class.new(sitehub_cookie_name: :top_level_cookie_name,
-                                           sitehub_cookie_path: subject.sitehub_cookie_path,
+            expected = described_class.new(version_cookie: TrackingCookieDefinition.new(:top_level_cookie_name, subject.sitehub_cookie_path),
                                            mapped_path: subject.mapped_path) do
               route label: route_1[:label], url: route_1[:url]
             end
@@ -145,8 +139,7 @@ class SiteHub
               route_1 = route_1()
               nested_route = nested_route()
 
-              expected = described_class.new(sitehub_cookie_name: :top_level_cookie_name,
-                                             sitehub_cookie_path: subject.sitehub_cookie_path,
+              expected = described_class.new(version_cookie: TrackingCookieDefinition.new(:top_level_cookie_name, subject.sitehub_cookie_path),
                                              mapped_path: subject.mapped_path) do
                 split(percentage: nested_route[:percentage], label: nested_route[:label]) do
                   route label: route_1[:label], url: route_1[:url]
@@ -164,8 +157,7 @@ class SiteHub
               split_2 = split_2()
               nested_split = nested_split()
 
-              expected = described_class.new(sitehub_cookie_name: :top_level_cookie_name,
-                                             sitehub_cookie_path: subject.sitehub_cookie_path,
+              expected = described_class.new(version_cookie: TrackingCookieDefinition.new(:top_level_cookie_name, subject.sitehub_cookie_path),
                                              mapped_path: subject.mapped_path) do
                 split(percentage: nested_split[:percentage], label: nested_split[:label]) do
                   split percentage: split_1[:percentage], label: split_1[:label], url: split_1[:url]
@@ -181,8 +173,8 @@ class SiteHub
           let(:default_url) { 'url' }
           let(:proxy_config_default) do
             {
-                path: '/',
-                default: default_url
+              path: '/',
+              default: default_url
             }
           end
 

@@ -36,7 +36,7 @@ class SiteHub
 
       def add_route(url: nil, mapped_path: nil, candidate_routes: nil, &block)
         unless candidate_routes
-          candidate_routes = CandidateRoutes.new(sitehub_cookie_name: sitehub_cookie_name,
+          candidate_routes = CandidateRoutes.new(version_cookie: TrackingCookieDefinition.new(sitehub_cookie_name),
                                                  mapped_path: mapped_path,
                                                  &block).tap do |builder|
             builder.default(url: url) if url

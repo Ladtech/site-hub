@@ -4,14 +4,14 @@ describe 'config server' do
 
   let(:config) do
     {
-        proxies: [
-            {
-                sitehub_cookie_name: 'custom_name',
-                sitehub_cookie_path: '/custom/path',
-                path: '%r{/regex(.*)}',
-                default: DOWNSTREAM_URL
-            }
-        ]
+      proxies: [
+        {
+          sitehub_cookie_name: 'custom_name',
+          sitehub_cookie_path: '/custom/path',
+          path: '%r{/regex(.*)}',
+          default: DOWNSTREAM_URL
+        }
+      ]
     }
   end
 
@@ -24,7 +24,7 @@ describe 'config server' do
 
   let(:app) do
     sitehub = sitehub do
-      config_server(CONFIG_SERVER_URL, caching_options: {expires_in: 1})
+      config_server(CONFIG_SERVER_URL, caching_options: { expires_in: 1 })
     end
 
     Async::Middleware.new(sitehub)
