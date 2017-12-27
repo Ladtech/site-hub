@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(spec)/*.rb})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'rack'
+  spec.add_dependency 'rack', '~> 1.6.8'
   spec.add_dependency 'uuid'
   spec.add_dependency 'em-http-request'
   spec.add_dependency 'rack-ssl-enforcer'
